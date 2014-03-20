@@ -13,6 +13,8 @@ describe ReferenceWord do
     it "should be able to access its school and reference word" do
       school = School.create(name: "PSU")
       reference_word = ReferenceWord.create(name: "Drinking", topic_id: 1)
+      school_word_count.school = school
+      school_word_count.reference_word = reference_word
       expect(school_word_count.school).to eq school
       expect(school_word_count.reference_word).to eq reference_word
     end

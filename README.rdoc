@@ -49,7 +49,7 @@ CampusLyfe (Working Title) is a tool for prospective college students to view th
 
 5. Then switch back to your feature branch before merging code from master:
 
-   <tt>git checkout Daniel_awesomefeature</tt>
+   <tt>git checkout Daniel_awesomebranch</tt>
 
 6. Now merge the updated master branch code into your current feature branch:
 

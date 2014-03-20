@@ -11,10 +11,51 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140320182508) do
+ActiveRecord::Schema.define(version: 20140320184634) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "analyzed_posts", force: true do |t|
+    t.integer  "school_id"
+    t.string   "overall_sentiment"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "keywords", force: true do |t|
+    t.integer  "analyzed_post_id"
+    t.string   "text"
+    t.string   "sentiment"
+    t.float    "confidence"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "original_posts", force: true do |t|
+    t.text     "text"
+    t.integer  "school_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "ratings", force: true do |t|
+    t.integer  "topic_id"
+    t.integer  "school_id"
+    t.integer  "positive_post_count"
+    t.integer  "negative_post_count"
+    t.integer  "neutral_post_count"
+    t.integer  "mixed_post_count"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "reference_words", force: true do |t|
+    t.string   "name"
+    t.integer  "topic_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "schools", force: true do |t|
     t.string   "name"
@@ -23,6 +64,12 @@ ActiveRecord::Schema.define(version: 20140320182508) do
     t.integer  "negative_post_count"
     t.integer  "neutral_post_count"
     t.integer  "mixed_post_count"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "topics", force: true do |t|
+    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

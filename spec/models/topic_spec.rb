@@ -1,5 +1,14 @@
 require 'spec_helper'
 
 describe Topic do
-  pending "add some examples to (or delete) #{__FILE__}"
+
+  context "initialization" do
+    it "should exist" do
+      topic = Topic.create();
+      expect(topic).to be_an_instance_of Topic
+    end
+  end
+
+
+
 end

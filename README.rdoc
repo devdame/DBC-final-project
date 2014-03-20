@@ -1,7 +1,6 @@
-= CampusLyfe (Working Title)
-[![Build Status](https://travis-ci.org/rails/rails.png?branch=master)](https://travis-ci.org/rails/rails)
-CampusLyfe (Working Title) is a tool for prospective college students to view the student culture at different colleges via analysis of social media output on campuses.
+= CampusLyfe (Working Title) {<img src="https://coveralls.io/repos/devdame/DBC-final-project/badge.png" alt="Coverage Status" />}[https://coveralls.io/r/devdame/DBC-final-project]
 
+CampusLyfe (Working Title) is a tool for prospective college students to view the student culture at different colleges via analysis of social media output on campuses.
 
 === System Requirements
 - Ruby 2.0.0 p-451
@@ -10,47 +9,70 @@ CampusLyfe (Working Title) is a tool for prospective college students to view th
 - Internet access
 
 === External APIs and Libraries
-- <b>Geofeedia</b>
-API: https://app.geofeedia.com/account/apisetup
+<b>Geofeedia</b>
 
-Docs: https://app.geofeedia.com/Content/APIQuickStartGuide.pdf
+- API: https://app.geofeedia.com/account/apisetup
 
-- <b>AlchemyAPI</b>
+- Docs: https://app.geofeedia.com/Content/APIQuickStartGuide.pdf
+
+<b>AlchemyAPI</b>
+
 - Demo: http://www.alchemyapi.com/products/demo/
+
 - Docs: http://www.alchemyapi.com/api/
 
-== Getting Started
+=== Getting Started
 
-<b>System dependencies</b>
+1. Clone to local machine: <tt>git clone https://github.com/devdame/DBC-final-project.git campuslyfe</tt>
+
+2. Install dependencies: <tt>bundle</tt>
+
+3. Initialize database: <tt>rake db:reset</tt>
+
+4. Run server: <tt>rails s</tt>
+
+5. Visit http://localhost/3000
+
+=== Workflow
+
+<em>As a collaborator on this project, I hold myself to high standard of code, commit often, and never push to the master branch.</em>
+
+1. Each collaborator should create and checkout a branch for a specific feature they're working on:
+
+<tt>git checkout -b Daniel_awesomefeature</tt>
+
+2. Test code
+
+3. Commit working code:
+
+<tt>git add .</tt>
+
+<tt>git commit -m commit_message</tt>
+
+(A note about git commit messages: http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)
+
+4. Pull down master to resolve any conflicts locally:
+
+<tt>git pull origin master</tt>
+
+5. Push to your feature branch:
+
+<tt>git push origin Daniel_awesomefeature</tt>
+
+6. Submit a pull request on Github for code review.
 
 
+=== Running the test suite
 
+<tt>rspec</tt>
 
-<b>Setup Guide</b>
-- Clone down this repo to local machine: <tt>git clone https://github.com/devdame/DBC-final-project.git campuslyfe</tt>
-- Bundling gems: <tt>bundle</tt>
-- Start Rails server: <tt>rails s</tt>
+=== Brought to you by
+Andrew: https://github.com/Birdrock
 
+Daniel: https://github.com/dandydanny
 
+Jay: https://gist.github.com/jayrogers889csa
 
+Jess: http://github.com/thejessleigh
 
-
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-`rake db`
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+Lauren: https://github.com/wisconsinpoet

@@ -7,6 +7,9 @@ describe School do
       school = School.create();
       expect(school).to be_an_instance_of School
     end
+
+
+
   end
 
 

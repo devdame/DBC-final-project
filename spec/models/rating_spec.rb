@@ -1,5 +1,14 @@
 require 'spec_helper'
 
 describe Rating do
-  pending "add some examples to (or delete) #{__FILE__}"
+
+  context "initialization" do
+    it "should exist" do
+      rating = Rating.create();
+      expect(rating).to be_an_instance_of Rating
+    end
+  end
+
+
+
 end

@@ -1,5 +1,12 @@
 require 'spec_helper'
 
 describe AnalyzedPost do
-  pending "add some examples to (or delete) #{__FILE__}"
+
+  context "initialization" do
+    it "should exist" do
+      analyzed_post = AnalyzedPost.create();
+      expect(analyzed_post).to be_an_instance_of AnalyzedPost
+    end
+  end
+
 end

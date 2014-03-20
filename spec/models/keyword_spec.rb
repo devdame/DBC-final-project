@@ -1,5 +1,14 @@
 require 'spec_helper'
 
 describe Keyword do
-  pending "add some examples to (or delete) #{__FILE__}"
+
+  context "initialization" do
+    it "should exist" do
+      keywords = Keyword.create();
+      expect(keywords).to be_an_instance_of Keyword
+    end
+  end
+
+
+
 end

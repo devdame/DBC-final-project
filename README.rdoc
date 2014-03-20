@@ -49,25 +49,25 @@ CampusLyfe (Working Title) is a tool for prospective college students to view th
 
 5. Then switch back to your feature branch before merging code from master:
 
-   <tt>git checkout Daniel_awesomefeature</tt>
+   <tt>git checkout Daniel_awesomebranch</tt>
 
 6. Now merge the updated master branch code into your current feature branch:
 
    <tt>git merge master</tt>
 
-7. Now you may work on the code for your feature branch. Commit often.
+7. Now you may work on the code for your feature branch. COMMIT OFTEN.
 
-8. Whenever you are committing a block of functional code, repeat step <b>3 through 6</b> to keep the code base up-to-date. Solve conflicts if present.
-
-9. When you are ready to submit code to the project repo, first include files that were changed:
+8. When you are ready to submit code to the project repo, go ahead and commit one more time. First include files that were changed:
 
    <tt>git add .</tt>
 
-10. Then commit the changes you've made:
+9. Then commit the changes you've made:
 
     <tt>git commit -m "Add awesome feature to do awesome thing"</tt>
 
-11. Push your code to your feature branch:
+10. Repeat step <b>3 through 6</b> to ensure your code base is up-to-date with any changes to master that might have occured in the time you were working on your feature branch. Solve conflicts if present.
+
+11. Push your code to your remote feature branch:
 
     <tt>git push origin Daniel_awesomebranch</tt>
 

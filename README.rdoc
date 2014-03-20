@@ -1,28 +1,78 @@
-== README
+= CampusLyfe (Working Title) {<img src="https://coveralls.io/repos/devdame/DBC-final-project/badge.png" alt="Coverage Status" />}[https://coveralls.io/r/devdame/DBC-final-project]
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+CampusLyfe (Working Title) is a tool for prospective college students to view the student culture at different colleges via analysis of social media output on campuses.
 
-Things you may want to cover:
+=== System Requirements
+- Ruby 2.0.0 p-451
+- Rails 4.0.3
+- Postgres 9.3.2
+- Internet access
 
-* Ruby version
+=== External APIs and Libraries
+<b>Geofeedia</b>
 
-* System dependencies
+- API: https://app.geofeedia.com/account/apisetup
 
-* Configuration
+- Docs: https://app.geofeedia.com/Content/APIQuickStartGuide.pdf
 
-* Database creation
+<b>AlchemyAPI</b>
 
-* Database initialization
+- Demo: http://www.alchemyapi.com/products/demo/
 
-* How to run the test suite
+- Docs: http://www.alchemyapi.com/api/
 
-* Services (job queues, cache servers, search engines, etc.)
+=== Getting Started
 
-* Deployment instructions
+1. Clone to local machine: <tt>git clone https://github.com/devdame/DBC-final-project.git campuslyfe</tt>
 
-* ...
+2. Install dependencies: <tt>bundle</tt>
+
+3. Initialize database: <tt>rake db:reset</tt>
+
+4. Run server: <tt>rails s</tt>
+
+5. Visit http://localhost:3000
+
+=== Workflow
+
+<em>As a collaborator on this project, I hold myself to high standard of code, commit often, and never push to the master branch.</em>
+
+1. Each collaborator should create and checkout a branch for a specific feature they're working on:
+
+<tt>git checkout -b Daniel_awesomefeature</tt>
+
+2. Test code
+
+3. Commit working code:
+
+<tt>git add .</tt>
+
+<tt>git commit -m commit_message</tt>
+
+(A note about git commit messages: http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)
+
+4. Pull down master to resolve any conflicts locally:
+
+<tt>git pull origin master</tt>
+
+5. Push to your feature branch:
+
+<tt>git push origin Daniel_awesomefeature</tt>
+
+6. Submit a pull request on Github for code review.
 
 
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+=== Running the test suite
+
+<tt>rspec</tt>
+
+=== Brought to you by
+Andrew: https://github.com/Birdrock
+
+Daniel: https://github.com/dandydanny
+
+Jay: https://gist.github.com/jayrogers889csa
+
+Jess: http://github.com/thejessleigh
+
+Lauren: https://github.com/devdame

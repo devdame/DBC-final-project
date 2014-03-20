@@ -12,55 +12,66 @@ CampusLyfe (Working Title) is a tool for prospective college students to view th
 <b>Geofeedia</b>
 
 - API: https://app.geofeedia.com/account/apisetup
-
 - Docs: https://app.geofeedia.com/Content/APIQuickStartGuide.pdf
 
 <b>AlchemyAPI</b>
 
-- Demo: http://www.alchemyapi.com/products/demo/
-
-- Docs: http://www.alchemyapi.com/api/
+- Demo: http://www.alchemyapi.com/products/demo
+- Docs: http://www.alchemyapi.com/api
 
 === Getting Started
 
 1. Clone to local machine: <tt>git clone https://github.com/devdame/DBC-final-project.git campuslyfe</tt>
-
 2. Install dependencies: <tt>bundle</tt>
-
 3. Initialize database: <tt>rake db:reset</tt>
-
 4. Run server: <tt>rails s</tt>
-
-5. Visit http://localhost/3000
+5. Visit http://localhost:3000
 
 === Workflow
 
 <em>As a collaborator on this project, I hold myself to high standard of code, commit often, and never push to the master branch.</em>
 
-1. Each collaborator should create and checkout a branch for a specific feature they're working on:
+1. Starting out, or if using a new development workstation:
 
-<tt>git checkout -b Daniel_awesomefeature</tt>
+   <tt>git clone https://github.com/devdame/DBC-final-project.git campuslyfe</tt>
 
-2. Test code
 
-3. Commit working code:
+2. Create new branch for the feature you're working on:
 
-<tt>git add .</tt>
+   <tt>git checkout -b Daniel_awesomebranch</tt>
+3. To bring the local code base up-to-date, first checkout master branch:
 
-<tt>git commit -m commit_message</tt>
+   <tt>git checkout master</tt>
 
-(A note about git commit messages: http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)
+4. Pull in the latest code from the master brach:
 
-4. Pull down master to resolve any conflicts locally:
+   <tt>git pull origin master</tt>
 
-<tt>git pull origin master</tt>
+5. Then switch back to your feature branch before merging code from master:
 
-5. Push to your feature branch:
+   <tt>git checkout Daniel_awesomefeature</tt>
 
-<tt>git push origin Daniel_awesomefeature</tt>
+6. Now merge the updated master branch code into your current feature branch:
 
-6. Submit a pull request on Github for code review.
+   <tt>git merge master</tt>
 
+7. Now you may work on the code for your feature branch. Commit often.
+
+8. Whenever you are committing a block of functional code, repeat step <b>3 through 6</b> to keep the code base up-to-date. Solve conflicts if present.
+
+9. When you are ready to submit code to the project repo, first include files that were changed:
+
+   <tt>git add .</tt>
+
+10. Then commit the changes you've made:
+
+    <tt>git commit -m "Add awesome feature to do awesome thing"</tt>
+
+11. Push your code to your feature branch:
+
+    <tt>git push origin Daniel_awesomebranch</tt>
+
+12. Submit a pull request on Github for code review.
 
 === Running the test suite
 

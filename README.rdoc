@@ -31,7 +31,7 @@ CampusLyfe (Working Title) is a tool for prospective college students to view th
 
 4. Run server: <tt>rails s</tt>
 
-5. Visit http://localhost/3000
+5. Visit http://localhost:3000
 
 === Workflow
 

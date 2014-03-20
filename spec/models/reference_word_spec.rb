@@ -5,6 +5,7 @@ describe ReferenceWord do
   context "initialization" do
 
     let(:reference_word) {ReferenceWord.create(topic_id: 1, name: "party")}
+
     it "should exist" do
       expect(reference_word).to be_an_instance_of ReferenceWord
     end

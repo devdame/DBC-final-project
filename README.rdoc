@@ -1,13 +1,40 @@
-== README
+= CampusLyfe (Working Title)
+[![Build Status](https://travis-ci.org/rails/rails.png?branch=master)](https://travis-ci.org/rails/rails)
+CampusLyfe (Working Title) is a tool for prospective college students to view the student culture at different colleges via analysis of social media output on campuses.
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
 
-Things you may want to cover:
+=== System Requirements
+- Ruby 2.0.0 p-451
+- Rails 4.0.3
+- Postgres 9.3.2
+- Internet access
 
-* Ruby version
+=== External APIs and Libraries
+- <b>Geofeedia</b>
+API: https://app.geofeedia.com/account/apisetup
 
-* System dependencies
+Docs: https://app.geofeedia.com/Content/APIQuickStartGuide.pdf
+
+- <b>AlchemyAPI</b>
+- Demo: http://www.alchemyapi.com/products/demo/
+- Docs: http://www.alchemyapi.com/api/
+
+== Getting Started
+
+<b>System dependencies</b>
+
+
+
+
+<b>Setup Guide</b>
+- Clone down this repo to local machine: <tt>git clone https://github.com/devdame/DBC-final-project.git campuslyfe</tt>
+- Bundling gems: <tt>bundle</tt>
+- Start Rails server: <tt>rails s</tt>
+
+
+
+
+
 
 * Configuration
 
@@ -23,6 +50,7 @@ Things you may want to cover:
 
 * ...
 
+`rake db`
 
 Please feel free to use a different markup language if you do not plan to run
 <tt>rake doc:app</tt>.

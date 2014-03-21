@@ -42,10 +42,10 @@ ActiveRecord::Schema.define(version: 20140320221446) do
   create_table "ratings", force: true do |t|
     t.integer  "topic_id"
     t.integer  "school_id"
-    t.integer  "positive_post_count"
-    t.integer  "negative_post_count"
-    t.integer  "neutral_post_count"
-    t.integer  "mixed_post_count"
+    t.integer  "positive_post_count", default: 0
+    t.integer  "negative_post_count", default: 0
+    t.integer  "neutral_post_count",  default: 0
+    t.integer  "mixed_post_count",    default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -71,11 +71,11 @@ ActiveRecord::Schema.define(version: 20140320221446) do
 
   create_table "schools", force: true do |t|
     t.string   "name"
-    t.integer  "post_count"
-    t.integer  "positive_post_count"
-    t.integer  "negative_post_count"
-    t.integer  "neutral_post_count"
-    t.integer  "mixed_post_count"
+    t.integer  "post_count",          default: 0
+    t.integer  "positive_post_count", default: 0
+    t.integer  "negative_post_count", default: 0
+    t.integer  "neutral_post_count",  default: 0
+    t.integer  "mixed_post_count",    default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -1,13 +1,15 @@
 require 'httparty'
 require 'json'
 require 'find'
-require 'alchemy_api/alchemyapi.rb'
+puts Dir.pwd
+require './db/alchemyapi.rb'
+
 
 ############################
 #  FOR REALS STUFF TO USE  #
 ############################
 
-def create_original_posts(parsed_items, batch)
+def create_original_posts(parsed_items, batch, feed_id, school)
   parsed_items.each do |item|
     batch << OriginalPost.create(text: item["title"], original_publish_time: item["publishDate"], geofeedia_school_id: feed_id, school_id: school.id)
   end
@@ -24,11 +26,11 @@ Dir['db/seeds/*'].each do |filename|
 
   batch = []
   if school.original_posts.empty?
-    create_original_posts(parsed["items"], batch)
+    create_original_posts(parsed["items"], batch, feed_id, school)
     first_post_time = batch.sort_by{|post| post.original_publish_time}.first.original_publish_time
     school.first_post_time = first_post_time
   else
-    create_original_posts(parsed["items"], batch)
+    create_original_posts(parsed["items"], batch, feed_id, school)
   end
 
   most_recent_post_time = batch.sort_by{|post| post.original_publish_time}.last.original_publish_time
@@ -37,3 +39,22 @@ Dir['db/seeds/*'].each do |filename|
 end
 
 alchemyapi = AlchemyAPI.new()
+
+
+# OriginalPost.each do |post|
+post = OriginalPost.first
+
+post_text = post.text
+alchemy_post_response = alchemyapi.sentiment('text', post_text)
+
+new_post = AnalyzedPost.create(school_id: post.school_id, original_publish_time: post.original_publish_time, overall_sentiment: alchemy_post_response["docSentiment"]["type"])
+puts new_post.overall_sentiment
+
+alchemy_keywords_response = alchemyapi.keywords('text', post_text, options = {"sentiment" => 1})
+alchemy_keywords_response["keywords"].each do |keyword|
+  Keyword.create(text: keyword["text"], sentiment: keyword["sentiment"]["type"], confidence: keyword["sentiment"]["score"], analyzed_post_id: new_post.id)
+end
+
+# end
+
+

@@ -19,7 +19,6 @@ ActiveRecord::Schema.define(version: 20140320221446) do
   create_table "analyzed_posts", force: true do |t|
     t.integer  "school_id"
     t.string   "overall_sentiment"
-    t.string   "geofeedia_school_id"
     t.string   "original_publish_time"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -46,6 +45,7 @@ ActiveRecord::Schema.define(version: 20140320221446) do
   create_table "ratings", force: true do |t|
     t.integer  "topic_id"
     t.integer  "school_id"
+    t.integer  "total_post_count",    default: 0
     t.integer  "positive_post_count", default: 0
     t.integer  "negative_post_count", default: 0
     t.integer  "neutral_post_count",  default: 0
@@ -75,13 +75,15 @@ ActiveRecord::Schema.define(version: 20140320221446) do
 
   create_table "schools", force: true do |t|
     t.string   "name"
+    t.integer  "student_body_count"
+    t.string   "first_post_time"
     t.string   "most_recent_post_time"
+    t.string   "geofeedia_id"
     t.integer  "post_count",            default: 0
     t.integer  "positive_post_count",   default: 0
     t.integer  "negative_post_count",   default: 0
     t.integer  "neutral_post_count",    default: 0
     t.integer  "mixed_post_count",      default: 0
-    t.string   "geofeedia_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

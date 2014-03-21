@@ -63,7 +63,7 @@ CampusLyfe (Working Title) is a tool for prospective college students to view th
 
 9. Then commit the changes you've made:
 
-    <tt>git commit -m "Add awesome feature to do awesome thing"</tt>
+   <tt>git commit -m "Add awesome feature to do awesome thing"</tt>
 
 10. Repeat step <b>3 through 6</b> to ensure your code base is up-to-date with any changes to master that might have occured in the time you were working on your feature branch. Solve conflicts if present.
 
@@ -78,12 +78,10 @@ CampusLyfe (Working Title) is a tool for prospective college students to view th
 <tt>rspec</tt>
 
 === Brought to you by
-Andrew: https://github.com/Birdrock
+http://i29.photobucket.com/albums/c259/dandydanny/DBC/team_foxsandwich_zps9492f352.jpg
 
-Daniel: https://github.com/dandydanny
-
-Jay: https://gist.github.com/jayrogers889csa
-
-Jess: http://github.com/thejessleigh
-
-Lauren: https://github.com/devdame
+Jay:: https://github.com/jayrogers889csa
+Jess:: https://github.com/thejessleigh
+Andrew:: https://github.com/Birdrock
+Lauren:: https://github.com/devdame
+Daniel:: https://github.com/dandydanny

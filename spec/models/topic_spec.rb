@@ -10,6 +10,11 @@ describe Topic do
       expect(topic).to be_an_instance_of Topic
     end
 
+    it "should be unique" do
+      topic_duplicate = Topic.create(name: "Academics")
+      expect(Topic.all.count).to eq 1
+    end
+
     it "should be able to access its reference words" do
       ReferenceWord.create(topic_id: topic.id, name: "study")
       expect(topic.reference_words.count).to eq 1

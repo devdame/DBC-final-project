@@ -10,7 +10,7 @@ describe Rating do
     end
 
     it "should be able to access its school" do
-      school = School.create(name: "MSU")
+      school = School.create(name: "MSU", most_recent_post_time: "2014-03-21 15:14:33")
       rating.school = school
       expect(rating.school).to eq school
     end

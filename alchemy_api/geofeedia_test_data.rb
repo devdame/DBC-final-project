@@ -22,7 +22,7 @@ parsed["items"].each do |item|
 end
 
 sample_data
-sample_selection = sample_data.sample(10)
+sample_selection = sample_data.sample(2)
 
 
 sample_selection.each do |sample|
@@ -53,8 +53,8 @@ sample_selection.each do |sample|
     for keyword in response['keywords']
       puts 'text: ' + keyword['text']
       puts 'relevance: ' + keyword['relevance']
-      print 'sentiment: ' + keyword['sentiment']['type'] 
-      
+      print 'sentiment: ' + keyword['sentiment']['type']
+
 
       #Make sure score exists (it's not returned for neutral sentiment
       if keyword['sentiment'].key?('score')
@@ -90,7 +90,7 @@ sample_selection.each do |sample|
     puts ''
     puts '## Document Sentiment ##'
     puts 'type: ' + response['docSentiment']['type']
-    
+
     #Make sure score exists (it's not returned for neutral sentiment
     if response['docSentiment'].key?('score')
       puts 'score: ' + response['docSentiment']['score']

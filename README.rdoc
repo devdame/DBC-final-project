@@ -78,12 +78,10 @@ CampusLyfe (Working Title) is a tool for prospective college students to view th
 <tt>rspec</tt>
 
 === Brought to you by
-Andrew: https://github.com/Birdrock
+http://i29.photobucket.com/albums/c259/dandydanny/DBC/team_foxsandwich_zps9492f352.jpg
 
-Daniel: https://github.com/dandydanny
-
-Jay: https://gist.github.com/jayrogers889csa
-
-Jess: http://github.com/thejessleigh
-
-Lauren: https://github.com/devdame
+Jay:: https://github.com/jayrogers889csa
+Jess:: https://github.com/thejessleigh
+Andrew:: https://github.com/Birdrock
+Lauren:: https://github.com/devdame
+Daniel:: https://github.com/dandydanny

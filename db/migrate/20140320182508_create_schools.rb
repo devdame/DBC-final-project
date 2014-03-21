@@ -8,6 +8,7 @@ class CreateSchools < ActiveRecord::Migration
       t.integer :negative_post_count, default: 0
       t.integer :neutral_post_count, default: 0
       t.integer :mixed_post_count, default: 0
+      t.string :geofeedia_id
 
       t.timestamps
     end

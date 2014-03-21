@@ -81,6 +81,7 @@ ActiveRecord::Schema.define(version: 20140320221446) do
     t.integer  "negative_post_count",   default: 0
     t.integer  "neutral_post_count",    default: 0
     t.integer  "mixed_post_count",      default: 0
+    t.string   "geofeedia_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

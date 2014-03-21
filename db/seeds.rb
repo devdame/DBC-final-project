@@ -1,22 +1,23 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#
-#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
-#   Mayor.create(name: 'Emanuel', city: cities.first)
 require 'httparty'
 require 'json'
+require 'find'
 
-# response = HTTParty.get('https://api.geofeedia.com/v1/search/geofeed/32206?appId=420880de&appKey=306ced14ef8ab2183b8264327c456806&maxDate=2014-03-19T23:59:59Z')
+############################
+#  FOR REALS STUFF TO USE  #
+############################
 
-uofm_320 = File.read('seeds/uofm32206_3_20_1342.json')
-parsed = JSON.parse(json)
+School.create(name: "University of Illinois, Champaign-Urbana", geofeedia_id: "32202")
+School.create(name: "University of Michigan, Ann Arbor", geofeedia_id: "32206")
 
-sample_data = []
+Dir['db/seeds/*'].each do |filename|
+  json = File.read(filename)
+  feed_id = filename.gsub(/\D+(\d+)[a-z].+/i, '\1')
+  school_id = School.find_by_geofeedia_id(feed_id).id
+  parsed = JSON.parse(json)
 
-parsed["items"].each do |item|
-  sample_data << item["title"]
+
+
+  parsed["items"].each do |item|
+    OriginalPost.create(text: item["title"], original_publish_time: item["publishDate"], geofeedia_school_id: feed_id, school_id: school_id)
+  end
 end
-
-puts sample_data

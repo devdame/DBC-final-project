@@ -1,5 +1,4 @@
 require './alchemyapi.rb'
-require 'zlib'
 
 alchemyapi = AlchemyAPI.new()
 
@@ -54,8 +53,8 @@ sample_selection.each do |sample|
     for keyword in response['keywords']
       puts 'text: ' + keyword['text']
       puts 'relevance: ' + keyword['relevance']
-      print 'sentiment: ' + keyword['sentiment']['type'] 
-      
+      print 'sentiment: ' + keyword['sentiment']['type']
+
 
       #Make sure score exists (it's not returned for neutral sentiment
       if keyword['sentiment'].key?('score')
@@ -91,7 +90,7 @@ sample_selection.each do |sample|
     puts ''
     puts '## Document Sentiment ##'
     puts 'type: ' + response['docSentiment']['type']
-    
+
     #Make sure score exists (it's not returned for neutral sentiment
     if response['docSentiment'].key?('score')
       puts 'score: ' + response['docSentiment']['score']

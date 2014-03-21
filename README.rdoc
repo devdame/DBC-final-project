@@ -63,7 +63,7 @@ CampusLyfe (Working Title) is a tool for prospective college students to view th
 
 9. Then commit the changes you've made:
 
-    <tt>git commit -m "Add awesome feature to do awesome thing"</tt>
+   <tt>git commit -m "Add awesome feature to do awesome thing"</tt>
 
 10. Repeat step <b>3 through 6</b> to ensure your code base is up-to-date with any changes to master that might have occured in the time you were working on your feature branch. Solve conflicts if present.
 

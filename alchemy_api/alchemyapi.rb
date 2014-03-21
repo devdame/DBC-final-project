@@ -518,10 +518,20 @@ class AlchemyAPI
 		#Add the API key and set the output mode to JSON
 		options['apikey'] = @apiKey
 		options['outputMode'] = 'json'
+
+		uri = URI.parse(url)
+		req = Net::HTTP::Post.new(uri)
+		req.set_form_data(options)
+
+		# disable gzip encoding which blows up in Zlib due to Ruby 2.0 bug
+		# otherwise you'll get Zlib::BufError: buffer error
+    req['Accept-Encoding'] = 'identity'		
 		
 		#Fire off the HTTP request
-		res = Net::HTTP::post_form(URI.parse(url), options)
-		
+    res = Net::HTTP.start(uri.hostname, uri.port) do |http|
+    	http.request(req)
+    end
+    
 		#parse and return the response
 		return JSON.parse(res.body)
 	end

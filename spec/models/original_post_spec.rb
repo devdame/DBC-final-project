@@ -4,8 +4,8 @@ describe OriginalPost do
 
   context "initialization" do
 
-    let(:school) {School.create(name: "school")}
-    let(:original_post) {OriginalPost.create(school_id: school.id, text: "blah")}
+    let(:school) {School.create(name: "school", most_recent_post_time: "2014-03-21 15:14:33")}
+    let(:original_post) {OriginalPost.create(school_id: school.id, text: "blah", geofeedia_school_id: "123456", original_publish_time: "2014-03-21 15:14:33")}
 
 
     it "should exist" do

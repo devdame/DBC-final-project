@@ -2,13 +2,13 @@ CollegeCultureFit::Application.routes.draw do
 
   root 'welcome#index'
 
-  resources :colleges
+  resources :schools
 
   resources :topics
 
   get 'about' => 'about#index'
 
-  get 'compare' => 'colleges#compare'
+  get 'compare' => 'schools#compare'
 
 
   # The priority is based upon order of creation: first created -> highest priority.

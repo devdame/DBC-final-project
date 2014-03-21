@@ -157,14 +157,12 @@ PLATFORMS
 DEPENDENCIES
   capybara (~> 2.2.1)
   coffee-rails (~> 4.0.0)
+  coveralls
+  database_cleaner (~> 1.2.0)
   httparty
   jbuilder (~> 1.2)
   jquery-rails
   multi_xml
-  coveralls
-  database_cleaner (~> 1.2.0)
-  jbuilder (~> 1.2)
-  jquery-rails
   pg
   rails (= 4.0.3)
   rspec-rails (~> 2.14.1)

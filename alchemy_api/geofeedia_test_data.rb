@@ -1,4 +1,5 @@
 require './alchemyapi.rb'
+require 'zlib'
 
 alchemyapi = AlchemyAPI.new()
 
@@ -22,7 +23,7 @@ parsed["items"].each do |item|
 end
 
 sample_data
-sample_selection = sample_data.sample(10)
+sample_selection = sample_data.sample(2)
 
 
 sample_selection.each do |sample|

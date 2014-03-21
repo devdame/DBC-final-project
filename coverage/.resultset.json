@@ -9,6 +9,8 @@
         1,
         1,
         1,
+        1,
+        1,
         null,
         1,
         1,
@@ -25,6 +27,8 @@
         null
       ],
       "/Users/apprentice/college_culture_fit/app/models/original_post.rb": [
+        1,
+        1,
         1,
         1,
         1,
@@ -50,6 +54,7 @@
         null
       ],
       "/Users/apprentice/college_culture_fit/app/models/school.rb": [
+        1,
         1,
         1,
         null,
@@ -78,6 +83,6 @@
         null
       ]
     },
-    "timestamp": 1395366777
+    "timestamp": 1395416212
   }
 }

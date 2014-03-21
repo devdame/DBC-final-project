@@ -11,7 +11,7 @@ describe ReferenceWord do
     end
 
     it "should be able to access its school and reference word" do
-      school = School.create(name: "PSU")
+      school = School.create(name: "PSU", most_recent_post_time: "2014-03-21 15:14:33")
       reference_word = ReferenceWord.create(name: "Drinking", topic_id: 1)
       school_word_count.school = school
       school_word_count.reference_word = reference_word

@@ -1,4 +1,5 @@
 require './alchemyapi.rb'
+require 'zlib'
 
 alchemyapi = AlchemyAPI.new()
 

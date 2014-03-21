@@ -3,7 +3,6 @@ class CreateAnalyzedPosts < ActiveRecord::Migration
     create_table :analyzed_posts do |t|
       t.belongs_to :school
       t.string :overall_sentiment
-      t.string :geofeedia_school_id
       t.string :original_publish_time
 
       t.timestamps

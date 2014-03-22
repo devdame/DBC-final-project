@@ -6,14 +6,14 @@ class Rating < ActiveRecord::Base
   belongs_to :school
 
   def topic_activity_ratio
-    total_post_count/self.school.post_count
+    total_post_count/self.school.post_count.to_f
   end
 
   def topic_positivity_ratio
-    positive_post_count/total_post_count
+    positive_post_count/total_post_count.to_f
   end
 
   def topic_negativity_ratio
-    negative_post_count/total_post_count
+    negative_post_count/total_post_count.to_f
   end
 end

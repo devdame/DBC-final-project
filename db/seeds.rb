@@ -10,7 +10,7 @@ require './db/alchemyapi.rb'
 ############################
 
 ###############Create Topics
-topics = ["nerd_culture", "partying", "academics", "romance", "lgbt", "fitness", "career"]
+topics = ["food", "tech", "nerd_culture", "partying", "academics", "romance", "lgbt", "fitness", "career", "finance", "gender", "housing", "politics", "food", "religion"]
 
 topics.each do |topic|
   Topic.create(name: topic)
@@ -32,27 +32,69 @@ academics.each do |word|
   ReferenceWord.create(name: word.downcase, topic: Topic.find_by_name("academics"))
 end
 
-lgbt = ["gay", "lesbian", "bisexual", "bi", "trans", "transgender", "drag queen", "drag queens", "pansexual", "queer", "genderqueer", "gender queer", "gender", "asexual", "post-op", "post op", "pride parade", "gay pride", "homosexual", "butch", "femme", "fag", "dyke", "boystown", "hunty", "throw shade", "rainbow", "drag ball", "RuPaul"]
+lgbt = ["lgbt", "gay", "lesbian", "bisexual", "bi", "trans", "transgender", "drag queen", "drag queens", "pansexual", "queer", "genderqueer", "gender queer", "gender", "asexual", "post-op", "post op", "pride parade", "gay pride", "homosexual", "butch", "femme", "fag", "dyke", "boystown", "hunty", "throw shade", "rainbow", "drag ball", "RuPaul"]
 lgbt.each do |word|
   ReferenceWord.create(name: word.downcase, topic: Topic.find_by_name("lgbt"))
 end
 
-career = ["business", "management", "marketing", "job", "work", "workplace", "office", "overtime", "work week", "worknight", "work night", "shift", "interview", "apprentice", "apprenticeship", "intern", "internship"]
+career = ["career", "business", "management", "marketing", "job", "work", "workplace", "office", "overtime", "work week", "worknight", "work night", "shift", "interview", "apprentice", "apprenticeship", "intern", "internship"]
 
 career.each do |word|
   ReferenceWord.create(name: word.downcase, topic: Topic.find_by_name("career"))
 end
 
-romance = ["hookup", "sex", "crush", "flowers", "date", "girlfriend", "boyfriend", "wife", "husband", "marriage", "significant other", "s. o.", "s.o.", "spouse", "date night"]
+romance = ["romance", "hookup", "sex", "crush", "flowers", "date", "girlfriend", "boyfriend", "wife", "husband", "marriage", "significant other", "s. o.", "s.o.", "spouse", "date night"]
 
 romance.each do |word|
   ReferenceWord.create(name: word.downcase, topic: Topic.find_by_name("romance"))
 end
 
-fitness = ["protien", "workout", "p90x", "gym", "swole", "swol", "parkour", "bodyweight", "bmi", "swoll", "diet", "dieting", "weight", "marathon", "half marathon", "half-marathon", "running", "triathalon", "5k", "five k", "cycling", "jog", "jogging", "body mass index", "body mass", "body weight", "lose weight", "lost weight", "pounds", "snowboard", "bike", "biking", "hiking", "ski", "yoga", "hatha yoga", "hatha"]
+fitness = ["fitness", "protien", "workout", "p90x", "gym", "swole", "swol", "parkour", "bodyweight", "bmi", "swoll", "diet", "dieting", "weight", "marathon", "half marathon", "half-marathon", "running", "triathalon", "5k", "five k", "cycling", "jog", "jogging", "body mass index", "body mass", "body weight", "lose weight", "lost weight", "pounds", "snowboard", "bike", "biking", "hiking", "ski", "yoga", "hatha yoga", "hatha"]
 
 fitness.each do |word|
-  ReferenceWord.create(name: word, topic: Topic.find_by_name("fitness"))
+  ReferenceWord.create(name: word.downcase, topic: Topic.find_by_name("fitness"))
+end
+
+finance = ["finance", "finances", "broke", "cheap", "expensive"]
+
+finance.each do |word|
+  ReferenceWord.create(name: word.downcase, topic: Topic.find_by_name("finance"))
+end
+
+housing = ["housing", "rent", "lease", "dorm", "apartment", "house"]
+
+housing.each do |word|
+  ReferenceWord.create(name: word.downcase, topic: Topic.find_by_name("housing"))
+end
+
+gender = ["gender", "women", "female", "bitch", "sexxx", "slurty", "flirty", "submissive", "sex positive", "whore", "cunt", "ladies", "gender", "gender roles", "gender studies", "feminist", "gender binary"]
+
+gender.each do |word|
+  ReferenceWord.create(name: word.downcase, topic: Topic.find_by_name("gender"))
+end
+
+politics = ["politics", "political", "fillibuster", "gridlock", "boycott", "divestment", "sanctions", "election", "senate", "senator", "congress", "congressman", "congresswoman", "congressperson", "congress person", "representative", "rep", "potus", "flotus", "democrat", "dem", "republican", "conservative", "liberal", "dems", "democrats", "republicans", "communist", "facist", "protest", "occupy wall street", "wall street", "post-all", "sit-in", "post all", "sit in", "Capitol Hill", "whitehouse", "white house", "newt gingrich", "gingrich", "student election", "student elections", "vote", "voter", "voter registration", "special interest", "special interests", "pac", "super pac", "super-pac", "lobbyist", "lobbyists"]
+
+politics.each do |word|
+  ReferenceWord.create(name: word.downcase, topic: Topic.find_by_name("politics"))
+end
+
+tech = ["App store", "api", "startup", "start up", "start-up", "web developer", "web development", "dev", "sysadmin", "macbook", "app", "microsoft", "netflix", "programming", "ruby", "python", "sublime text", "vim", "facebook", "twitter", "tech", "whatsapp", "whats app", "snapchat", "technology"]
+
+tech.each do |word|
+  ReferenceWord.create(name: word.downcase, topic: Topic.find_by_name("tech"))
+end
+
+food = ["cafeteria", "caf", "dining", "dining hall", "food", "breakfast", "lunch", "dinner", "brunch", "grub", "meal plan", "meal", "vegan", "gluten free", "gf", "veganism", "vegetarianism", "vegetarian", "vegeterianism", "vegeterian", "gluten", "coffee", "caffiene"]
+
+food.each do |word|
+  ReferenceWord.create(name: word.downcase, topic: Topic.find_by_name("food"))
+end
+
+religion = ["pray", "jesus", "allah", "buddha", "god", "blessed", "hymn", "hymnal", "bible", "church", "religion", "chapel", "judiasm", "temple", "bible study", "bible group", "atheism", "atheist", "jewish", "christian", "muslim", "islam", "buddhist", "spiritual", "spiritualism", "catholic", "pope", "bishop", "priest", "pastor", "righteous"]
+
+religion.each do |word|
+  ReferenceWord.create(name: word.downcase, topic: Topic.find_by_name("religion"))
 end
 
 

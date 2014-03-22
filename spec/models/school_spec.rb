@@ -2,14 +2,37 @@ require 'spec_helper'
 
 describe School do
 
+  let(:school) {School.create(name: "ASU", student_body_count: 52_140, first_post_time: "2014-03-21 12:14:33", most_recent_post_time: "2014-03-21 15:14:33", geofeedia_id: "12234")}
+
   context "initialization" do
-
-  let(:school) {School.create(name: "ASU", most_recent_post_time: "2014-03-21 15:14:33")}
-
     it "should exist" do
       expect(school).to be_an_instance_of School
     end
+  end
 
+  context "basic validations" do
+    it "should have a name" do
+      school.name.should_not be_nil
+    end
+
+    it "should have a student body count" do
+      school.student_body_count.should_not be_nil
+    end
+
+    it "should have a first post time" do
+      school.first_post_time.should_not be_nil
+    end
+
+    it "should have a most recent post time" do
+      school.most_recent_post_time.should_not be_nil
+    end
+
+    it "should have a geofeedia id" do
+      school.geofeedia_id.should_not be_nil
+    end
+  end
+
+  context "basic associations" do
     it "should be able to access its original posts" do
       original_post = OriginalPost.create(school_id: school.id, text: "post", geofeedia_school_id: "123456", original_publish_time: "2014-03-21 15:14:33")
       expect(school.original_posts.count).to eq 1
@@ -17,7 +40,7 @@ describe School do
     end
 
     it "should be able to access its analyzed posts" do
-      analyzed_post = AnalyzedPost.create(school_id: school.id, overall_sentiment: "positive", geofeedia_school_id: "123456", original_publish_time: "2014-03-21 15:14:33")
+      analyzed_post = AnalyzedPost.create(school_id: school.id, overall_sentiment: "positive", original_publish_time: "2014-03-21 15:14:33")
       expect(school.analyzed_posts.count).to eq 1
       expect(school.analyzed_posts.first).to be_an_instance_of AnalyzedPost
     end
@@ -27,7 +50,7 @@ describe School do
       expect(school.ratings.count).to eq 1
       expect(school.ratings.first).to be_an_instance_of Rating
     end
-
   end
+
 
 end

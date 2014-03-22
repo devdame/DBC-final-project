@@ -1,11 +1,11 @@
 {
   "RSpec": {
     "coverage": {
-      "/Users/apprentice/rake_db_foxwich/app/helpers/application_helper.rb": [
+      "/Users/apprentice/college_culture_fit/app/helpers/application_helper.rb": [
         1,
         null
       ],
-      "/Users/apprentice/rake_db_foxwich/app/models/analyzed_post.rb": [
+      "/Users/apprentice/college_culture_fit/app/models/analyzed_post.rb": [
         1,
         1,
         1,
@@ -15,17 +15,7 @@
         1,
         null
       ],
-      "/Users/apprentice/rake_db_foxwich/app/models/keyword.rb": [
-        1,
-        1,
-        1,
-        1,
-        1,
-        null,
-        1,
-        null
-      ],
-      "/Users/apprentice/rake_db_foxwich/app/models/original_post.rb": [
+      "/Users/apprentice/college_culture_fit/app/models/keyword.rb": [
         1,
         1,
         1,
@@ -35,7 +25,17 @@
         1,
         null
       ],
-      "/Users/apprentice/rake_db_foxwich/app/models/rating.rb": [
+      "/Users/apprentice/college_culture_fit/app/models/original_post.rb": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        null,
+        1,
+        null
+      ],
+      "/Users/apprentice/college_culture_fit/app/models/rating.rb": [
         1,
         1,
         1,
@@ -44,7 +44,7 @@
         1,
         null
       ],
-      "/Users/apprentice/rake_db_foxwich/app/models/reference_word.rb": [
+      "/Users/apprentice/college_culture_fit/app/models/reference_word.rb": [
         1,
         1,
         1,
@@ -52,7 +52,10 @@
         1,
         null
       ],
-      "/Users/apprentice/rake_db_foxwich/app/models/school.rb": [
+      "/Users/apprentice/college_culture_fit/app/models/school.rb": [
+        1,
+        1,
+        1,
         1,
         1,
         1,
@@ -63,25 +66,25 @@
         null,
         null
       ],
-      "/Users/apprentice/rake_db_foxwich/app/models/topic.rb": [
+      "/Users/apprentice/college_culture_fit/app/models/school_word_count.rb": [
+        1,
         1,
         1,
         null,
         1,
         1,
+        null,
         null
       ],
-      "/Users/apprentice/rake_db_foxwich/app/models/school_word_count.rb": [
-        1,
-        1,
-        1,
-        null,
+      "/Users/apprentice/college_culture_fit/app/models/topic.rb": [
         1,
         1,
         null,
+        1,
+        1,
         null
       ]
     },
-    "timestamp": 1395507070
+    "timestamp": 1395507380
   }
 }

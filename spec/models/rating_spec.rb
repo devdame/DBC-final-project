@@ -33,5 +33,4 @@ describe Rating do
       expect(rating.topic).to eq topic
     end
   end
-
 end

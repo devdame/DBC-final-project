@@ -108,6 +108,7 @@ end
 # School.create(name: "University of Michigan, Ann Arbor", geofeedia_id: "32206", student_body_count: 43426)
 
 School.create(name: "Arizona State University", geofeedia_id: "32204", student_body_count: 123456789)
+School.create(name: "University of Texas Austin", geofeedia_id: "32211", student_body_count: 123456789)
 
 Dir['db/seeds/*'].each do |filename|
   json = File.read(filename)
@@ -129,23 +130,21 @@ Dir['db/seeds/*'].each do |filename|
   school.save
 end
 
-# alchemyapi = AlchemyAPI.new()
+alchemyapi = AlchemyAPI.new()
 
 
-# # OriginalPost.each do |post|
-# post = OriginalPost.first
+OriginalPost.all.each do |post|
 
-# post_text = post.text
-# alchemy_post_response = alchemyapi.sentiment('text', post_text)
+  post_text = post.text
+  alchemy_post_response = alchemyapi.sentiment('text', post_text)
 
-# new_post = AnalyzedPost.create(school_id: post.school_id, original_publish_time: post.original_publish_time, overall_sentiment: alchemy_post_response["docSentiment"]["type"])
-# puts new_post.overall_sentiment
+  new_post = AnalyzedPost.create(school_id: post.school_id, original_publish_time: post.original_publish_time, overall_sentiment: alchemy_post_response["docSentiment"]["type"])
 
-# alchemy_keywords_response = alchemyapi.keywords('text', post_text, options = {"sentiment" => 1})
-# alchemy_keywords_response["keywords"].each do |keyword|
-#   Keyword.create(text: keyword["text"], sentiment: keyword["sentiment"]["type"], confidence: keyword["sentiment"]["score"], analyzed_post_id: new_post.id)
-# end
+  alchemy_keywords_response = alchemyapi.keywords('text', post_text, options = {"sentiment" => 1})
+  alchemy_keywords_response["keywords"].each do |keyword|
+    Keyword.create(text: keyword["text"], sentiment: keyword["sentiment"]["type"], confidence: keyword["sentiment"]["score"], analyzed_post_id: new_post.id)
+  end
 
-# # end
+end
 
 

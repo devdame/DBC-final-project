@@ -47,8 +47,8 @@ if response['status'] == 'OK'
 		puts 'text: ' + entity['text']
 		puts 'type: ' + entity['type']
 		puts 'relevance: ' + entity['relevance']
-		print 'sentiment: ' + entity['sentiment']['type'] 
-		
+		print 'sentiment: ' + entity['sentiment']['type']
+
 		#Make sure score exists (it's not returned for neutral sentiment
 		if entity['sentiment'].key?('score')
 			print ' (' + entity['sentiment']['score'] + ')'
@@ -85,8 +85,8 @@ if response['status'] == 'OK'
 	for keyword in response['keywords']
 		puts 'text: ' + keyword['text']
 		puts 'relevance: ' + keyword['relevance']
-		print 'sentiment: ' + keyword['sentiment']['type'] 
-		
+		print 'sentiment: ' + keyword['sentiment']['type']
+
 
 		#Make sure score exists (it's not returned for neutral sentiment
 		if keyword['sentiment'].key?('score')
@@ -153,7 +153,7 @@ if response['status'] == 'OK'
 	puts ''
 	puts '## Document Sentiment ##'
 	puts 'type: ' + response['docSentiment']['type']
-	
+
 	#Make sure score exists (it's not returned for neutral sentiment
 	if response['docSentiment'].key?('score')
 		puts 'score: ' + response['docSentiment']['score']
@@ -185,7 +185,7 @@ if response['status'] == 'OK'
 	puts ''
 	puts '## Targeted Sentiment ##'
 	puts 'type: ' + response['docSentiment']['type']
-	
+
 	#Make sure score exists (it's not returned for neutral sentiment
 	if response['docSentiment'].key?('score')
 		puts 'score: ' + response['docSentiment']['score']

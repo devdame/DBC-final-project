@@ -12,7 +12,7 @@ puts ''
 
 ##
 
-json = File.read('../db/seeds/uofm32206_3_20_1342.json')
+json = File.read('../db/seeds/32206uofm_3_20_1342.json')
 parsed = JSON.parse(json)
 
 sample_data = []

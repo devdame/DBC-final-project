@@ -17,7 +17,7 @@ describe School do
     end
 
     it "should be able to access its analyzed posts" do
-      analyzed_post = AnalyzedPost.create(school_id: school.id, overall_sentiment: "positive", geofeedia_school_id: "123456", original_publish_time: "2014-03-21 15:14:33")
+      analyzed_post = AnalyzedPost.create(school_id: school.id, overall_sentiment: "positive", geofeedia_id: "123456", original_publish_time: "2014-03-21 15:14:33")
       expect(school.analyzed_posts.count).to eq 1
       expect(school.analyzed_posts.first).to be_an_instance_of AnalyzedPost
     end

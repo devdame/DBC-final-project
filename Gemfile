@@ -32,6 +32,7 @@ gem 'multi_xml'
 
 gem 'httparty'
 
+
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false
@@ -53,4 +54,6 @@ group :development, :test do
   gem 'rspec-rails', '~> 2.14.1'
   gem 'capybara', '~> 2.2.1'
   gem 'database_cleaner', '~> 1.2.0'
+  gem 'pry'
+  gem 'pry-nav'
 end

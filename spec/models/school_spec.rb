@@ -19,14 +19,6 @@ describe School do
       school.student_body_count.should_not be_nil
     end
 
-    it "should have a first post time" do
-      school.first_post_time.should_not be_nil
-    end
-
-    it "should have a most recent post time" do
-      school.most_recent_post_time.should_not be_nil
-    end
-
     it "should have a geofeedia id" do
       school.geofeedia_id.should_not be_nil
     end

@@ -13,7 +13,7 @@ class SchoolsController < ApplicationController
   def show
     @school = School.find(params[:id])
     @topics = Topic.all
-    @ratings = @topic.ratings.where(school_id: @school.id)
+    # @ratings = @topic.ratings.where(school_id: @school.id)
   end
 
 

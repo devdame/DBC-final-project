@@ -1,11 +1,19 @@
 {
   "RSpec": {
     "coverage": {
+<<<<<<< HEAD
+      "/Users/andrewwittrock/DBC-final-project/app/helpers/application_helper.rb": [
+        1,
+        null
+      ],
+      "/Users/andrewwittrock/DBC-final-project/app/controllers/schools_controller.rb": [
+=======
       "/Users/apprentice/college_culture_fit/app/helpers/application_helper.rb": [
         1,
         null
       ],
       "/Users/apprentice/college_culture_fit/app/controllers/schools_controller.rb": [
+>>>>>>> master
         1,
         null,
         1,
@@ -27,14 +35,25 @@
         null,
         null
       ],
+<<<<<<< HEAD
+      "/Users/andrewwittrock/DBC-final-project/app/controllers/application_controller.rb": [
+=======
       "/Users/apprentice/college_culture_fit/app/controllers/application_controller.rb": [
+>>>>>>> master
         1,
         null,
         null,
         1,
         null
       ],
+<<<<<<< HEAD
+      "/Users/andrewwittrock/DBC-final-project/app/models/analyzed_post.rb": [
+        1,
+        1,
+        null,
+=======
       "/Users/apprentice/college_culture_fit/app/models/analyzed_post.rb": [
+>>>>>>> master
         1,
         1,
         null,
@@ -131,6 +150,95 @@
         null,
         null,
         1,
+<<<<<<< HEAD
+        null,
+        1,
+        11,
+        44,
+        44,
+        11,
+        11,
+        null,
+        11,
+        11,
+        null,
+        11,
+        11,
+        null,
+        11,
+        11,
+        null,
+        44,
+        null,
+        null,
+        null,
+        1,
+        0,
+        0,
+        0,
+        null,
+        null,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        null,
+        0,
+        null,
+        null,
+        null,
+        null,
+        0,
+        0,
+        0,
+        0,
+        0,
+        null,
+        0,
+        0,
+        0,
+        0,
+        null,
+        0,
+        null,
+        0,
+        null,
+        0,
+        null,
+        null,
+        0,
+        0,
+        null,
+        0,
+        null,
+        0,
+        0,
+        0,
+        null,
+        0,
+        null,
+        0,
+        null,
+        0,
+        null,
+        0,
+        null,
+        0,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        1,
+=======
+>>>>>>> master
         0,
         0,
         null,
@@ -151,8 +259,12 @@
         null,
         null
       ],
+<<<<<<< HEAD
+      "/Users/andrewwittrock/DBC-final-project/app/models/keyword.rb": [
+=======
       "/Users/apprentice/college_culture_fit/app/models/keyword.rb": [
         1,
+>>>>>>> master
         1,
         1,
         1,
@@ -163,6 +275,12 @@
         null,
         1,
         null,
+<<<<<<< HEAD
+        null,
+        1,
+        null,
+=======
+>>>>>>> master
         0,
         0,
         0,
@@ -196,7 +314,11 @@
         null,
         null
       ],
+<<<<<<< HEAD
+      "/Users/andrewwittrock/DBC-final-project/app/models/original_post.rb": [
+=======
       "/Users/apprentice/college_culture_fit/app/models/original_post.rb": [
+>>>>>>> master
         1,
         1,
         1,
@@ -206,9 +328,13 @@
         1,
         null
       ],
+<<<<<<< HEAD
+      "/Users/andrewwittrock/DBC-final-project/app/models/rating.rb": [
+=======
       "/Users/apprentice/college_culture_fit/app/models/rating.rb": [
         1,
         1,
+>>>>>>> master
         1,
         null,
         1,
@@ -236,7 +362,11 @@
         null,
         null
       ],
+<<<<<<< HEAD
+      "/Users/andrewwittrock/DBC-final-project/app/models/reference_word.rb": [
+=======
       "/Users/apprentice/college_culture_fit/app/models/reference_word.rb": [
+>>>>>>> master
         1,
         1,
         1,
@@ -244,12 +374,16 @@
         1,
         null
       ],
+<<<<<<< HEAD
+      "/Users/andrewwittrock/DBC-final-project/app/models/school.rb": [
+=======
       "/Users/apprentice/college_culture_fit/app/models/school.rb": [
         1,
         1,
         1,
         1,
         null,
+>>>>>>> master
         1,
         1,
         1,
@@ -272,6 +406,18 @@
         1,
         null,
         null,
+<<<<<<< HEAD
+        1,
+        0,
+        0,
+        0,
+        0,
+        null,
+        null,
+        null,
+        null,
+=======
+>>>>>>> master
         1,
         1,
         null,
@@ -286,6 +432,9 @@
         null,
         null
       ],
+<<<<<<< HEAD
+      "/Users/andrewwittrock/DBC-final-project/app/models/school_word_count.rb": [
+=======
       "/Users/apprentice/college_culture_fit/app/models/school_word_count.rb": [
         1,
         1,
@@ -304,6 +453,7 @@
         1,
         null,
         null,
+>>>>>>> master
         1,
         1,
         null,
@@ -318,7 +468,11 @@
         null,
         null
       ],
+<<<<<<< HEAD
+      "/Users/andrewwittrock/DBC-final-project/app/models/topic.rb": [
+=======
       "/Users/apprentice/college_culture_fit/app/models/topic.rb": [
+>>>>>>> master
         1,
         1,
         null,
@@ -328,6 +482,10 @@
         null
       ]
     },
+<<<<<<< HEAD
+    "timestamp": 1395551231
+=======
     "timestamp": 1395545399
+>>>>>>> master
   }
 }

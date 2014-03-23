@@ -110,6 +110,8 @@ end
 School.create(name: "Arizona State University", geofeedia_id: "32204", student_body_count: 123456789)
 School.create(name: "University of Texas Austin", geofeedia_id: "32211", student_body_count: 123456789)
 
+School.create_ratings
+
 Dir['db/seeds/*'].each do |filename|
   json = File.read(filename)
   feed_id = filename.gsub(/\D+(\d+)[a-z].+/i, '\1')
@@ -146,5 +148,8 @@ OriginalPost.all.each do |post|
   end
 
 end
+
+##########################Create School Word Counts
+Keyword.create_or_update_school_word_counts
 
 

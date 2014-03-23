@@ -7,4 +7,13 @@ class School < ActiveRecord::Base
   has_many :original_posts
   has_many :analyzed_posts
 
+  def self.create_ratings
+    self.all.each do |school|
+      Topic.all.each do |topic|
+        new_rating = Rating.create(topic_id: topic.id, school_id: school.id)
+        new_rating.save
+      end
+    end
+  end
+
 end

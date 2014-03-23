@@ -46,9 +46,9 @@ describe School do
 
 
   context "activity ratio methods" do
-    let(:school) {School.create(name: "ASU", student_body_count: 50_000, first_post_time: "2014-03-21 12:14:33", most_recent_post_time: "2014-03-21 15:14:33", geofeedia_id: "12234", post_count: 12_500, positive_post_count: 3_000, negative_post_count: 1_250)}
-    it "should calculate the relative social media activity of a school" do
+    let(:school) {School.create(name: "ASU", student_body_count: 50_000, first_post_time: "2014-03-21 12:14:33", most_recent_post_time: "2014-03-21 15:14:33", geofeedia_id: "12234", post_count: 12_500, positive_post_count: 3_000, negative_post_count: 1_250, neutral_post_count: 500, mixed_post_count: 750)}
 
+    it "should calculate the relative social media activity of a school" do
       expect(school.social_media_activity).to eq 0.25
     end
 
@@ -58,6 +58,14 @@ describe School do
 
     it "should calculate the negative vibe ratio of the school" do
       expect(school.negative_vibe_ratio).to eq 0.1
+    end
+
+    it "should calculate the neutral vibe ratio of the school" do
+      expect(school.neutral_vibe_ratio).to eq 0.04
+    end
+
+    it "should calculate the mixed vibe ratio of the school" do
+      expect(school.mixed_vibe_ratio).to eq 0.06
     end
   end
 end

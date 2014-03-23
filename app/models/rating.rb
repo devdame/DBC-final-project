@@ -16,4 +16,13 @@ class Rating < ActiveRecord::Base
   def topic_negativity_ratio
     negative_post_count/total_post_count.to_f
   end
+
+  def topic_neutral_ratio
+    neutral_post_count/total_post_count.to_f
+  end
+
+  def topic_mixed_ratio
+    mixed_post_count/total_post_count.to_f
+  end
+
 end

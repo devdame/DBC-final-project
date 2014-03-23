@@ -29,4 +29,12 @@ class School < ActiveRecord::Base
     negative_post_count/post_count.to_f
   end
 
+  def neutral_vibe_ratio
+    neutral_post_count/post_count.to_f
+  end
+
+  def mixed_vibe_ratio
+    mixed_post_count/post_count.to_f
+  end
+
 end

@@ -36,4 +36,7 @@ describe Keyword do
     end
   end
 
+  context "create or update school word counts" do
+
+  end
 end

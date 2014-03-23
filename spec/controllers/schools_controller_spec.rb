@@ -1,6 +1,7 @@
 require 'spec_helper'
 
-describe SchoolsController do
+describe SchoolsController, :type => :request do
+
   it "index should have access to schools" do
     get :index
     assert_response :success
@@ -13,10 +14,17 @@ describe SchoolsController do
     assert_not_nil assigns(:topics)
   end
 
-  xit "can visit a school show page by clicking the title" do
-    school = School.create(name: "SampleShit", geofeedia_id: "32211", student_body_count: 123456789)
-    visit "/schools"
-    click_link("SampleShit")
-    current_path.should eq "/schools/1"
+  it "assigns the requested school to @school" do
+    school = School.create(name: "ASU", geofeedia_id: "32204", student_body_count: 123456789)
+    get :show, id: school
+    assert_response :success
+    assigns(:school).should eq(school)
+  end
+
+  it "show should have access to topics" do
+    school = School.create(name: "ASU", geofeedia_id: "32204", student_body_count: 123456789)
+    get :show, id: school
+    assert_response :success
+    assert_not_nil assigns(:topics)
   end
 end

@@ -69,7 +69,7 @@ class AnalyzedPost < ActiveRecord::Base
         ##do this for each pair within the hash
         topic_record = Topic.find_by_name(topic)
         ##Find the topic associated with this key
-        school_rating = Rating.where(topic_id: topic_record.id, school_id: school.id)[0]
+        school_rating = Rating.find_or_create_by(topic_id: topic_record.id, school_id: school.id)
         ##Find the rating associated with the topic and the school in question
         if keyword_match.length == 1
           #keyword_match is the array (value) associated with the topic (key) 
@@ -101,12 +101,6 @@ class AnalyzedPost < ActiveRecord::Base
           # school_rating.save
           aggregated_keywords_data = self.aggregate_keywords(keyword_match)
           ##look at aggregate_keywords to figure out what the fuck is going on here.
-
-
-
-
-
-
           if aggregated_keywords_data[:positive_negative_difference] < 0.1 #changed from 0.3 to 0.1 so that when we start running we accrue more data
             school_rating.mixed_post_count += 1
           elsif aggregated_keywords_data[:greatest_count] == "positive_count"

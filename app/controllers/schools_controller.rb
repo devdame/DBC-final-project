@@ -15,6 +15,4 @@ class SchoolsController < ApplicationController
     @topics = Topic.all
     @ratings = Rating.all.where(school_id: @school.id)
   end
-
-
 end

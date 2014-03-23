@@ -1,32 +1,30 @@
-require 'httparty'
-require 'json'
-require 'find'
-require './db/alchemyapi.rb'
+# require 'httparty'
+# require 'json'
+# require 'find'
+# require './db/alchemyapi.rb'
 
 
-# ############################
-# #  FOR REALS STUFF TO USE  #
-# ############################
+# # # ############################
+# # # #  FOR REALS STUFF TO USE  #
+# # # ############################
 
 
-###############Create Topics
-
+# # ###############Create Topics
+# #
 # topics = ["food", "tech", "nerd_culture", "partying", "academics", "romance", "lgbt", "fitness", "career", "finance", "gender", "housing", "politics", "religion"]
 
 # topics.each do |topic|
 #   Topic.create(name: topic)
 # end
 
-# ################Create Reference Words
+# # ################Create Reference Words
 
 # nerd_culture = ["nerd", "geek", "nerds", "geeks", "xbox", "ps4", "playstation", "league", "bioshock", "bioshock infinite", "wii", "minecraft", "lolcats", "lolcat", "doge", "bitcoin", "dogecoin", "doctor who", "dr who", "dr. who", "matt smith", "david tennant", "nerd rage", "liz lemon", "30 rock", "peter capaldi", "capaldi", "firefly", "whedon", "joss whedon", "buffy", "btvs", "scifi", "anime", "reddit", "star wars", "star trek", "trekkie", "trekkies", "trekker", "trekkers", "meme", "nerdcore", "nerdfighter", "nerdfighters", "nerdfighteria", "cosplay", "dungeons and dragons", "dungeons & dragons", "d&d", "d20", "20 sided die", "dice set", "set of dice", "twenty sided die", "d10", "d12", "d8", "d4", "rpg", "role playing game", "tabletop", "tabletop game", "settlers of catan", "catan", "board games", "board game", "munchkin", "four chan", "4chan", "comics", "marvel", "dc comics", "orphan black", "agents of shield", "agents of s.h.i.e.l.d.", "pi", "magic", "magic the gathering", "magic cards", "miniatures", "battle mat", "battle board", "world of warcraft", "w.o.w.", "newb", "noob", "n00b", "pwn", "pwned"]
 # nerd_culture.each do |word|
 #   ReferenceWord.create(name: word.downcase, topic: Topic.find_by_name("nerd_culture"))
 # end
 
-
 # partying = ["king cobra", "schwasted", "schwasty", "40 oz", "40s", "forties", "fourtys", "fotie", "foties", 'St Patty', "St. Patty's", "Saturday", "Friday", "sex cult", "booze", "tailgaiting", "drinks", "beer", "alcohol", "shots", "rage", "ragin", "ragin'", "dat ass", "raging", "rager", "get down", "hammered", "spring break", "springbreak", "collegelife", "blacked out", "drugs", "drink", "smoke", "wasted", "shitfaced", "shit faced", "shithoused", "browned out", "blasted", "tipsy", "drunk", "drank", "blotto", "smokin", "kush", "dank", "pot", "weed", "blazed", "blazing", "party", "partying", "cig", "cigarettes", "acid", "lsd", "mdma", "ecstasy", "blackout", "black out", "wine", "liquor", "whiskey", "rum", "gin", "vodka", "tequila", "rumpleminze", "goldschlager", "kahlua", "jager", "jagermeister", "budweiser", "leinenkugels", "leinies", "pbr", "pabst", "pabst blue ribbon", "miller high life", "mgd", "blatts", "hamms", "porter", "stout", "ipa", "amber ale", "red ale", "beer pong", "frat", "greek", "sorority", "club", "420", "bath salts", "busch", "schlitz", "keystone", "30 rack", "thirty rack", "rolling rock", "steel reserve", "house party", "hookah", "hooka", "ritalin", "adderall", "shinerbock", "coors", "cocktail", "kings cup", "king's cup", "circle of death"]
-
 # partying.each do |word|
 #   ReferenceWord.create(name: word.downcase, topic: Topic.find_by_name("partying"))
 # end
@@ -91,96 +89,96 @@ require './db/alchemyapi.rb'
 #   ReferenceWord.create(name: word.downcase, topic: Topic.find_by_name("religion"))
 # end
 
-##########################Create Original Posts
+# # ##########################Create Original Posts
 
-# def create_original_posts(parsed_items, batch, feed_id, school)
-#   parsed_items.each do |item|
-#     batch << OriginalPost.create(text: item["title"], original_publish_time: item["publishDate"], geofeedia_school_id: feed_id, school_id: school.id)
-#   end
+# # def create_original_posts(parsed_items, batch, feed_id, school)
+# #   parsed_items.each do |item|
+# #     batch << OriginalPost.create(text: item["title"], original_publish_time: item["publishDate"], geofeedia_school_id: feed_id, school_id: school.id)
+# #   end
+# # end
+
+# # # School.where(name: "Arizona State University", geofeedia_id: "32204", student_body_count: 123456789).first_or_create
+# # # School.where(name: "University of Texas Austin", geofeedia_id: "32211", student_body_count: 123456789).first_or_create
+
+# # new_posts = []
+
+# # Dir['db/seeds/*'].each do |filename|
+# #   json = File.read(filename)
+# #   feed_id = filename.gsub(/\D+(\d+)[a-z].+/i, '\1')
+# #   school = School.find_by_geofeedia_id(feed_id)
+# #   parsed = JSON.parse(json)
+# #   batch = []
+# #   if school.original_posts.empty?
+# #     create_original_posts(parsed["items"], batch, feed_id, school)
+# #     first_post_time = batch.sort_by{|post| post.original_publish_time}.first.original_publish_time
+# #     school.first_post_time = first_post_time
+# #   else
+# #     create_original_posts(parsed["items"], batch, feed_id, school)
+# #   end
+# #   batch.each do |post|
+# #     new_posts << post
+# #   end
+# #   most_recent_post_time = batch.sort_by{|post| post.original_publish_time}.last.original_publish_time
+# #   school.most_recent_post_time = most_recent_post_time
+# #   school.save
+# # end
+
+# # alchemyapi = AlchemyAPI.new()
+
+# # new_analyzed_posts = []
+# # new_analyzed_keywords = []
+
+# # new_posts.each do |post|
+# #   post_text = post.text
+# #   alchemy_post_response = alchemyapi.sentiment('text', post_text)
+# #   if alchemy_post_response["docSentiment"]
+# #     overall_sentiment = alchemy_post_response["docSentiment"]["type"]
+# #   else
+# #     overall_sentiment = "neutral"
+# #   end
+# #   new_post = AnalyzedPost.new(school_id: post.school_id, original_publish_time: post.original_publish_time, overall_sentiment: overall_sentiment)
+# #   new_analyzed_posts << new_post if new_post.save
+
+# #   alchemy_keywords_response = alchemyapi.keywords('text', post_text, options = {"sentiment" => 1})
+# #   alchemy_keywords_response["keywords"].each do |keyword|
+# #     if keyword["sentiment"]
+# #       sentiment = keyword["sentiment"]["type"]
+# #       confidence = keyword["sentiment"]["score"]
+# #     else
+# #       sentiment = "neutral"
+# #       confidence = 0.0
+# #     end
+# #     new_keyword = Keyword.new(text: keyword["text"], sentiment: sentiment, confidence: confidence, analyzed_post_id: new_post.id)
+# #     new_analyzed_keywords << new_keyword if new_keyword.save
+# #   end
+# # end
+
+# # CSV.open('db/analyzed_posts.csv', 'a') do |csv|
+# #   new_analyzed_posts.each do |post|
+# #     csv << post.attributes.values
+# #   end
+# # end
+
+# # CSV.open('db/keywords.csv', 'a') do |csv|
+# #   new_analyzed_keywords.each do |keyword|
+# #     csv << keyword.attributes.values
+# #   end
+# # end
+
+
+# post_csv = CSV.read('db/analyzed_posts.csv', :headers => true)
+# post_csv.each do |post|
+#   AnalyzedPost.create(post.to_hash)
 # end
 
-# School.where(name: "Arizona State University", geofeedia_id: "32204", student_body_count: 123456789).first_or_create
-# School.where(name: "University of Texas Austin", geofeedia_id: "32211", student_body_count: 123456789).first_or_create
-
-# new_posts = []
-
-# Dir['db/seeds/*'].each do |filename|
-#   json = File.read(filename)
-#   feed_id = filename.gsub(/\D+(\d+)[a-z].+/i, '\1')
-#   school = School.find_by_geofeedia_id(feed_id)
-#   parsed = JSON.parse(json)
-#   batch = []
-#   if school.original_posts.empty?
-#     create_original_posts(parsed["items"], batch, feed_id, school)
-#     first_post_time = batch.sort_by{|post| post.original_publish_time}.first.original_publish_time
-#     school.first_post_time = first_post_time
-#   else
-#     create_original_posts(parsed["items"], batch, feed_id, school)
-#   end
-#   batch.each do |post|
-#     new_posts << post
-#   end
-#   most_recent_post_time = batch.sort_by{|post| post.original_publish_time}.last.original_publish_time
-#   school.most_recent_post_time = most_recent_post_time
-#   school.save
-# end
-
-# alchemyapi = AlchemyAPI.new()
-
-# new_analyzed_posts = []
-# new_analyzed_keywords = []
-
-# new_posts.each do |post|
-#   post_text = post.text
-#   alchemy_post_response = alchemyapi.sentiment('text', post_text)
-#   if alchemy_post_response["docSentiment"]
-#     overall_sentiment = alchemy_post_response["docSentiment"]["type"]
-#   else
-#     overall_sentiment = "neutral"
-#   end
-#   new_post = AnalyzedPost.new(school_id: post.school_id, original_publish_time: post.original_publish_time, overall_sentiment: overall_sentiment)
-#   new_analyzed_posts << new_post if new_post.save
-
-#   alchemy_keywords_response = alchemyapi.keywords('text', post_text, options = {"sentiment" => 1})
-#   alchemy_keywords_response["keywords"].each do |keyword|
-#     if keyword["sentiment"]
-#       sentiment = keyword["sentiment"]["type"]
-#       confidence = keyword["sentiment"]["score"]
-#     else
-#       sentiment = "neutral"
-#       confidence = 0.0
-#     end
-#     new_keyword = Keyword.new(text: keyword["text"], sentiment: sentiment, confidence: confidence, analyzed_post_id: new_post.id)
-#     new_analyzed_keywords << new_keyword if new_keyword.save
-#   end
-# end
-
-# CSV.open('db/analyzed_posts.csv', 'a') do |csv|
-#   new_analyzed_posts.each do |post|
-#     csv << post.attributes.values
-#   end
-# end
-
-# CSV.open('db/keywords.csv', 'a') do |csv|
-#   new_analyzed_keywords.each do |keyword|
-#     csv << keyword.attributes.values
-#   end
+# keyword_csv = CSV.read('db/keywords.csv', :headers => true)
+# keyword_csv.each do |post|
+#   Keyword.create(post.to_hash)
 # end
 
 
-post_csv = CSV.read('db/analyzed_posts.csv', :headers => true)
-post_csv.each do |post|
-  AnalyzedPost.create(post.to_hash)
-end
 
-keyword_csv = CSV.read('db/keywords.csv', :headers => true)
-keyword_csv.each do |post|
-  Keyword.create(post.to_hash)
-end
-
-
-
-def get_last_id
-  CSV.read('db/analyzed_posts.csv').last[0]
-end
+# # def get_last_id
+# #   CSV.read('db/analyzed_posts.csv').last[0]
+# # end
 

@@ -96,7 +96,6 @@ class AnalyzedPost < ActiveRecord::Base
   def self.aggregate_keywords(keywords_array)
     counts = {"positive_count" => 0, "negative_count" => 0, "neutral_count" => 0, "mixed_count" => 0}
     keywords_array.each do |keyword|
-        # binding.pry
       if keyword.sentiment == "positive"
         counts["positive_count"] += keyword.confidence.abs
       elsif keyword.sentiment == "negative"

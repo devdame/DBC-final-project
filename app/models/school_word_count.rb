@@ -7,8 +7,8 @@ class SchoolWordCount < ActiveRecord::Base
 
 
   def reference_word_activity_ratio
-    rating = Rating.where(topic_id: self.reference_word.topic.id, school_id: self.school.id)
-    word_count/rating.total_post_count
+    rating = Rating.where(topic_id: self.reference_word.topic.id, school_id: self.school.id)[0]
+    word_count/rating.total_post_count.to_f
   end
 
   def word_positivity_ratio

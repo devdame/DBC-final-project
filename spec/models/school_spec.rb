@@ -65,7 +65,7 @@ describe School do
     end
 
     it "should calculate the mixed vibe ratio of the school" do
-      expect(school.neutral_vibe_ratio).to eq 0.06
+      expect(school.mixed_vibe_ratio).to eq 0.06
     end
   end
 end

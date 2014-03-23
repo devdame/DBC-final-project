@@ -69,7 +69,7 @@ def topics_and_schools
     ReferenceWord.create(name: word.downcase, topic: Topic.find_by_name("academics"))
   end
 
-  lgbt = ["lgbt", "gay", "lesbian", "bisexual", "bi", "trans", "transgender", "drag queen", "drag queens", "pansexual", "queer", "genderqueer", "gender queer", "gender", "asexual", "post-op", "post op", "pride parade", "gay pride", "homosexual", "butch", "femme", "fag", "dyke", "boystown", "hunty", "throw shade", "rainbow", "drag ball", "rupaul", "rupauls drag race", "rupaul's drag race", "sharon needles", "raja", "michelle visage", "willam", "jinkx monsoon", "courtney act", "chad michaels", "latrice royale", "jiggly caliente", "pandora boxxx", "jujubee", "manila luzon", "nina flowers", "shangela", "jessica wild", "tyra sanchez", "yara sofia", "alyssa edwards", "bianca del rio", "laganja estranja", ]
+  lgbt = ["lgbt", "gay", "boi", "bois", "lesbian", "bisexual", "bi", "trans", "transgender", "drag queen", "drag queens", "pansexual", "queer", "genderqueer", "gender queer", "gender", "asexual", "post-op", "post op", "pride parade", "gay pride", "homosexual", "butch", "femme", "fag", "dyke", "boystown", "hunty", "throw shade", "rainbow", "drag ball", "rupaul", "rupauls drag race", "rupaul's drag race", "sharon needles", "raja", "michelle visage", "willam", "jinkx monsoon", "courtney act", "chad michaels", "latrice royale", "jiggly caliente", "pandora boxxx", "jujubee", "manila luzon", "nina flowers", "shangela", "jessica wild", "tyra sanchez", "yara sofia", "alyssa edwards", "bianca del rio", "laganja estranja", ]
   lgbt.each do |word|
     ReferenceWord.create(name: word.downcase, topic: Topic.find_by_name("lgbt"))
   end
@@ -79,12 +79,12 @@ def topics_and_schools
     ReferenceWord.create(name: word.downcase, topic: Topic.find_by_name("career"))
   end
 
-  romance = ["romance", "hookup", "hook up", "hooked up", "had sex", "have sex", "good lay", "got laid", "get laid", "sex", "crush", "flowers", "date", "date night", "dinner date", "girlfriend", "boyfriend", "wife", "husband", "marriage", "significant other", "s. o.", "s.o.", "spouse"]
+  romance = ["romance", "hookup", "hook up", "slurty", "flirty", "hooked up", "had sex", "have sex", "good lay", "got laid", "get laid", "sex", "crush", "flowers", "date", "date night", "dinner date", "girlfriend", "boyfriend", "wife", "husband", "marriage", "significant other", "s. o.", "s.o.", "spouse"]
   romance.each do |word|
     ReferenceWord.create(name: word.downcase, topic: Topic.find_by_name("romance"))
   end
 
-  fitness = ["fitness", "protien", "workout", "p90x", "gym", "swole", "swol", "parkour", "bodyweight", "bmi", "swoll", "diet", "dieting", "weight", "marathon", "half marathon", "half-marathon", "running", "triathalon", "5k", "five k", "cycling", "jog", "jogging", "body mass index", "body mass", "body weight", "lose weight", "lost weight", "pounds", "snowboard", "bike", "biking", "hiking", "ski", "yoga", "hatha yoga", "hatha"]
+  fitness = ["fitness", "protien", "workout", "p90x", "gym", "swole", "swol", "parkour", "bodyweight", "bmi", "swoll", "diet", "dieting", "weight", "marathon", "half marathon", "half-marathon", "running", "triathalon", "5k", "five k", "cycling", "jog", "jogging", "body mass index", "body mass", "body weight", "lose weight", "lost weight", "skinny", "thin", "fat", "obese", "diet", "paleo", "weight watchers", "pounds", "snowboard", "bike", "biking", "hiking", "ski", "yoga", "hatha yoga", "hatha"]
   fitness.each do |word|
     ReferenceWord.create(name: word.downcase, topic: Topic.find_by_name("fitness"))
   end
@@ -99,7 +99,7 @@ def topics_and_schools
     ReferenceWord.create(name: word.downcase, topic: Topic.find_by_name("housing"))
   end
 
-  gender = ["gender", "women", "female", "bitch", "sexxx", "slurty", "flirty", "submissive", "sex positive", "whore", "cunt", "ladies", "gender", "gender roles", "gender studies", "feminist", "gender binary"]
+  gender = ["gender", "women", "men", "female", "sexual harrassment", "sexual assault", "rape", "sexually harrassed", "sexually assaulted", "raped", "victim blaming", "slut shaming", "slut shame", "bitch", "sexxx", "submissive", "slut", "slutty", "ho", "flasher", "flashed", "cat-call", "cat-called", "cat called", "cat call", "catcall", "catcalled", "twat", "sex positive", "whore", "cunt", "ladies", "gender", "gender roles", "gender studies", "feminist", "gender binary", "gender roles", "patriarchy", "mra", "mens rights activist", "mens rights", "examine your privelege", ""]
   gender.each do |word|
     ReferenceWord.create(name: word.downcase, topic: Topic.find_by_name("gender"))
   end
@@ -109,7 +109,7 @@ def topics_and_schools
     ReferenceWord.create(name: word.downcase, topic: Topic.find_by_name("politics"))
   end
 
-  tech = ["App store", "api", "startup", "start up", "start-up", "web developer", "web development", "dev", "sysadmin", "macbook", "app", "microsoft", "netflix", "programming", "ruby", "python", "sublime text", "vim", "facebook", "twitter", "tech", "whatsapp", "whats app", "snapchat", "technology"]
+  tech = ["App store", "api", "startup", "start up", "start-up", "web developer", "web development", "dev", "sysadmin", "macbook", "app", "microsoft", "netflix", "programming", "ruby", "sublime text", "vim", "facebook", "twitter", "tech", "whatsapp", "whats app", "snapchat", "technology", "dev bootcamp", "bill gates", "steve jobs", "google", "html", "css", "python", "java", "javascript", "c++", "fortran", "sublime text 2", "sublime text 3", "rspec", "ajax", "jquery", "ux", "ui", "front end", "front-end", "back end", "back-end", "web developer", "web development", "computer science", "computer", "technological", "technological advances", "technological innovation"]
   tech.each do |word|
     ReferenceWord.create(name: word.downcase, topic: Topic.find_by_name("tech"))
   end
@@ -119,7 +119,7 @@ def topics_and_schools
     ReferenceWord.create(name: word.downcase, topic: Topic.find_by_name("food"))
   end
 
-  religion = ["pray", "jesus", "allah", "buddha", "god", "blessed", "hymn", "hymnal", "bible", "church", "religion", "chapel", "judiasm", "temple", "bible study", "bible group", "atheism", "atheist", "jewish", "christian", "muslim", "islam", "buddhist", "spiritual", "spiritualism", "catholic", "pope", "bishop", "priest", "pastor", "righteous"]
+  religion = ["pray", "jesus", "allah", "buddha", "sermon", "worship", "sunday mass", "saturday mass", "god", "blessed", "hymn", "hymnal", "bible", "church", "religion", "chapel", "judaism", "temple", "bible study", "bible group", "church service", "pastor", "priest", "rabbi", "atheism", "atheist", "agnostic", "agnosticism", "jewish", "christian", "muslim", "islam", "buddhist", "spiritual", "spiritualism", "catholic", "pope", "bishop", "righteous", "cardinal", "archbishop", "arch bishop", "sunday school", "bible", "bible study"]
   religion.each do |word|
     ReferenceWord.create(name: word.downcase, topic: Topic.find_by_name("religion"))
   end

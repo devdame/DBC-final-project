@@ -7,33 +7,54 @@ require './db/alchemyapi.rb'
 
     desc "Setup from empty database (adding new seed files if any) and wipe tables when done"
     task :setup_from_empty => :environment do
+      raise "Databases must be empty!" unless AnalyzedPost.all.empty? && OriginalPost.all.empty? && Keyword.all.empty? && School.all.empty? && Topic.all.empty? && Rating.all.empty? && ReferenceWord.all.empty?
       topics_and_schools
       seed_from_csv
+      ["analyzed_posts", "original_posts", "reference_words", "topics", "keywords", "schools"].each do |table|
+        result = ActiveRecord::Base.connection.execute("SELECT id FROM #{table} ORDER BY id DESC LIMIT 1")
+        if result.any?
+          ai_val = result.first['id'].to_i + 1
+          puts "Resetting auto increment ID for #{table} to #{ai_val}"
+          ActiveRecord::Base.connection.execute("ALTER SEQUENCE #{table}_id_seq RESTART WITH #{ai_val}")
+        end
+      end
       update_csv if Dir['db/seeds/*'].any?
       wipe_temporary_tables
     end
 
     desc "Setup from empty database (adding new seed files if any) BUT DON'T wipe tables when done"
     task :setup_from_empty_keep_tables => :environment do
+      raise "Databases must be empty!" unless AnalyzedPost.all.empty? && OriginalPost.all.empty? && Keyword.all.empty? && School.all.empty? && Topic.all.empty? && Rating.all.empty? && ReferenceWord.all.empty?
       topics_and_schools
       seed_from_csv
+      puts ActiveRecord::Base.connection.tables.inspect
+      ["analyzed_posts", "original_posts", "reference_words", "topics", "keywords", "schools"].each do |table|
+        result = ActiveRecord::Base.connection.execute("SELECT id FROM #{table} ORDER BY id DESC LIMIT 1")
+        if result.any?
+          ai_val = result.first['id'].to_i + 1
+          puts "Resetting auto increment ID for #{table} to #{ai_val}"
+          ActiveRecord::Base.connection.execute("ALTER SEQUENCE #{table}_id_seq RESTART WITH #{ai_val}")
+        end
+      end
       update_csv if Dir['db/seeds/*'].any?
     end
 
     desc "Populate empty database from csv file"
     task :seed_from_csv => :environment do
+    raise "Temporary databases must be empty, and you must have already made schools!" unless AnalyzedPost.all.empty? && OriginalPost.all.empty? && Keyword.all.empty? && School.all.any?
       seed_from_csv
     end
 
     desc "Create topics and schools"
     task :seed_schools_and_topics => :environment do
+      raise "Topics, reference words and schools must be empty!" unless Topic.all.empty? && School.all.empty? && ReferenceWord.all.empty?
       topics_and_schools
     end
 
     desc "Update the csv file with new seeding info"
     task :update_csv => :environment do
-      if AnalyzedPost.empty?
-        wipe_temporary_tables unless OriginalPost.empty? && Keyword.empty?
+      if AnalyzedPost.all.empty? || Keyword.all.empty? || OriginalPost.all.empty?
+        wipe_temporary_tables unless OriginalPost.all.empty? && Keyword.all.empty? && AnalyzedPost.all.empty?
       end
       update_csv
       wipe_temporary_tables
@@ -191,10 +212,10 @@ def update_csv
     else
       overall_sentiment = "neutral"
     end
-    new_post = AnalyzedPost.new(school_id: post.school_id, original_publish_time: post.original_publish_time, overall_sentiment: overall_sentiment)
+    new_post = AnalyzedPost.create(school_id: post.school_id, original_publish_time: post.original_publish_time, overall_sentiment: overall_sentiment)
     last_id = CSV.read('db/analyzed_posts.csv').last[0].to_i
     new_post.id = new_post.id + last_id if add_to_id
-    new_analyzed_posts << new_post if new_post.save
+    new_analyzed_posts << new_post
 
 
     alchemy_keywords_response = alchemyapi.keywords('text', post_text, options = {"sentiment" => 1})
@@ -207,10 +228,17 @@ def update_csv
         confidence = 0.0
       end
       new_keyword = Keyword.new(text: keyword["text"], sentiment: sentiment, confidence: confidence, analyzed_post_id: new_post.id)
+      # ALSO UPDATE ID OF KEYWORDS
       new_analyzed_keywords << new_keyword if new_keyword.save
     end
   end
-  write_to_csv_files
+  write_to_csv_files(new_analyzed_posts, new_analyzed_keywords)
+end
+
+def create_original_posts(parsed_items, batch, feed_id, school)
+  parsed_items.each do |item|
+    batch << OriginalPost.create(text: item["title"], original_publish_time: item["publishDate"], geofeedia_school_id: feed_id, school_id: school.id)
+  end
 end
 
 
@@ -221,7 +249,7 @@ def wipe_temporary_tables
 end
 
 
-def write_to_csv_files
+def write_to_csv_files(new_analyzed_posts, new_analyzed_keywords)
     CSV.open('db/analyzed_posts.csv', 'a') do |csv|
     new_analyzed_posts.each do |post|
       csv << post.attributes.values
@@ -232,6 +260,14 @@ def write_to_csv_files
       csv << keyword.attributes.values
     end
   end
+end
+
+
+def update_ids_for_posts_and_keywords
+  new_first_post_id = CSV.read('db/analyzed_posts.csv').last[0].to_i + 1
+  new_first_keyword_id = CSV.read('db/keywords.csv').last[0].to_i + 1
+  ActiveRecord::Base.connection.execute("ALTER SEQUENCE analyzed_posts_id_seq RESTART WITH #{new_first_post_id}")
+  ActiveRecord::Base.connection.execute("ALTER SEQUENCE keywords_id_seq RESTART WITH #{new_first_keyword_id}")
 end
 
 

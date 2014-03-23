@@ -68,4 +68,14 @@ describe School do
       expect(school.mixed_vibe_ratio).to eq 0.06
     end
   end
+
+  context "create ratings" do
+
+    it "should create ratings tables that link schools and topics" do
+      School.create(name: "ASU", student_body_count: 50_000, first_post_time: "2014-03-21 12:14:33", most_recent_post_time: "2014-03-21 15:14:33", geofeedia_id: "12234", post_count: 12_500, positive_post_count: 3_000, negative_post_count: 1_250, neutral_post_count: 500, mixed_post_count: 750)
+      Topic.create(name: "Academics")
+      School.create_ratings
+      expect(Rating.count).to eq 1
+    end
+  end
 end

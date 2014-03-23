@@ -178,7 +178,7 @@ end
 
 
 
-# def get_last_id
-#   CSV.read('db/analyzed_posts.csv').last[0]
-# end
+def get_last_id
+  CSV.read('db/analyzed_posts.csv').last[0]
+end
 

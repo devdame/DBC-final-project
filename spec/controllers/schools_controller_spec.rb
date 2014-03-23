@@ -17,6 +17,14 @@ describe SchoolsController, :type => :request do
   it "assigns the requested school to @school" do
     school = School.create(name: "ASU", geofeedia_id: "32204", student_body_count: 123456789)
     get :show, id: school
+    assert_response :success
     assigns(:school).should eq(school)
+  end
+
+  it "show should have access to topics" do
+    school = School.create(name: "ASU", geofeedia_id: "32204", student_body_count: 123456789)
+    get :show, id: school
+    assert_response :success
+    assert_not_nil assigns(:topics)
   end
 end

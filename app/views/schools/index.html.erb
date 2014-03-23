@@ -1,1 +1,5 @@
 <h1>test topic index</h1>
+
+<%@schools.each do |school|%>
+  <%= link_to school.name, school_path(school) %>
+<%end%>

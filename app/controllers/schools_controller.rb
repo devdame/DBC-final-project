@@ -1,7 +1,8 @@
 class SchoolsController < ApplicationController
 
   def index
-
+    @schools = School.all
+    @topics = Topic.all
   end
 
   def compare
@@ -11,6 +12,8 @@ class SchoolsController < ApplicationController
 
   def show
     @school = School.find(params[:id])
+    @topics = Topic.all
+    # @ratings = @topic.ratings.where(school_id: @school.id)
   end
 
 

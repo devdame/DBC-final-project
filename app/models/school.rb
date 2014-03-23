@@ -7,6 +7,7 @@ class School < ActiveRecord::Base
   has_many :original_posts
   has_many :analyzed_posts
 
+
   def self.create_ratings
     self.all.each do |school|
       Topic.all.each do |topic|
@@ -14,6 +15,18 @@ class School < ActiveRecord::Base
         new_rating.save
       end
     end
+  end
+
+  def social_media_activity
+    post_count/student_body_count.to_f
+  end
+
+  def positive_vibe_ratio
+    positive_post_count/post_count.to_f
+  end
+
+  def negative_vibe_ratio
+    negative_post_count/post_count.to_f
   end
 
 end

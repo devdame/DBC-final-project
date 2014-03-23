@@ -1,59 +1,50 @@
 {
   "RSpec": {
     "coverage": {
-      "/Users/apprentice/college_culture_fit/app/helpers/application_helper.rb": [
+      "/Users/apprentice/rake_db_foxwich/app/helpers/application_helper.rb": [
         1,
         null
       ],
-      "/Users/apprentice/college_culture_fit/app/models/analyzed_post.rb": [
-        1,
-        1,
-        1,
+      "/Users/apprentice/rake_db_foxwich/app/controllers/schools_controller.rb": [
         1,
         null,
         1,
-        1,
-        null
-      ],
-      "/Users/apprentice/college_culture_fit/app/models/keyword.rb": [
-        1,
-        1,
-        1,
-        1,
-        1,
+        2,
+        2,
+        null,
         null,
         1,
-        null
-      ],
-      "/Users/apprentice/college_culture_fit/app/models/original_post.rb": [
-        1,
-        1,
-        1,
-        1,
-        1,
+        0,
+        0,
+        null,
         null,
         1,
+        2,
+        2,
+        null,
+        null,
+        null,
+        null,
         null
       ],
-      "/Users/apprentice/college_culture_fit/app/models/rating.rb": [
-        1,
-        1,
+      "/Users/apprentice/rake_db_foxwich/app/controllers/application_controller.rb": [
         1,
         null,
-        1,
-        1,
-        null
-      ],
-      "/Users/apprentice/college_culture_fit/app/models/reference_word.rb": [
-        1,
-        1,
-        1,
         null,
         1,
         null
       ],
-      "/Users/apprentice/college_culture_fit/app/models/school.rb": [
+      "/Users/apprentice/rake_db_foxwich/app/models/analyzed_post.rb": [
         1,
+        1,
+        1,
+        1,
+        null,
+        1,
+        1,
+        null
+      ],
+      "/Users/apprentice/rake_db_foxwich/app/models/keyword.rb": [
         1,
         1,
         1,
@@ -61,12 +52,72 @@
         1,
         null,
         1,
+        null
+      ],
+      "/Users/apprentice/rake_db_foxwich/app/models/original_post.rb": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        null,
+        1,
+        null
+      ],
+      "/Users/apprentice/rake_db_foxwich/app/models/rating.rb": [
+        1,
+        1,
+        1,
+        null,
+        1,
+        1,
+        null,
+        1,
+        1,
+        null,
+        null,
+        1,
+        1,
+        null,
+        null,
         1,
         1,
         null,
         null
       ],
-      "/Users/apprentice/college_culture_fit/app/models/school_word_count.rb": [
+      "/Users/apprentice/rake_db_foxwich/app/models/reference_word.rb": [
+        1,
+        1,
+        1,
+        null,
+        1,
+        null
+      ],
+      "/Users/apprentice/rake_db_foxwich/app/models/school.rb": [
+        1,
+        1,
+        1,
+        1,
+        null,
+        1,
+        1,
+        1,
+        null,
+        1,
+        1,
+        null,
+        null,
+        1,
+        1,
+        null,
+        null,
+        1,
+        1,
+        null,
+        null,
+        null
+      ],
+      "/Users/apprentice/rake_db_foxwich/app/models/school_word_count.rb": [
         1,
         1,
         1,
@@ -76,7 +127,7 @@
         null,
         null
       ],
-      "/Users/apprentice/college_culture_fit/app/models/topic.rb": [
+      "/Users/apprentice/rake_db_foxwich/app/models/topic.rb": [
         1,
         1,
         null,
@@ -85,6 +136,6 @@
         null
       ]
     },
-    "timestamp": 1395507989
+    "timestamp": 1395534024
   }
 }

@@ -6,30 +6,13 @@ require 'fileutils'
 
   namespace :db do
 
-    desc "Setup from empty database (adding new seed files if any) and wipe tables when done"
-    task :setup_from_empty => :environment do
-      setup_from_empty
-      wipe_temporary_tables
-    end
-
-    desc "Setup from empty database (adding new seed files if any) BUT DON'T wipe tables when done"
-    task :setup_from_empty_keep_tables => :environment do
-      setup_from_empty
-    end
-
-    desc "Populate empty database from csv file"
-    task :seed_from_csv => :environment do
-    raise "Temporary databases must be empty, and you must have already made schools!" unless AnalyzedPost.all.empty? && OriginalPost.all.empty? && Keyword.all.empty? && School.all.any?
-      seed_from_csv
-    end
-
-    desc "Create topics and schools"
+    desc "Create topics and schools for empty db"
     task :seed_schools_and_topics => :environment do
       raise "Topics, reference words and schools must be empty!" unless Topic.all.empty? && School.all.empty? && ReferenceWord.all.empty?
       topics_and_schools
     end
 
-    desc "Overwrite topics and schools"
+    desc "Overwrite topics and schools (destroys what's already in there and repopulates it from rake file)"
     task :overwrite_schools_and_topics => :environment do
       Topic.all.each {|topic| topic.destroy}
       ReferenceWord.all.each {|word| word.destroy}
@@ -37,25 +20,42 @@ require 'fileutils'
       topics_and_schools
     end
 
-    desc "Update the csv file with new seeding info and wipe temporary tables"
-    task :update_csv => :environment do
+    desc "Import rows from CSV into empty database (keywords and analyzed posts)"
+    task :seed_from_csv => :environment do
+    raise "Temporary databases must be empty, and you must have already made schools!" unless AnalyzedPost.all.empty? && OriginalPost.all.empty? && Keyword.all.empty? && School.all.any?
+      seed_from_csv
+    end
+
+    desc "Import rows from CSV  *AND*  send any json files in seeds folder to geofeedia and back to analyzed posts and keywords, from empty (but already created and migrated) database and wipe tables when done"
+    task :setup_from_empty_wipe_tables => :environment do
+      setup_from_empty
+      wipe_temporary_tables
+    end
+
+    desc "Import rows from CSV  *AND*  send any json files in seeds folder to geofeedia and back to analyzed posts and keywords, from empty (but already created and migrated) database"
+    task :setup_from_empty_keep_tables => :environment do
+      setup_from_empty
+    end
+
+    desc "Send any json files in seeds folder to alchemy and update csv accordingly, then wipe temporary tables"
+    task :update_csv_wipe_tables => :environment do
       check_setup_for_updating_csv
       update_csv
       wipe_temporary_tables
     end
 
-    desc "Update the csv file with new seeding info BUT DON'T wipe tables when done"
+    desc "Send any json files in seeds folder to alchemy and update csv accordingly BUT DON'T wipe tables when done"
     task :update_csv_keep_tables => :environment do
       check_setup_for_updating_csv
       update_csv
     end
 
-    desc "Wipe the temporary tables"
+    desc "Wipe the temporary tables (keywords and analyzed posts)"
     task :wipe_temporary_tables => :environment do
       wipe_temporary_tables
     end
 
-    desc "Grabs data from geofeedia and stores in json files"
+    desc "Grabs data from geofeedia and stores in json files. Uncomment the schools that you want to grab from."
     task :create_json_from_geofeedia => :environment do
       make_call_to_geofeedia_and_save_json({"32204" => "asu",
         "32211" => "uta",
@@ -74,7 +74,7 @@ require 'fileutils'
 
 
 def setup_from_empty
-    raise "Databases must be empty!" unless AnalyzedPost.all.empty? && OriginalPost.all.empty? && Keyword.all.empty? && School.all.empty? && Topic.all.empty? && Rating.all.empty? && ReferenceWord.all.empty?
+  raise "Databases must be empty!" unless AnalyzedPost.all.empty? && OriginalPost.all.empty? && Keyword.all.empty? && School.all.empty? && Topic.all.empty? && Rating.all.empty? && ReferenceWord.all.empty?
   topics_and_schools
   seed_from_csv
   ["analyzed_posts", "original_posts", "reference_words", "topics", "keywords", "schools"].each do |table|

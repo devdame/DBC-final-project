@@ -2,6 +2,7 @@ require 'httparty'
 require 'json'
 require 'find'
 require './db/alchemyapi.rb'
+require 'fileutils'
 
   namespace :db do
 
@@ -54,6 +55,23 @@ require './db/alchemyapi.rb'
     task :wipe_temporary_tables => :environment do
       wipe_temporary_tables
     end
+
+    desc "Grabs data from geofeedia and stores in json files"
+    task :create_json_from_geofeedia => :environment do
+      make_call_to_geofeedia_and_save_json({"32204" => "asu",
+        "32211" => "uta",
+        # "32244" => "uga",
+        # "32207" => "msu",
+        "32206" => "uofm"#,
+        # "32202" => "uofi",
+        # "32251" => "uwm",
+        # "32243" => "uws",
+        # "32241" => "ucd",
+        # "32210" => "cor"
+        })
+    end
+
+
   end
 
 
@@ -93,7 +111,7 @@ def topics_and_schools
     Topic.where(name: topic).first_or_create
   end
 
-  nerd_culture = ["nerd", "geek", "nerds", "geeks", "xbox", "ps4", "ps3", "super nintendo", "nintendo", "wii", "nintendo wii", "n64", "gameboy", "playstation", "league", "bioshock", "bioshock infinite", "wii", "minecraft", "lolcats", "lolcat", "doge", "bitcoin", "dogecoin", "doctor who", "dr who", "dr. who", "matt smith", "david tennant", "nerd rage", "liz lemon", "30 rock", "peter capaldi", "capaldi", "firefly", "whedon", "joss whedon", "buffy", "btvs", "scifi", "anime", "reddit", "star wars", "star trek", "trekkie", "trekkies", "trekker", "trekkers", "meme", "nerdcore", "nerdfighter", "nerdfighters", "nerdfighteria", "cosplay", "dungeons and dragons", "dungeons & dragons", "d&d", "d20", "20 sided die", "dice set", "set of dice", "twenty sided die", "d10", "d12", "d8", "d4", "rpg", "role playing game", "tabletop", "tabletop game", "settlers of catan", "catan", "board games", "board game", "munchkin", "four chan", "4chan", "comics", "marvel", "dc comics", "orphan black", "agents of shield", "agents of s.h.i.e.l.d.", "pi", "magic", "magic the gathering", "magic cards", "miniatures", "battle mat", "battle board", "world of warcraft", "w.o.w.", "newb", "noob", "n00b", "pwn", "pwned", "night cheese", "adventure time", "finn and jake", "lsp", "lumpy space princess", "princess bubblegum", "marceline", "the ice king", "amy pond", "tardis", "the tardis", "sonic screwdriver", "tribbles", "george takei", "takei", "sulu", "captain kirk", "janeway", "picard", "captain picard", "jean luc picard", "captain janeway", "spock", "big bang" "the big bang", "the big bang theory", "fake geek girl", "fake geek girls", "geek girl", "geek girls", "think geek", "futurama", "scifi", "sci-fi", "syfy", "game of thrones", "winter is coming", "westeros", "the cones of dunshire", "cones of dunshire", "leslie knope", "ben wyatt", "torchwood", "jack harkness", "river song", "face of bo", "geronimo", "the girl who waited", "harry potter", "the boy who lived", "voldemort", "rowling", "hermione granger", "ron weasley", "snape", "severus snape", "marvel vs dc", "dc vs marvel", "mischief managed", "time travel", "space time", "spacetime", "space time continuum", "the verse", "buffy", "buffy the vampire slayer", "dragons"]
+  nerd_culture = ["nerd", "geek", "nerds", "geeks", "xbox", "ps4", "ps3", "super nintendo", "nintendo", "wii", "nintendo wii", "n64", "miyazaki", "anime", "cowboy bebop", "fanfic", "fanfiction", "fan-fic", "fan-fiction", "speculative fiction", "manga", "gameboy", "playstation", "league", "bioshock", "bioshock infinite", "wii", "minecraft", "lolcats", "lolcat", "doge", "bitcoin", "dogecoin", "doctor who", "dr who", "dr. who", "matt smith", "david tennant", "nerd rage", "liz lemon", "30 rock", "peter capaldi", "capaldi", "firefly", "whedon", "joss whedon", "buffy", "btvs", "scifi", "anime", "reddit", "star wars", "star trek", "trekkie", "trekkies", "trekker", "trekkers", "meme", "nerdcore", "nerdfighter", "nerdfighters", "nerdfighteria", "cosplay", "dungeons and dragons", "dungeons & dragons", "d&d", "d20", "20 sided die", "dice set", "set of dice", "twenty sided die", "d10", "d12", "d8", "d4", "rpg", "role playing game", "tabletop", "tabletop game", "settlers of catan", "catan", "board games", "board game", "munchkin", "four chan", "4chan", "comics", "marvel", "dc comics", "orphan black", "agents of shield", "agents of s.h.i.e.l.d.", "pi", "magic", "magic the gathering", "magic cards", "miniatures", "battle mat", "battle board", "world of warcraft", "w.o.w.", "newb", "noob", "n00b", "pwn", "pwned", "night cheese", "adventure time", "finn and jake", "lsp", "lumpy space princess", "princess bubblegum", "marceline", "the ice king", "amy pond", "tardis", "the tardis", "sonic screwdriver", "tribbles", "george takei", "takei", "sulu", "captain kirk", "janeway", "picard", "captain picard", "jean luc picard", "captain janeway", "spock", "big bang" "the big bang", "the big bang theory", "fake geek girl", "fake geek girls", "geek girl", "geek girls", "think geek", "futurama", "scifi", "sci-fi", "syfy", "game of thrones", "winter is coming", "westeros", "the cones of dunshire", "cones of dunshire", "leslie knope", "ben wyatt", "torchwood", "jack harkness", "river song", "face of bo", "geronimo", "the girl who waited", "harry potter", "the boy who lived", "voldemort", "rowling", "hermione granger", "ron weasley", "snape", "severus snape", "marvel vs dc", "dc vs marvel", "mischief managed", "time travel", "space time", "spacetime", "space time continuum", "the verse", "buffy", "buffy the vampire slayer", "dragons"]
   nerd_culture.each do |word|
     ReferenceWord.where(name: word.downcase, topic_id: Topic.find_by_name("nerd_culture")).first_or_create
   end
@@ -148,12 +166,12 @@ def topics_and_schools
     ReferenceWord.where(name: word.downcase, topic_id: Topic.find_by_name("politics")).first_or_create
   end
 
-  tech = ["App store", "api", "startup", "start up", "start-up", "web developer", "web development", "dev", "sysadmin", "macbook", "app", "microsoft", "netflix", "programming", "ruby", "sublime text", "vim", "facebook", "twitter", "tech", "whatsapp", "whats app", "snapchat", "technology", "dev bootcamp", "bill gates", "steve jobs", "google", "html", "css", "python", "java", "javascript", "c++", "fortran", "sublime text 2", "sublime text 3", "rspec", "ajax", "jquery", "ux", "ui", "front end", "front-end", "back end", "back-end", "web developer", "web development", "computer science", "computer", "technological", "technological advances", "technological innovation"]
+  tech = ["App store", "api", "startup", "start up", "start-up", "web developer", "web development", "dev", "sysadmin", "raspberry pi", "arduino", "d3", "macbook", "app", "microsoft", "netflix", "programming", "ruby", "sublime text", "vim", "facebook", "twitter", "tech", "whatsapp", "whats app", "snapchat", "technology", "dev bootcamp", "bill gates", "steve jobs", "google", "html", "css", "python", "java", "javascript", "c++", "fortran", "sublime text 2", "sublime text 3", "rspec", "ajax", "jquery", "ux", "ui", "front end", "front-end", "back end", "back-end", "web developer", "web development", "computer science", "computer", "technological", "technological advances", "technological innovation"]
   tech.each do |word|
     ReferenceWord.where(name: word.downcase, topic_id: Topic.find_by_name("tech")).first_or_create
   end
 
-  fashion = ["fashion", "clothes", "clothing", "shopping", "hair", "fashionista", "fashion plate", "nails", "fingernails", "nail polish", "nail art", "beauty", "uggs", "notd", "ootd", "outfit", "fashion freak", "fashion tip", "fashion slave", "slave to fashion", "style blog", "my haul", "makeup", "flawless", "gorgeous", "sephora", "sunnies", "sunglasses", "accessories", "accessory", "purse", "clutch", "scarf", "necklace", "earring", "earrings", "jewelry", "diamond ring", "diamond", "sapphire", "emerald", "jewels", "bangles", "necklaces", "bracelet", "bracelets", "lipstick", "lippy", "toner", "primer", "eyeshadow", "blush", "makeup primer", "face primer", "eye primer", "lotion", "body lotion", "face lotion", "eyeliner", "smudge pot", "lip gloss", "lip liner", "mascara", "ulta", "legging", "leggings", "urban outfitters", "anthropologie", "forever 21", "american apparel", "gucci", "prada", "louis vuitton", "chanel", "bcbg", "fendi", "nordstrom", "bloomingdales", "bloomies", "saks", "manolo blahnik", "salon", "louboutins", "louboutin", "armani", "burberry", "j-crew", "j crew", "banana republic", "dress", "rag and bone", "skirt", "shirt", "jacket", "leather jacket", "outfit", "cutest outfit", "cute outfit", "looking good", "cute dress", "shoes", "cute shoes", "hat", "slouchy boots", "boots", "knee high boots", "tights", "fleece lined tights", "fleece tights", "mz wallace", "kate spade", "michael kors", "project runway", "model", "supermodel", "high fashion", "new york fashion week", "fashion week", "runway", "runway show", "fashion model", "haute couture", "couture", "stylist", "celebrity stylist", "rachel zoe", "fashion consultant", "get my hair done", "get my hair cut", "hair cut", "hair dye", "hair bow", "ascot", "hair accessories", "locket", "brooch", "high heels", "heels", "stilettos", "high heeled", "pumps", "high heeled shoes", "high heeled boots", "three inch heels", "four inch heels", "two inch heels", "3 inch heels", "4 inch heels", "2 inch heels", "mani pedi", "mani", "pedi", "manicure", "pedicure", "brazilian blowout", "bikini wax", "full face of slap", "full face o slap", "no makeup", "without makeup", "sans makeup", "spanx", "kitten heels", "bronzer", "moisturize", "moisturizer", "daily moisturizer", "facial moisturizer", "body moisturizer", "juicy couture", "heidi klum", "tim gunn", "make it work"]
+  fashion = ["fashion", "clothes", "clothing", "shopping", "hair", "fashionista", "fashion plate", "nails", "fingernails", "blouse", "cardigan", "sweater", "nail polish", "nail art", "beauty", "uggs", "notd", "ootd", "outfit", "fashion freak", "fashion tip", "fashion slave", "slave to fashion", "style blog", "my haul", "makeup", "flawless", "gorgeous", "sephora", "sunnies", "sunglasses", "accessories", "accessory", "purse", "clutch", "scarf", "necklace", "earring", "earrings", "jewelry", "diamond ring", "diamond", "sapphire", "emerald", "jewels", "bangles", "necklaces", "bracelet", "bracelets", "lipstick", "lippy", "toner", "primer", "eyeshadow", "blush", "makeup primer", "face primer", "eye primer", "lotion", "body lotion", "face lotion", "eyeliner", "smudge pot", "lip gloss", "lip liner", "mascara", "ulta", "legging", "leggings", "urban outfitters", "anthropologie", "forever 21", "american apparel", "gucci", "prada", "louis vuitton", "chanel", "bcbg", "fendi", "nordstrom", "bloomingdales", "bloomies", "saks", "manolo blahnik", "salon", "louboutins", "louboutin", "armani", "burberry", "j-crew", "j crew", "banana republic", "dress", "rag and bone", "skirt", "shirt", "jacket", "leather jacket", "outfit", "cutest outfit", "cute outfit", "looking good", "cute dress", "shoes", "cute shoes", "hat", "slouchy boots", "boots", "knee high boots", "tights", "fleece lined tights", "fleece tights", "mz wallace", "kate spade", "michael kors", "project runway", "model", "supermodel", "high fashion", "new york fashion week", "fashion week", "runway", "runway show", "fashion model", "haute couture", "couture", "stylist", "celebrity stylist", "rachel zoe", "fashion consultant", "get my hair done", "get my hair cut", "hair cut", "hair dye", "hair bow", "ascot", "hair accessories", "locket", "brooch", "high heels", "heels", "stilettos", "high heeled", "pumps", "high heeled shoes", "high heeled boots", "three inch heels", "four inch heels", "two inch heels", "3 inch heels", "4 inch heels", "2 inch heels", "mani pedi", "mani", "pedi", "manicure", "pedicure", "brazilian blowout", "bikini wax", "full face of slap", "full face o slap", "no makeup", "without makeup", "sans makeup", "spanx", "kitten heels", "bronzer", "moisturize", "moisturizer", "daily moisturizer", "facial moisturizer", "body moisturizer", "juicy couture", "heidi klum", "tim gunn", "make it work"]
   fashion.each do |word|
     ReferenceWord.where(name: word.downcase, topic_id: Topic.find_by_name("fashion")).first_or_create
   end
@@ -178,12 +196,12 @@ def topics_and_schools
     ReferenceWord.where(name: word.downcase, topic_id: Topic.find_by_name("climate")).first_or_create
   end
 
-  music = ["music", "band", "musician", "rock band", "music video", "concert", "jazz", "rock music", "experimental jazz", "show tunes", "musical theater", "musical theatre", "musical", "song", "sing", "singing", "stuck in my head", "auto tune", "tone deaf", "singing voice", "singer", "really good singer", "amazing singer", "amazing voice", "the voice", "broadway", "music theory", "instrument", "neo-soul", "r and b", "r&b", "music festival", "amp", "lollapalooza", "coachella", "opening band", "opener", "guitar", "bass", "electric guitar", "fender", "bpm", "clef", "treble", "soprano", "alto", "tenor", "acapella", "acapella group", "drum", "synth", "synthesizer", "violin", "viola", "strings", "trumpet", "clarinet", "horn", "flute", "drums", "percussion", "drummer", "guitarist", "bassist", "keyboard", "keytar", "guitar solo", "bass solo", "drum solo", "my jam", "piano", "dj", "remix", "disc jockey", "give me a beat", "hip hop", "rap", "venue", "hip hop artist", "rapper", "rap artist", "indie pop", "indie rock", "pitchfork", "techno", "skrillex", "dubstep", "metal", "black metal", "heavy metal", "death metal", "blues", "blues artist", "metal band", "death metal band", "heavy metal band", "rock band", "jazz band", "jazz standards", "jazz standard", "classical music"]
+  music = ["music", "band", "musician", "rock band", "music video", "concert", "jazz", "rock music", "experimental jazz", "show tunes", "musical theater", "musical theatre", "musical", "sxsw", "south by southwest", "bonaroo", "bonnaroo", "song", "sing", "singing", "stuck in my head", "auto tune", "tone deaf", "singing voice", "singer", "really good singer", "amazing singer", "amazing voice", "the voice", "broadway", "music theory", "instrument", "neo-soul", "r and b", "r&b", "music festival", "amp", "lollapalooza", "coachella", "opening band", "opener", "guitar", "bass", "electric guitar", "fender", "bpm", "clef", "treble", "soprano", "alto", "tenor", "acapella", "acapella group", "drum", "synth", "synthesizer", "violin", "viola", "strings", "trumpet", "clarinet", "horn", "flute", "drums", "percussion", "drummer", "guitarist", "bassist", "keyboard", "keytar", "guitar solo", "bass solo", "drum solo", "my jam", "piano", "dj", "remix", "disc jockey", "give me a beat", "hip hop", "rap", "venue", "hip hop artist", "rapper", "rap artist", "indie pop", "indie rock", "pitchfork", "techno", "skrillex", "dubstep", "metal", "black metal", "heavy metal", "death metal", "blues", "blues artist", "metal band", "death metal band", "heavy metal band", "rock band", "jazz band", "jazz standards", "jazz standard", "classical music"]
   music.each do |word|
     ReferenceWord.where(name: word.downcase, topic_id: Topic.find_by_name("music")).first_or_create
   end
 
-  social_life = ["friend", "friends", "best friend", "best friends", "bestie", "besties", "bff", "bffs", "girl party", "bromance", "hug", "fraternity", "sorority", "sorority sisters", "frat brothers", "sorority sister", "happy birthday", "birthday", "girls night", "ladies night", "bro out", "with the guys", "man cave", "cookout", "grill out", "grilling out", "cooking out", "frisbee", "coffee shop", "coffee house", "go get coffee", "hang out", "hanging out", "hung out", "chill", "chilled", "chillin'", "chillin", "chilling", "hangin out", "hangin' out", "broing out", "bro out", "social", "social life", "my social life", "bowling", "roomie", "roommate", "my roommate", "my roommates", "roommates", "roomies", "old roommate", "new roommate", "old roommates", "new roommates", "out with friends", "with my friends", "i love you guys", "besties forever", "most amazing friend", "love my friends", "awesome friend", "awesome friends", "sisters", "soul sisters", "blood brothers", "blood brother", "soul sister", "soul sistas", "soul sista", "brother from another mother", "brotha from another mother", "sister from another mister", "sista from another mista", "brotha", "sista", "sistas", "brothas", "brothers", "brother", "the bros", "my bros", "bros", "best bros", "my guy friends", "my girl friends", "trivia night", "neighbor", "neighbors", "best buds", "buddy", "buddies", "friends from home", "friends from school", "fun", "best day", "fun day", "outing", "trip", "vacation", "day trip"]
+  social_life = ["friend", "friends", "best friend", "best friends", "bestie", "besties", "bff", "bffs", "girl party", "bromance", "hug", "fraternity", "fam", "family", "mom", "dad", "mother", "father", "sorority", "sorority sisters", "frat brothers", "sorority sister", "happy birthday", "birthday", "girls night", "ladies night", "bro out", "with the guys", "man cave", "cookout", "grill out", "grilling out", "cooking out", "frisbee", "coffee shop", "coffee house", "go get coffee", "hang out", "hanging out", "hung out", "chill", "chilled", "chillin'", "chillin", "chilling", "hangin out", "hangin' out", "broing out", "bro out", "social", "social life", "my social life", "bowling", "roomie", "roommate", "my roommate", "my roommates", "roommates", "roomies", "old roommate", "new roommate", "old roommates", "new roommates", "out with friends", "with my friends", "i love you guys", "besties forever", "most amazing friend", "love my friends", "awesome friend", "awesome friends", "sisters", "soul sisters", "blood brothers", "blood brother", "soul sister", "soul sistas", "soul sista", "brother from another mother", "brotha from another mother", "sister from another mister", "sista from another mista", "brotha", "sista", "sistas", "brothas", "brothers", "brother", "the bros", "my bros", "bros", "best bros", "my guy friends", "my girl friends", "trivia night", "neighbor", "neighbors", "best buds", "buddy", "buddies", "friends from home", "friends from school", "fun", "best day", "fun day", "outing", "trip", "vacation", "day trip"]
   social_life.each do |word|
     ReferenceWord.where(name: word.downcase, topic_id: Topic.find_by_name("social life")).first_or_create
   end
@@ -364,4 +382,74 @@ def update_most_recent_post_time(school, most_recent_post_time)
   else
     school.most_recent_post_time = most_recent_post_time
   end
+end
+
+
+def ping_geofeedia
+  times_pinged = 0
+  until times_pinged == 16
+  #{geofeedia_id => "abbrev"}
+  #schoools_and_calls = {Arizona State University => "asu",
+  #University of Texas Austin => "uta"}
+    make_call_to_geofeedia_and_save_json({"32204" => "asu",
+    "32211" => "uta",
+    "32244" => "uga",
+    "32207" => "msu",
+    "32206" => "uofm",
+    "32202" => "uofi",
+    "32251" => "uwm",
+    "32243" => "uws",
+    "32241" => "ucd",
+    "32210" => "cor"
+    })
+    times_pinged += 1
+    sleep 21600
+  end
+end
+
+
+#   case school
+#    when "32204"
+#     make_call_to_feedia every 4 hours
+#    when "3098345"
+#     make_call_to feeedia every 6 hours
+
+
+def make_call_to_geofeedia_and_save_json(school_plus_abbreviation_hash)
+  # schools_and_calls = {"32204" => "asu",
+  #   "32211" => "uta"
+  #   }
+  school_plus_abbreviation_hash.each do |geofeedia_id, school_abbreviation|
+    most_recent_post_time = nil
+    url = "https://api.geofeedia.com/v1/search/geofeed/#{geofeedia_id}?format=json-default&appId=420880de&appKey=306ced14ef8ab2183b8264327c456806"
+    4.times do
+      response = HTTParty.get(url)
+        if most_recent_post_time == nil
+          most_recent_post_time = response.parsed_response["items"][0]["publishDate"]
+        end
+      posts = response.parsed_response
+      url = response.parsed_response["result"]["nextPage"]["url"]
+      timestamp = Time.now.to_s.gsub(/\s|(:)/, '')
+      # p geofeedia_id
+      # p most_recent_post_time
+      # p response.parsed_response["items"].count
+      create_local_json_files(geofeedia_id, school_abbreviation, timestamp, posts)
+    end
+    update_most_recent_post_time(geofeedia_id, most_recent_post_time)
+    sleep 40
+  end
+end
+
+
+def create_local_json_files(geofeedia_id, school_abbreviation, timestamp, posts)
+  FileUtils.touch("db/seeds/#{geofeedia_id}#{school_abbreviation}_#{timestamp}.json")
+  File.open("db/seeds/#{geofeedia_id}#{school_abbreviation}_#{timestamp}.json","w") do |file|
+    file.write(posts.to_json)
+  end
+end
+
+
+def update_most_recent_post_time(geofeedia_id, most_recent_post_time)
+  school_to_be_updated = School.find_by_geofeedia_id(geofeedia_id)
+  school_to_be_updated.update_attributes(most_recent_post_time: most_recent_post_time)
 end

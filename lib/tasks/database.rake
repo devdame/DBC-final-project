@@ -61,7 +61,7 @@ require 'fileutils'
       make_call_to_geofeedia_and_save_json({"32204" => "asu",
         "32211" => "uta",
         # "32244" => "uga",
-        # "32207" => "msu",
+        "32207" => "msu",
         "32206" => "uofm"#,
         # "32202" => "uofi",
         # "32251" => "uwm",

@@ -9,7 +9,16 @@
 <body>
   <h1>WOW IT'S AN APP</h1>
 
+  <%= link_to "Topics", controller: "topics" %>
+  <%= link_to "Schools (index)", controller: "schools" %>
+  <%= link_to "Schools (compare)", compare_path %>
+  <%= link_to "About", controller: "about" %>
+
+  <hr>
+
 <%= yield %>
+<hr>
+<p>Footer stuff. Andrew, Daniel, Jay, Jess, Lauren.</p>
 
 </body>
 </html>

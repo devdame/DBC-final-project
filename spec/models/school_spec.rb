@@ -26,7 +26,7 @@ describe School do
 
   context "basic associations" do
     it "should be able to access its original posts" do
-      original_post = OriginalPost.create(school_id: school.id, text: "post", geofeedia_school_id: "123456", original_publish_time: "2014-03-21 15:14:33")
+      original_post = OriginalPost.create(school_id: school.id, text: "post", geofeedia_school_id: "123456", original_publish_time: "2014-03-21 15:14:33", external_id: "12343987980234", external_id: "9734289")
       expect(school.original_posts.count).to eq 1
       expect(school.original_posts.first).to be_an_instance_of OriginalPost
     end
@@ -72,9 +72,8 @@ describe School do
   context "create ratings" do
 
     it "should create ratings tables that link schools and topics" do
-      School.create(name: "ASU", student_body_count: 50_000, first_post_time: "2014-03-21 12:14:33", most_recent_post_time: "2014-03-21 15:14:33", geofeedia_id: "12234")
       Topic.create(name: "Academics")
-      School.create_ratings
+      School.create(name: "ASU", student_body_count: 50_000, first_post_time: "2014-03-21 12:14:33", most_recent_post_time: "2014-03-21 15:14:33", geofeedia_id: "12234")
       expect(Rating.count).to eq 1
     end
   end

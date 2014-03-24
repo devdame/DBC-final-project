@@ -56,66 +56,39 @@ class AnalyzedPost < ActiveRecord::Base
       ratings.each do |topic, keyword_match|
         topic_record = Topic.find_by_name(topic)
         school_rating = Rating.find_or_create_by(topic_id: topic_record.id, school_id: school.id)
-        if keyword_match.length == 1
           school_rating.total_post_count += 1
-          keyword = ratings[topic].first
-          #the first keyword within the keyword_match array, which in this nested if loop, should only ever be one element long
-          if keyword.confidence.abs > 0.15
-            sentiment = keyword.sentiment
-            case sentiment
-            when "positive" then school_rating.positive_post_count += 1
-            when "negative" then school_rating.negative_post_count += 1
-            when "neutral" then school_rating.neutral_post_count += 1
-            when "mixed" then school_rating.mixed_post_count += 1
-            end
-          end
-          school_rating.save
-        elsif keyword_match.length > 1
-          ##if there is more than one keyword associated with a particular topic within a post
-          school_rating.total_post_count += 1
-          ##increment the total post count on the rating for this school and topic
-          # school_rating.save
           aggregated_keywords_data = self.aggregate_keywords(keyword_match)
-          ##look at aggregate_keywords to figure out what the fuck is going on here.
-          if aggregated_keywords_data[:positive_negative_difference] < 0.1 #changed from 0.3 to 0.1 so that when we start running we accrue more data
-            school_rating.mixed_post_count += 1
-          elsif aggregated_keywords_data[:greatest_count] == "positive_count"
-            school_rating.positive_post_count += 1
-          elsif aggregated_keywords_data[:greatest_count] == "negative_count"
-            school_rating.negative_post_count += 1
-          elsif aggregated_keywords_data[:greatest_count] == "neutral_count"
-            school_rating.neutral_post_count += 1
-          elsif aggregated_keywords_data[:greatest_count] == "mixed_count"
-            school_rating.mixed_count += 1
-          end
+          case aggregated_keywords_data
+          when "neutral"
+          school_rating.neutral_post_count +=1
+          when "positive"
+          school_rating.positive_post_count +=1
+          when "negative"
+          school_rating.negative_post_count +=1
+          when "mixed"
+          school_rating.mixed_post_count +=1
+          end 
           school_rating.save
-        end
       end
     end
   end
 
   def self.aggregate_keywords(keywords_array)
-    #this method takes an array of keywords that are all associated with one particular topic and school
-    counts = Hash.new(0)
+    confidence_array = []
     keywords_array.each do |keyword|
-      sentiment = keyword.sentiment
       confidence = keyword.confidence
-      if sentiment == "positive"
-        counts["positive_count"] += confidence.abs
-      elsif sentiment == "negative"
-        counts["negative_count"] += confidence.abs
-      elsif sentiment == "neutral"
-        counts["neutral_count"] += confidence.abs
-      elsif sentiment == "mixed"
-        counts["mixed_count"] += confidence.abs
-      end
-      #increment the count associated with the sentiment in the keyword object by one
+      confidence_array << confidence
     end
-    positive_negative_difference = (counts["positive_count"] - counts["negative_count"]).abs
-    #take the positive post count and subtract the absolute value of the negative post count
-    greatest_count = counts.max_by{|k,v| v}.first
-    #find the strongest sentiment among all the keywords in the array
-    {:greatest_count => greatest_count, :positive_negative_difference => positive_negative_difference}
-    #check to make sure that the difference between positive and negative sentiment is big enough
+
+    confidence_sum = confidence_array.inject(:+)
+    if confidence_sum == 0
+      "neutral"
+    elsif confidence_sum > 0.1
+      "positive"
+    elsif confidence_sum < -0.1
+      "negative"
+    else
+      "mixed"
+    end
   end
 end

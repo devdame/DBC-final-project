@@ -57,6 +57,7 @@ ActiveRecord::Schema.define(version: 20140320221446) do
 
   create_table "reference_words", force: true do |t|
     t.string   "name"
+    t.string   "canonical_name"
     t.integer  "topic_id"
     t.datetime "created_at"
     t.datetime "updated_at"

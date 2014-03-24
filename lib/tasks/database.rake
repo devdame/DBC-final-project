@@ -69,8 +69,35 @@ require 'fileutils'
         # "32210" => "cor"
         })
       end
+
+    desc "Allows for the updating of the post models on the school table"
+    task :update_school_models_from_analyzed_posts => :environment do
+      increment_school_word_counts
+      # increment_school_ratings
+      wipe_temporary_tables
     end
 
+    desc "Allows for the creation or updating of school word counts"
+    task :create_or_update_school_word_counts => :environment do
+      create_or_update_school_word_counts
+      wipe_temporary_tables
+    end
+  end
+
+def increment_school_word_counts
+  AnalyzedPost.populate_reference_words
+  AnalyzedPost.increment_school_word_count
+end
+
+def increment_school_ratings
+  AnalyzedPost.increment_school_ratings
+end
+
+
+def create_or_update_school_word_counts
+  Keyword.populate_reference_words
+  Keyword.create_or_update_school_word_counts
+end
 
 def setup_from_empty
   raise "Databases must be empty!" unless AnalyzedPost.all.empty? && OriginalPost.all.empty? && Keyword.all.empty? && School.all.empty? && Topic.all.empty? && Rating.all.empty? && ReferenceWord.all.empty?

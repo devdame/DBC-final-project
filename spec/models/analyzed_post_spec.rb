@@ -78,8 +78,6 @@ describe AnalyzedPost do
     end
   end
 
-  ############################################
-
   context "increment school ratings" do
     it "school rating total post count goes up by 1" do
       analyzed_post

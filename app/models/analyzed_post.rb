@@ -8,6 +8,14 @@ class AnalyzedPost < ActiveRecord::Base
 
   @@reference_words = []
 
+  def self.reference_words
+    @@reference_words
+  end
+
+  def self.find_school(post)
+    post.school
+  end
+
   def self.increment_school_word_count
     self.all.each do |post|
       school = self.find_school(post)
@@ -22,8 +30,23 @@ class AnalyzedPost < ActiveRecord::Base
     end
   end
 
-  def self.find_school(post)
-    post.school
+  def self.populate_reference_words
+    ReferenceWord.all.each do |reference_word|
+      @@reference_words << reference_word.canonical_name
+    end
+  end
+
+  def self.get_ratings_hash(post)
+    ratings = {}
+    post.keywords.each do |keyword|
+      text = keyword.text.downcase
+      if @@reference_words.include?(text)
+        lookup_reference_word = ReferenceWord.find_by_name(text)
+        topic = lookup_reference_word.topic.name
+        ratings.has_key?("#{topic}") ? ratings[topic].push(keyword) : ratings[topic] = [keyword]
+      end
+    end
+    ratings
   end
 
   def self.increment_school_ratings
@@ -42,27 +65,6 @@ class AnalyzedPost < ActiveRecord::Base
         when "mixed" then school_rating.mixed_post_count +=1
         end
         school_rating.save
-      end
-    end
-  end
-
-  def self.get_ratings_hash(post)
-    ratings = {}
-    post.keywords.each do |keyword|
-      text = keyword.text.downcase
-      if @@reference_words.include?(text)
-        lookup_reference_word = ReferenceWord.find_by_name(text)
-        topic = lookup_reference_word.topic.name
-        ratings.has_key?("#{topic}") ? ratings[topic].push(keyword) : ratings[topic] = [keyword]
-      end
-    end
-    ratings
-  end
-
-  def self.populate_reference_words
-    if @@reference_words.length == 0
-      ReferenceWord.all.each do |reference_word|
-        @@reference_words << reference_word.canonical_name
       end
     end
   end

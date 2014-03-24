@@ -1,6 +1,3 @@
-require 'pry'
-require 'pry-nav'
-
 class AnalyzedPost < ActiveRecord::Base
   validates :school_id, presence: true
   validates :overall_sentiment, presence: true

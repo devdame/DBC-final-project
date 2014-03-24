@@ -49,7 +49,7 @@ class Keyword < ActiveRecord::Base
       confidence = keyword.confidence
       if reference_words.include?(text)
         lookup_reference_word = ReferenceWord.find_by_name(text)
-        counter = SchoolWordCount.find_or_create_by(school_id: keyword.analyzed_post.school_id, reference_word_id: lookup_reference_word.id)
+        counter = SchoolWordCount.where(school_id: keyword.analyzed_post.school_id, reference_word_id: lookup_reference_word.id).first_or_create
         counter.word_count += 1
         self.determine_keyword_confidence(keyword, counter)
         counter.save

@@ -38,6 +38,7 @@ ActiveRecord::Schema.define(version: 20140320221446) do
     t.integer  "school_id"
     t.string   "geofeedia_school_id"
     t.string   "original_publish_time"
+    t.string   "external_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

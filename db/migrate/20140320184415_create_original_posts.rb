@@ -5,6 +5,7 @@ class CreateOriginalPosts < ActiveRecord::Migration
       t.belongs_to :school
       t.string :geofeedia_school_id
       t.string :original_publish_time
+      t.string :external_id
 
       t.timestamps
     end

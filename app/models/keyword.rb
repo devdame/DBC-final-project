@@ -3,11 +3,16 @@ class Keyword < ActiveRecord::Base
   validates :text, presence: true
   validates :sentiment, presence: true
   validates :confidence, presence: true
+  before_save :remove_spaces
 
   belongs_to :analyzed_post
 
 
-  def self.find_reference_words
+  def remove_spaces
+    self.text = self.text.downcase.split(' ').join.gsub("#", "").gsub(/sohf\d{3}/, '')
+  end
+
+   def self.find_reference_words
     reference_words = []
     ReferenceWord.all.each do |reference_word|
       reference_words << reference_word.name

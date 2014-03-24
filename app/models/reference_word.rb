@@ -3,4 +3,6 @@ class ReferenceWord < ActiveRecord::Base
   validates :name, presence: true, uniqueness: true
 
   belongs_to :topic
+  has_many :school_word_counts
+
 end

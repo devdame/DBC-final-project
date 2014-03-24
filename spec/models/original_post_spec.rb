@@ -3,7 +3,7 @@ require 'spec_helper'
 describe OriginalPost do
 
   let(:school) {School.create(name: "UGA", student_body_count: 33_297, first_post_time: "2014-03-21 12:14:33", most_recent_post_time: "2014-03-21 15:14:33", geofeedia_id: "298734")}
-  let(:original_post) {OriginalPost.create(school_id: school.id, text: "fun fun", geofeedia_school_id: "123456", original_publish_time: "2014-03-21 15:14:33")}
+  let(:original_post) {OriginalPost.create(school_id: school.id, text: "fun fun", geofeedia_school_id: "123456", original_publish_time: "2014-03-21 15:14:33", external_id: "9877378")}
 
   context "initialization" do
     it "should exist" do

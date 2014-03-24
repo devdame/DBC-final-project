@@ -4,6 +4,7 @@ class Keyword < ActiveRecord::Base
   validates :sentiment, presence: true
   validates :confidence, presence: true
   before_save :remove_spaces
+  before_save :check_for_confidence
 
   belongs_to :analyzed_post
 
@@ -12,13 +13,20 @@ class Keyword < ActiveRecord::Base
     self.text = self.text.downcase.split(' ').join.gsub("#", "").gsub(/sohf\d{3}/, '')
   end
 
-   def self.find_reference_words
+
+  def check_for_confidence
+    self.confidence = 0 unless confidence
+  end
+
+
+  def self.find_reference_words
     reference_words = []
     ReferenceWord.all.each do |reference_word|
       reference_words << reference_word.name
     end
     reference_words
   end
+
 
   def self.determine_keyword_confidence(keyword, counter)
     confidence = keyword.confidence

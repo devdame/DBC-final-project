@@ -99,26 +99,26 @@ describe AnalyzedPost do
 
     it "should not increment negative post count if confidence is low" do
       analyzed_post
-      Keyword.create(analyzed_post_id: analyzed_post.id, text: "basketball", sentiment: "negative", confidence: 0.01)
+      Keyword.create(analyzed_post_id: analyzed_post.id, text: "basketball", sentiment: "negative", confidence: -0.01)
       reference_word
       AnalyzedPost.increment_school_ratings
       expect(Rating.first.negative_post_count).to eq 0
     end
 
-    it "should not increment mixed post count if confidence is low" do
+    it "should increment mixed post count if confidence is low" do
       analyzed_post
       Keyword.create(analyzed_post_id: analyzed_post.id, text: "basketball", sentiment: "mixed", confidence: 0.01)
       reference_word
       AnalyzedPost.increment_school_ratings
-      expect(Rating.first.mixed_post_count).to eq 0
+      expect(Rating.first.mixed_post_count).to eq 1
     end
 
-    it "should not increment neutral post count if confidence is low" do
+    it "should increment neutral post count if confidence is zero" do
       analyzed_post
-      Keyword.create(analyzed_post_id: analyzed_post.id, text: "basketball", sentiment: "neutral", confidence: 0.01)
+      Keyword.create(analyzed_post_id: analyzed_post.id, text: "basketball", sentiment: "neutral", confidence: 0.0)
       reference_word
       AnalyzedPost.increment_school_ratings
-      expect(Rating.first.neutral_post_count).to eq 0
+      expect(Rating.first.neutral_post_count).to eq 1
     end
 
     it "should increment the positive post count for positive keywords" do
@@ -129,9 +129,33 @@ describe AnalyzedPost do
       expect(Rating.first.positive_post_count).to eq 1
     end
 
+    it "should not increment the positive post count for negative keywords" do
+      analyzed_post
+      Keyword.create(analyzed_post_id: analyzed_post.id, text: "basketball", sentiment: "negative", confidence: -0.5)
+      reference_word
+      AnalyzedPost.increment_school_ratings
+      expect(Rating.first.positive_post_count).to eq 0
+    end
+
+    it "should not increment the positive post count for neutral keywords" do
+      analyzed_post
+      Keyword.create(analyzed_post_id: analyzed_post.id, text: "basketball", sentiment: "neutral", confidence: 0.0)
+      reference_word
+      AnalyzedPost.increment_school_ratings
+      expect(Rating.first.positive_post_count).to eq 0
+    end
+
+    it "should not increment the positive post count for mixed keywords" do
+      analyzed_post
+      Keyword.create(analyzed_post_id: analyzed_post.id, text: "basketball", sentiment: "mixed", confidence: 0.05)
+      reference_word
+      AnalyzedPost.increment_school_ratings
+      expect(Rating.first.positive_post_count).to eq 0
+    end
+
     it "should increment the negative post count for negative keywords" do
       analyzed_post
-      Keyword.create(analyzed_post_id: analyzed_post.id, text: "basketball", sentiment: "negative", confidence: 0.5)
+      Keyword.create(analyzed_post_id: analyzed_post.id, text: "basketball", sentiment: "negative", confidence: -0.5)
       reference_word
       AnalyzedPost.increment_school_ratings
       expect(Rating.first.negative_post_count).to eq 1
@@ -139,7 +163,7 @@ describe AnalyzedPost do
 
     it "should increment the neutral post count for neutral keywords" do
       analyzed_post
-      Keyword.create(analyzed_post_id: analyzed_post.id, text: "basketball", sentiment: "neutral", confidence: 0.5)
+      Keyword.create(analyzed_post_id: analyzed_post.id, text: "basketball", sentiment: "neutral", confidence: 0.0)
       reference_word
       AnalyzedPost.increment_school_ratings
       expect(Rating.first.neutral_post_count).to eq 1
@@ -147,7 +171,7 @@ describe AnalyzedPost do
 
     it "should increment the mixed post count for mixed keywords" do
       analyzed_post
-      Keyword.create(analyzed_post_id: analyzed_post.id, text: "basketball", sentiment: "mixed", confidence: 0.5)
+      Keyword.create(analyzed_post_id: analyzed_post.id, text: "basketball", sentiment: "mixed", confidence: 0.02)
       reference_word
       AnalyzedPost.increment_school_ratings
       expect(Rating.first.mixed_post_count).to eq 1
@@ -165,7 +189,7 @@ describe AnalyzedPost do
     it "should not increment positive if the positive_negative_difference is insignificant" do
       analyzed_post
       Keyword.create(analyzed_post_id: analyzed_post.id, text: "basketball", sentiment: "positive", confidence: 0.51)
-      Keyword.create(analyzed_post_id: analyzed_post.id, text: "basketball", sentiment: "negative", confidence: 0.50)
+      Keyword.create(analyzed_post_id: analyzed_post.id, text: "basketball", sentiment: "negative", confidence: -0.50)
       reference_word
       AnalyzedPost.increment_school_ratings
       expect(Rating.first.positive_post_count).to eq 0
@@ -174,7 +198,7 @@ describe AnalyzedPost do
     it "should not increment negative if the positive_negative_difference is insignificant" do
       analyzed_post
       Keyword.create(analyzed_post_id: analyzed_post.id, text: "basketball", sentiment: "positive", confidence: 0.50)
-      Keyword.create(analyzed_post_id: analyzed_post.id, text: "basketball", sentiment: "negative", confidence: 0.51)
+      Keyword.create(analyzed_post_id: analyzed_post.id, text: "basketball", sentiment: "negative", confidence: -0.51)
       reference_word
       AnalyzedPost.increment_school_ratings
       expect(Rating.first.negative_post_count).to eq 0

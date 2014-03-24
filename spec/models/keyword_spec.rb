@@ -44,14 +44,14 @@ describe Keyword do
   context "create or update school word counts" do
     it "should have access to all the reference word texts" do
       reference_word
-      Keyword.find_reference_words
+      Keyword.populate_reference_words
       expect(Keyword.reference_words.first).to eq ReferenceWord.first.canonical_name
     end
 
     it "should increment the total school word count" do
       keyword
       reference_word
-      Keyword.find_reference_words
+      Keyword.populate_reference_words
       analyzed_post
       Keyword.create_or_update_school_word_counts
       expect(reference_word.school_word_counts.first.word_count).to eq 1
@@ -60,7 +60,7 @@ describe Keyword do
     it "should increment the positive word count on school word count for positive words" do
       keyword
       reference_word
-      Keyword.find_reference_words
+      Keyword.populate_reference_words
       analyzed_post
       Keyword.create_or_update_school_word_counts
       expect(reference_word.school_word_counts.first.positive_word_count).to eq 1
@@ -69,7 +69,7 @@ describe Keyword do
     it "should increment the negative word count on school word count for negative words" do
       Keyword.create(analyzed_post_id: 1, text: "fun", sentiment: "negative", confidence: -0.8)
       reference_word
-      Keyword.find_reference_words
+      Keyword.populate_reference_words
       analyzed_post
       Keyword.create_or_update_school_word_counts
       expect(reference_word.school_word_counts.first.negative_word_count).to eq 1
@@ -78,7 +78,7 @@ describe Keyword do
     it "should increment the mixed word count on school word count when confidence is low" do
       Keyword.create(analyzed_post_id: 1, text: "fun", sentiment: "mixed", confidence: 0.01)
       reference_word
-      Keyword.find_reference_words
+      Keyword.populate_reference_words
       analyzed_post
       Keyword.create_or_update_school_word_counts
       expect(reference_word.school_word_counts.first.mixed_word_count).to eq 1
@@ -87,7 +87,7 @@ describe Keyword do
     it "should increment the neutral word count on school word count when confidence is zero" do
       Keyword.create(analyzed_post_id: 1, text: "fun", sentiment: "mixed", confidence: 0.0)
       reference_word
-      Keyword.find_reference_words
+      Keyword.populate_reference_words
       analyzed_post
       Keyword.create_or_update_school_word_counts
       expect(reference_word.school_word_counts.first.neutral_word_count).to eq 1

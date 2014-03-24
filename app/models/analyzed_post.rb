@@ -30,7 +30,7 @@ class AnalyzedPost < ActiveRecord::Base
     end
   end
 
-  def self.find_reference_words
+  def self.populate_reference_words
     ReferenceWord.all.each do |reference_word|
       @@reference_words << reference_word.canonical_name
     end

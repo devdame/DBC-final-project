@@ -89,7 +89,7 @@ end
 
 
 def setup_from_empty
-    raise "Databases must be empty!" unless AnalyzedPost.all.empty? && OriginalPost.all.empty? && Keyword.all.empty? && School.all.empty? && Topic.all.empty? && Rating.all.empty? && ReferenceWord.all.empty?
+  raise "Databases must be empty!" unless AnalyzedPost.all.empty? && OriginalPost.all.empty? && Keyword.all.empty? && School.all.empty? && Topic.all.empty? && Rating.all.empty? && ReferenceWord.all.empty?
   topics_and_schools
   seed_from_csv
   ["analyzed_posts", "original_posts", "reference_words", "topics", "keywords", "schools"].each do |table|
@@ -211,7 +211,7 @@ def topics_and_schools
     ReferenceWord.where(name: word.downcase, topic_id: Topic.find_by_name("sports")).first_or_create
   end
 
-  School.where(id: 1, name: "Arizona State University", geofeedia_id: "32204", student_body_count: 59794 ).first_or_create
+  School.where(id: 1, name: "Arizona State University", geofeedia_id: "32204", student_body_count: 59794).first_or_create
   School.where(id: 2, name: "University of Michigan, Ann Arbor", geofeedia_id: "32206", student_body_count: 43426).first_or_create
   School.where(id: 3, name: "University of Texas, Austin", geofeedia_id: "32211", student_body_count: 38463).first_or_create
 end

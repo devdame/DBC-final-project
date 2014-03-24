@@ -383,7 +383,7 @@ end
 #####################################
 
 
-def topics_and_schools
+def make_topics_and_schools
 
   topics = ["food", "tech", "nerd_culture", "art", "sports", "partying", "academics", "romance", "music", "lgbt", "fitness", "social life", "career", "finance", "gender", "housing", "politics", "religion", "fashion"]
   topics.each do |topic|

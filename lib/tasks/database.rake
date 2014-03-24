@@ -68,9 +68,8 @@ require 'fileutils'
         # "32241" => "ucd",
         # "32210" => "cor"
         })
+      end
     end
-  end
-
 
 
 def setup_from_empty

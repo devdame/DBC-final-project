@@ -91,11 +91,11 @@
 
 # # ##########################Create Original Posts
 
-# # def create_original_posts(parsed_items, batch, feed_id, school)
-# #   parsed_items.each do |item|
-# #     batch << OriginalPost.create(text: item["title"], original_publish_time: item["publishDate"], geofeedia_school_id: feed_id, school_id: school.id)
-# #   end
-# # end
+# def create_original_posts(parsed_items, batch, feed_id, school)
+#   parsed_items.each do |item|
+#     batch << OriginalPost.create(text: item["title"], original_publish_time: item["publishDate"], geofeedia_school_id: feed_id, school_id: school.id)
+#   end
+# end
 
 # # # School.where(name: "Arizona State University", geofeedia_id: "32204", student_body_count: 123456789).first_or_create
 # # # School.where(name: "University of Texas Austin", geofeedia_id: "32211", student_body_count: 123456789).first_or_create

@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+ruby '2.0.0'
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.3'
 
@@ -32,6 +34,8 @@ gem 'multi_xml'
 
 gem 'httparty'
 
+gem 'rails_12factor', group: :production
+
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
@@ -54,6 +58,4 @@ group :development, :test do
   gem 'rspec-rails', '~> 2.14.1'
   gem 'capybara', '~> 2.2.1'
   gem 'database_cleaner', '~> 1.2.0'
-  gem 'pry'
-  gem 'pry-nav'
 end

@@ -5,6 +5,7 @@ class ReferenceWord < ActiveRecord::Base
   validates :canonical_name, uniqueness: true
 
   belongs_to :topic
+  has_many :school_word_counts
 
   def remove_spaces
     self.canonical_name = self.name.downcase.split(' ').join.gsub("#", "")

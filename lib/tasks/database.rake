@@ -88,7 +88,7 @@ end
 
 def topics_and_schools
 
-  topics = ["food", "tech", "nerd_culture", "art", "partying", "academics", "romance", "music", "lgbt", "fitness", "social life", "career", "finance", "gender", "housing", "politics", "religion", "fashion"]
+  topics = ["food", "tech", "nerd_culture", "art", "sports", "partying", "academics", "romance", "music", "lgbt", "fitness", "social life", "career", "finance", "gender", "housing", "politics", "religion", "fashion"]
   topics.each do |topic|
     Topic.where(name: topic).first_or_create
   end
@@ -98,7 +98,7 @@ def topics_and_schools
     ReferenceWord.where(name: word.downcase, topic_id: Topic.find_by_name("nerd_culture")).first_or_create
   end
 
-  partying = ["king cobra", "schwasted", "schwasty", "40 oz", "40s", "forties", "fourtys", "fotie", "foties", "liquor store", 'St Patty', "St. Patty's", "beer porn", "beer snob", "beergasm", "beerstagram", "craft beer", "jack daniels", "jim beam", "jameson", "captain morgan", "moonshine", "smirnoff", "absolut", "312", "goose island", "whiskey sour", "gin and tonic", "whiskey coke", "whiskey and diet", "whisky", "absinthe", "ouzo", "jager bomb", "sake", "sake bomb", "sake bombs", "jager bombs", "corona", "heineken", "dos equis", "bud light", "coors light", "miller light", "coors", "sauza", "jose cuervo", "el jimador", "russian standard", "svedka", "patron", "hennessy", "dom perignon", "champagne", "champagne of beers", "don julio", "beefeater", "seagrams", "malort", "bitters", "bombay gin", "tanqueray", "coconut rum", "baileys", "baileys irish cream", "grey goose", "gray goose", "ketel one", "belvedere", "stolichnaya", "uv blue", "lush", "alkie", "alcoholic", "booze hound", "Saturday", "Friday", "tailgate", "pregame", "pre-game", "pregaming", "pre-gaming", "after bar", "after-bar", "a-bar", "cut loose", "get down", "party down", "hotbox", "smokeout", "reefer", "rave", "raver", "orgy", "blunt", "after hours", "spliff", "joint", "walk of shame", "sex cult", "vermouth", "alcohol delivery", "boozahol", "boozaholic", "booze", "margaritas", "martini", "martinis", "margarita", "margs", "tailgaiting", "stoner", "spring break", "tgif", "freakin weekend", "stoner mindset", "bottle",  "drinks", "unlimited ass", "beer", "alcohol", "shots", "rage", "ragin", "ragin'", "vape", "vaporizer", "codeine", "morphine", "vicodin", "hydrocodone", "oxycontin", "oxy cotton", "hopped up", "nugs", "dank weed", "good weed", "chronic", "dank nugs", "tripping", "hallucinating", "ball so hard", "dope", "karaoke", "head shop", "dat ass", "raging", "rager", "get down", "hammered", "spring break", "springbreak", "collegelife", "blacked out", "drugs", "drink", "smoke", "wasted", "shitfaced", "shit faced", "shithoused", "browned out", "blasted", "tipsy", "drunk", "drank", "blotto", "smokin", "kush", "dank", "pot", "weed", "blazed", "blazing", "party", "partying", "cig", "cigarettes", "acid", "lsd", "mdma", "ecstasy", "blackout", "black out", "wine", "liquor", "whiskey", "rum", "gin", "vodka", "tequila", "rumpleminze", "goldschlager", "kahlua", "jager", "jagermeister", "budweiser", "leinenkugels", "leinies", "pbr", "pabst", "pabst blue ribbon", "miller high life", "mgd", "blatts", "hamms", "porter", "stout", "ipa", "amber ale", "red ale", "beer pong", "frat", "greek", "sorority", "club", "420", "4:20", "four twenty", "so high", "get high", "get blazed", "get drunk", "get shitty", "get shitfaced", "get wasted", "get blackout", "blackout drunk", "bath salts", "busch", "schlitz", "keystone", "30 rack", "thirty rack", "rolling rock", "steel reserve", "house party", "hookah", "hooka", "ritalin", "adderall", "shinerbock", "coors", "cocktail", "kings cup", "king's cup", "circle of death"]
+  partying = ["king cobra", "schwasted", "schwasty", "40 oz", "40s", "forties", "fourtys", "shenanigans", "fotie", "foties", "liquor store", 'St Patty', "St. Patty's", "beer porn", "beer snob", "beergasm", "beerstagram", "craft beer", "jack daniels", "jim beam", "jameson", "captain morgan", "moonshine", "smirnoff", "absolut", "312", "goose island", "whiskey sour", "gin and tonic", "whiskey coke", "whiskey and diet", "whisky", "absinthe", "ouzo", "jager bomb", "sake", "sake bomb", "sake bombs", "jager bombs", "corona", "heineken", "dos equis", "bud light", "coors light", "miller light", "coors", "sauza", "jose cuervo", "el jimador", "russian standard", "svedka", "patron", "hennessy", "dom perignon", "champagne", "champagne of beers", "don julio", "beefeater", "seagrams", "malort", "bitters", "bombay gin", "tanqueray", "coconut rum", "baileys", "baileys irish cream", "grey goose", "gray goose", "ketel one", "belvedere", "stolichnaya", "uv blue", "lush", "alkie", "alcoholic", "booze hound", "Saturday", "Friday", "tailgate", "pregame", "pre-game", "pregaming", "pre-gaming", "after bar", "after-bar", "a-bar", "cut loose", "get down", "party down", "hotbox", "smokeout", "reefer", "rave", "raver", "orgy", "blunt", "after hours", "spliff", "joint", "walk of shame", "sex cult", "vermouth", "alcohol delivery", "boozahol", "boozaholic", "booze", "margaritas", "martini", "martinis", "margarita", "margs", "tailgaiting", "stoner", "spring break", "tgif", "freakin weekend", "stoner mindset", "bottle",  "drinks", "unlimited ass", "beer", "alcohol", "shots", "rage", "ragin", "ragin'", "vape", "vaporizer", "codeine", "morphine", "vicodin", "hydrocodone", "oxycontin", "oxy cotton", "hopped up", "nugs", "dank weed", "good weed", "chronic", "dank nugs", "tripping", "hallucinating", "ball so hard", "dope", "karaoke", "head shop", "dat ass", "raging", "rager", "get down", "hammered", "spring break", "springbreak", "collegelife", "blacked out", "drugs", "drink", "smoke", "wasted", "shitfaced", "shit faced", "shithoused", "browned out", "blasted", "tipsy", "drunk", "drank", "blotto", "smokin", "kush", "dank", "pot", "weed", "blazed", "blazing", "party", "partying", "cig", "cigarettes", "acid", "lsd", "mdma", "ecstasy", "blackout", "black out", "wine", "liquor", "whiskey", "rum", "gin", "vodka", "tequila", "rumpleminze", "goldschlager", "kahlua", "jager", "jagermeister", "budweiser", "leinenkugels", "leinies", "pbr", "pabst", "pabst blue ribbon", "miller high life", "mgd", "blatts", "hamms", "porter", "stout", "ipa", "amber ale", "red ale", "beer pong", "frat", "greek", "sorority", "club", "420", "4:20", "four twenty", "so high", "get high", "get blazed", "get drunk", "get shitty", "get shitfaced", "get wasted", "get blackout", "blackout drunk", "bath salts", "busch", "schlitz", "keystone", "30 rack", "thirty rack", "rolling rock", "steel reserve", "house party", "hookah", "hooka", "ritalin", "adderall", "shinerbock", "coors", "cocktail", "kings cup", "king's cup", "circle of death"]
   partying.each do |word|
     ReferenceWord.where(name: word.downcase, topic_id: Topic.find_by_name("partying")).first_or_create
   end
@@ -183,9 +183,14 @@ def topics_and_schools
     ReferenceWord.where(name: word.downcase, topic_id: Topic.find_by_name("music")).first_or_create
   end
 
-  social_life = ["friend", "friends", "best friend", "best friends", "bestie", "besties", "bff", "bffs", "girl party", "bromance", "hug", "fraternity", "sorority", "sorority sisters", "frat brothers", "sorority sister", "happy birthday", "birthday", "girls night", "ladies night", "bro out", "with the guys", "man cave", "cookout", "grill out", "grilling out", "cooking out", "frisbee", "coffee shop", "coffee house", "go get coffee", "hang out", "hanging out", "hung out", "chill", "chilled", "chillin'", "chillin", "chilling", "hangin out", "hangin' out", "broing out", "bro out", "social", "social life", "my social life", "roomie", "roommate", "my roommate", "my roommates", "roommates", "roomies", "old roommate", "new roommate", "old roommates", "new roommates", "out with friends", "with my friends", "i love you guys", "besties forever", "most amazing friend", "love my friends", "awesome friend", "awesome friends", "sisters", "soul sisters", "blood brothers", "blood brother", "soul sister", "soul sistas", "soul sista", "brother from another mother", "brotha from another mother", "sister from another mister", "sista from another mista", "brotha", "sista", "sistas", "brothas", "brothers", "brother", "the bros", "my bros", "bros", "best bros", "my guy friends", "my girl friends", "trivia night", "neighbor", "neighbors", "best buds", "buddy", "buddies", "friends from home", "friends from school", "fun", "best day", "fun day", "outing", "trip", "vacation", "day trip"]
+  social_life = ["friend", "friends", "best friend", "best friends", "bestie", "besties", "bff", "bffs", "girl party", "bromance", "hug", "fraternity", "sorority", "sorority sisters", "frat brothers", "sorority sister", "happy birthday", "birthday", "girls night", "ladies night", "bro out", "with the guys", "man cave", "cookout", "grill out", "grilling out", "cooking out", "frisbee", "coffee shop", "coffee house", "go get coffee", "hang out", "hanging out", "hung out", "chill", "chilled", "chillin'", "chillin", "chilling", "hangin out", "hangin' out", "broing out", "bro out", "social", "social life", "my social life", "bowling", "roomie", "roommate", "my roommate", "my roommates", "roommates", "roomies", "old roommate", "new roommate", "old roommates", "new roommates", "out with friends", "with my friends", "i love you guys", "besties forever", "most amazing friend", "love my friends", "awesome friend", "awesome friends", "sisters", "soul sisters", "blood brothers", "blood brother", "soul sister", "soul sistas", "soul sista", "brother from another mother", "brotha from another mother", "sister from another mister", "sista from another mista", "brotha", "sista", "sistas", "brothas", "brothers", "brother", "the bros", "my bros", "bros", "best bros", "my guy friends", "my girl friends", "trivia night", "neighbor", "neighbors", "best buds", "buddy", "buddies", "friends from home", "friends from school", "fun", "best day", "fun day", "outing", "trip", "vacation", "day trip"]
   social_life.each do |word|
     ReferenceWord.where(name: word.downcase, topic_id: Topic.find_by_name("social life")).first_or_create
+  end
+
+  sports = ["sports", "championship", "championship title", "bases loaded", "50 yard line", "jock strap", "cleats", "soccer ball", "golf", "golfer", "tennis", "tennis ball", "tennis court", "grand slam", "slam dunk", "quarterback", "lineman", "offensive lineman", "defensive lineman", "offense", "defense", "penalty", "penalty shot", "goalie", "juke", "field goal", "3 pointer", "2 pointer", "three pointer", "two pointer", "free throw", "punt", "bracket", "march madness", "basketball", "football", "nfl", "nba", "wba", "hockey", "aaron rodgers", "brett favre", "fantasy football", "fantasy football league", "football league", "football game", "basketball game", "baseball", "baseball game", "touchdown", "foul", "referee", "ref", "superbowl", "playoffs", "championship playoffs", "rose bowl", "espn", "sport", "sports team", "football team", "basketball team", "baseball team", "hockey team", "hockey game", "stanley cup", "halftime", "half time", "cheerleader", "cheerleaders", "inning", "ninth inning", "9th inning", "bottom of the ninth", "tennis", "wimbledon", "rowing", "lacrosse", "rugby", "baseball bat", "chicago bears", "packers", "green bay", "green bay packers", "longhorn", "da bears", "cubs", "chicago cubs", "white sox", "red sox", "sox", "ball game", "forty niners", "forty-niners", "giants", "new york giants", "dallas cowboys", "houston texans", "texas rangers", "rangers", "houston astros", "dallas stars", "houston dynamo", "houston rockets", "longhorns", "aggies", "wolverines", "spartans", "detroit tigers", "detroit lions", "detroit redwings", "lions", "tigers", "redwings", "pistons", "sun devils", "sundevils", "cardinals", "mascot", "phoenix suns", "world series", "soccer", "futbol", "world cup", "sugar bowl", "orange bowl", "championship playoff game", "playoff game", "division series", "championship series", "college basketball", "college football", "nba finals", "nhl", "mls", "mlb", "frozen four", "sports news", "lebron james", "michael jordan", "james harden", "the beard", "kevin durant", "chicago bulls", "bulls", "anthony davis", "puck", "andrew wiggins"]
+  sports.each do |word|
+    ReferenceWord.where(name: word.downcase, topic_id: Topic.find_by_name("sports")).first_or_create
   end
 
   School.where(id: 1, name: "Arizona State University", geofeedia_id: "32204", student_body_count: 59794 ).first_or_create
@@ -223,7 +228,12 @@ end
 
 def create_original_posts(parsed_items, batch, feed_id, school)
   parsed_items.each do |item|
-    batch << OriginalPost.create(text: item["title"], original_publish_time: item["publishDate"], geofeedia_school_id: feed_id, school_id: school.id)
+    post = OriginalPost.new(text: item["title"], original_publish_time: item["publishDate"], geofeedia_school_id: feed_id, school_id: school.id, external_id: item["externalId"])
+    if post.save
+      batch << post
+    else
+      puts "original post didn't pass validations"
+    end
   end
 end
 
@@ -326,8 +336,14 @@ def get_alchemy_responses(new_analyzed_posts, new_analyzed_keywords, new_posts)
       alchemy_keywords_response["keywords"].each do |keyword|
         analysis = analyze_sentiment(keyword)
         new_keyword = Keyword.new(text: keyword["text"], sentiment: analysis[:sentiment], confidence: analysis[:confidence], analyzed_post_id: new_post.id)
-        new_analyzed_keywords << new_keyword if new_keyword.save
+        if new_keyword.save
+          new_analyzed_keywords << new_keyword
+        else
+          puts "keyword didn't pass validations"
+        end
       end
+    else
+      puts "analyzed post didn't pass validations"
     end
   end
 end
@@ -335,7 +351,7 @@ end
 
 def update_all_schools_mrpt
   AnalyzedPost.select(:school_id).distinct.each do |school_id|
-    school = School.find(school_id)
+    school = School.find(school_id.school_id)
     most_recent_post_time = get_most_recent_post_time(school.analyzed_posts)
     update_most_recent_post_time(school, most_recent_post_time)
   end

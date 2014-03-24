@@ -178,30 +178,44 @@ end
 #   Keyword.create(post.to_hash)
 # end
 
-
-
 # def get_last_id
 #   CSV.read('db/analyzed_posts.csv').last[0]
 # end
 
-# def ping_geofeedia
+def ping_geofeedia
+  times_pinged = 0
+  until times_pinged = 16
+  #{geofeedia_id => "abbrev"}
+  #schoools_and_calls = {Arizona State University => "asu",
+  #University of Texas Austin => "uta"}
+    make_call_to_geofeedia_and_save_json({"32204" => "asu",
+    "32211" => "uta",
+    "32244" => "uga",
+    "32207" => "msu",
+    "32206" => "uofm",
+    "32202" => "uofi",
+    "32251" => "uwm",
+    "32243" => "uws",
+    "32241" => "ucd",
+    "32210" => "cor"
+    })
+    times_pinged += 1
+    sleep 21600
+  end
+end
 #   case school
 #    when "32204"
 #     make_call_to_feedia every 4 hours
 #    when "3098345"
 #     make_call_to feeedia every 6 hours
 
-
-  #{geofeedia_id => ["abbrev", most_recent_post_time]}
-  #schoools_and_calls = {Arizona State University => ["asu", "UTC time"],
-  #University of Texas Austin => ["uta", "UTC Time"]}
-def make_call_to_geofeedia_and_save_json
-  schools_and_calls = {"32204" => ["asu", School.find_by_geofeedia_id("32204").most_recent_post_time],
-    "32211" => ["uta", School.find_by_geofeedia_id("32211").most_recent_post_time],
-  }
-  schools_and_calls.each do |geofeedia_id, school_table_info|
+def make_call_to_geofeedia_and_save_json(school_plus_abbreviation_hash)
+  schools_and_calls = {"32204" => "asu",
+    "32211" => "uta"
+    }
+  schools_and_calls.each do |geofeedia_id, school_abbreviation|
     most_recent_post_time = nil
-    url = "https://api.geofeedia.com/v1/search/geofeed/#{geofeedia_id}?format=json-default&appId=420880de&appKey=306ced14ef8ab2183b8264327c456806&minDate=#{school_table_info[1]}"
+    url = "https://api.geofeedia.com/v1/search/geofeed/#{geofeedia_id}?format=json-default&appId=420880de&appKey=306ced14ef8ab2183b8264327c456806"
     4.times do
       response = HTTParty.get(url)
         if most_recent_post_time == nil
@@ -210,34 +224,26 @@ def make_call_to_geofeedia_and_save_json
       posts = response.parsed_response
       url = response.parsed_response["result"]["nextPage"]["url"]
       timestamp = Time.now.to_s.gsub(/\s|(:)/, '')
-      p geofeedia_id
-      p most_recent_post_time
-      FileUtils.touch("db/seeds/#{geofeedia_id}#{school_table_info[0]}_#{timestamp}.json")
-      File.open("db/seeds/#{geofeedia_id}#{school_table_info[0]}_#{timestamp}.json","w") do |file|
-        file.write(posts.to_json)
-      end
+      # p geofeedia_id
+      # p most_recent_post_time
+      # p response.parsed_response["items"].count
+      create_local_json_files(geofeedia_id, school_abbreviation, timestamp, posts)
     end
-    school_to_be_updated = School.find_by_geofeedia_id(geofeedia_id)
-    school_to_be_updated.update_attributes(most_recent_post_time: most_recent_post_time)
+    update_most_recent_post_time(geofeedia_id, most_recent_post_time)
+    sleep 40
   end
 end
 
-# def call_geofeedia_api(url)
-#   # json_to_save.save_to_folder('db/#{geofeedia_id}.csv')
-# next_page = response.parsed_response["result"]["nextPage"]["url"]
-#   posts_count = response.parsed_response["items"].count
+def create_local_json_files(geofeedia_id, school_abbreviation, timestamp, posts)
+  FileUtils.touch("db/seeds/#{geofeedia_id}#{school_abbreviation}_#{timestamp}.json")
+  File.open("db/seeds/#{geofeedia_id}#{school_abbreviation}_#{timestamp}.json","w") do |file|
+    file.write(posts.to_json)
+  end
+end
 
-# end
-
-# def save_json_file(json_object)
-#   File.open("db/#{geofeedia_id}.json","w") do |file|
-#     file.write(json_to_save.to_json)
-#   end
-# end
+def update_most_recent_post_time(geofeedia_id, most_recent_post_time)
+  school_to_be_updated = School.find_by_geofeedia_id(geofeedia_id)
+  school_to_be_updated.update_attributes(most_recent_post_time: most_recent_post_time)
+end
 
 make_call_to_geofeedia_and_save_json
-
-# def make_calls_to_geofeedia_every_hour
-
-# end
-

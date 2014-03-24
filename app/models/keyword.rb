@@ -8,9 +8,15 @@ class Keyword < ActiveRecord::Base
 
   belongs_to :analyzed_post
 
+  @@reference_words = []
+
 
   def remove_spaces
     self.text = self.text.downcase.split(' ').join.gsub("#", "").gsub(/sohf\d{3}/, '')
+  end
+
+  def self.reference_words
+    @@reference_words
   end
 
 
@@ -20,11 +26,9 @@ class Keyword < ActiveRecord::Base
 
 
   def self.find_reference_words
-    reference_words = []
     ReferenceWord.all.each do |reference_word|
-      reference_words << reference_word.name
+      @@reference_words << reference_word.canonical_name
     end
-    reference_words
   end
 
 
@@ -43,11 +47,10 @@ class Keyword < ActiveRecord::Base
 
 
   def self.create_or_update_school_word_counts
-    reference_words = self.find_reference_words
     self.all.each do |keyword|
       text = keyword.text.downcase
       confidence = keyword.confidence
-      if reference_words.include?(text)
+      if @@reference_words.include?(text)
         lookup_reference_word = ReferenceWord.find_by_name(text)
         counter = SchoolWordCount.where(school_id: keyword.analyzed_post.school_id, reference_word_id: lookup_reference_word.id).first_or_create
         counter.word_count += 1

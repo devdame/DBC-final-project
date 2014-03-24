@@ -1,7 +1,9 @@
-# require 'httparty'
-# require 'json'
-# require 'find'
-# require './db/alchemyapi.rb'
+require 'httparty'
+require 'json'
+require 'find'
+require './db/alchemyapi.rb'
+require 'fileutils'
+
 
 
 # # # ############################
@@ -91,79 +93,79 @@
 
 # # ##########################Create Original Posts
 
-# # def create_original_posts(parsed_items, batch, feed_id, school)
-# #   parsed_items.each do |item|
-# #     batch << OriginalPost.create(text: item["title"], original_publish_time: item["publishDate"], geofeedia_school_id: feed_id, school_id: school.id)
-# #   end
-# # end
+def create_original_posts(parsed_items, batch, feed_id, school)
+  parsed_items.each do |item|
+    batch << OriginalPost.create(text: item["title"], original_publish_time: item["publishDate"], geofeedia_school_id: feed_id, school_id: school.id, external_id: item["externalId"])
+  end
+end
 
-# # # School.where(name: "Arizona State University", geofeedia_id: "32204", student_body_count: 123456789).first_or_create
-# # # School.where(name: "University of Texas Austin", geofeedia_id: "32211", student_body_count: 123456789).first_or_create
+School.where(name: "Arizona State University", geofeedia_id: "32204", student_body_count: 123456789).first_or_create
+School.where(name: "University of Texas Austin", geofeedia_id: "32211", student_body_count: 123456789).first_or_create
 
-# # new_posts = []
+new_posts = []
 
-# # Dir['db/seeds/*'].each do |filename|
-# #   json = File.read(filename)
-# #   feed_id = filename.gsub(/\D+(\d+)[a-z].+/i, '\1')
-# #   school = School.find_by_geofeedia_id(feed_id)
-# #   parsed = JSON.parse(json)
-# #   batch = []
-# #   if school.original_posts.empty?
-# #     create_original_posts(parsed["items"], batch, feed_id, school)
-# #     first_post_time = batch.sort_by{|post| post.original_publish_time}.first.original_publish_time
-# #     school.first_post_time = first_post_time
-# #   else
-# #     create_original_posts(parsed["items"], batch, feed_id, school)
-# #   end
-# #   batch.each do |post|
-# #     new_posts << post
-# #   end
-# #   most_recent_post_time = batch.sort_by{|post| post.original_publish_time}.last.original_publish_time
-# #   school.most_recent_post_time = most_recent_post_time
-# #   school.save
-# # end
+Dir['db/seeds/*'].each do |filename|
+  json = File.read(filename)
+  feed_id = filename.gsub(/\D+(\d+)[a-z].+/i, '\1')
+  school = School.find_by_geofeedia_id(feed_id)
+  parsed = JSON.parse(json)
+  batch = []
+  if school.original_posts.empty?
+    create_original_posts(parsed["items"], batch, feed_id, school)
+    first_post_time = batch.sort_by{|post| post.original_publish_time}.first.original_publish_time
+    school.first_post_time = first_post_time
+  else
+    create_original_posts(parsed["items"], batch, feed_id, school)
+  end
+  batch.each do |post|
+    new_posts << post
+  end
+  most_recent_post_time = batch.sort_by{|post| post.original_publish_time}.last.original_publish_time
+  school.most_recent_post_time = most_recent_post_time
+  school.save
+end
 
-# # alchemyapi = AlchemyAPI.new()
+# alchemyapi = AlchemyAPI.new()
 
-# # new_analyzed_posts = []
-# # new_analyzed_keywords = []
+# new_analyzed_posts = []
+# new_analyzed_keywords = []
 
-# # new_posts.each do |post|
-# #   post_text = post.text
-# #   alchemy_post_response = alchemyapi.sentiment('text', post_text)
-# #   if alchemy_post_response["docSentiment"]
-# #     overall_sentiment = alchemy_post_response["docSentiment"]["type"]
-# #   else
-# #     overall_sentiment = "neutral"
-# #   end
-# #   new_post = AnalyzedPost.new(school_id: post.school_id, original_publish_time: post.original_publish_time, overall_sentiment: overall_sentiment)
-# #   new_analyzed_posts << new_post if new_post.save
+# new_posts.each do |post|
+#   post_text = post.text
+#   alchemy_post_response = alchemyapi.sentiment('text', post_text)
+#   if alchemy_post_response["docSentiment"]
+#     overall_sentiment = alchemy_post_response["docSentiment"]["type"]
+#   else
+#     overall_sentiment = "neutral"
+#   end
+#   new_post = AnalyzedPost.new(school_id: post.school_id, original_publish_time: post.original_publish_time, overall_sentiment: overall_sentiment)
+#   new_analyzed_posts << new_post if new_post.save
 
-# #   alchemy_keywords_response = alchemyapi.keywords('text', post_text, options = {"sentiment" => 1})
-# #   alchemy_keywords_response["keywords"].each do |keyword|
-# #     if keyword["sentiment"]
-# #       sentiment = keyword["sentiment"]["type"]
-# #       confidence = keyword["sentiment"]["score"]
-# #     else
-# #       sentiment = "neutral"
-# #       confidence = 0.0
-# #     end
-# #     new_keyword = Keyword.new(text: keyword["text"], sentiment: sentiment, confidence: confidence, analyzed_post_id: new_post.id)
-# #     new_analyzed_keywords << new_keyword if new_keyword.save
-# #   end
-# # end
+#   alchemy_keywords_response = alchemyapi.keywords('text', post_text, options = {"sentiment" => 1})
+#   alchemy_keywords_response["keywords"].each do |keyword|
+#     if keyword["sentiment"]
+#       sentiment = keyword["sentiment"]["type"]
+#       confidence = keyword["sentiment"]["score"]
+#     else
+#       sentiment = "neutral"
+#       confidence = 0.0
+#     end
+#     new_keyword = Keyword.new(text: keyword["text"], sentiment: sentiment, confidence: confidence, analyzed_post_id: new_post.id)
+#     new_analyzed_keywords << new_keyword if new_keyword.save
+#   end
+# end
 
-# # CSV.open('db/analyzed_posts.csv', 'a') do |csv|
-# #   new_analyzed_posts.each do |post|
-# #     csv << post.attributes.values
-# #   end
-# # end
+# CSV.open('db/analyzed_posts.csv', 'a') do |csv|
+#   new_analyzed_posts.each do |post|
+#     csv << post.attributes.values
+#   end
+# end
 
-# # CSV.open('db/keywords.csv', 'a') do |csv|
-# #   new_analyzed_keywords.each do |keyword|
-# #     csv << keyword.attributes.values
-# #   end
-# # end
+# CSV.open('db/keywords.csv', 'a') do |csv|
+#   new_analyzed_keywords.each do |keyword|
+#     csv << keyword.attributes.values
+#   end
+# end
 
 
 # post_csv = CSV.read('db/analyzed_posts.csv', :headers => true)
@@ -178,7 +180,64 @@
 
 
 
-# # def get_last_id
-# #   CSV.read('db/analyzed_posts.csv').last[0]
-# # end
+# def get_last_id
+#   CSV.read('db/analyzed_posts.csv').last[0]
+# end
+
+# def ping_geofeedia
+#   case school
+#    when "32204"
+#     make_call_to_feedia every 4 hours
+#    when "3098345"
+#     make_call_to feeedia every 6 hours
+
+
+  #{geofeedia_id => ["abbrev", most_recent_post_time]}
+  #schoools_and_calls = {Arizona State University => ["asu", "UTC time"],
+  #University of Texas Austin => ["uta", "UTC Time"]}
+def make_call_to_geofeedia_and_save_json
+  schools_and_calls = {"32204" => ["asu", School.find_by_geofeedia_id("32204").most_recent_post_time],
+    "32211" => ["uta", School.find_by_geofeedia_id("32211").most_recent_post_time],
+  }
+  schools_and_calls.each do |geofeedia_id, school_table_info|
+    most_recent_post_time = nil
+    url = "https://api.geofeedia.com/v1/search/geofeed/#{geofeedia_id}?format=json-default&appId=420880de&appKey=306ced14ef8ab2183b8264327c456806&minDate=#{school_table_info[1]}"
+    4.times do
+      response = HTTParty.get(url)
+        if most_recent_post_time == nil
+          most_recent_post_time = response.parsed_response["items"][0]["publishDate"]
+        end
+      posts = response.parsed_response
+      url = response.parsed_response["result"]["nextPage"]["url"]
+      timestamp = Time.now.to_s.gsub(/\s|(:)/, '')
+      p geofeedia_id
+      p most_recent_post_time
+      FileUtils.touch("db/seeds/#{geofeedia_id}#{school_table_info[0]}_#{timestamp}.json")
+      File.open("db/seeds/#{geofeedia_id}#{school_table_info[0]}_#{timestamp}.json","w") do |file|
+        file.write(posts.to_json)
+      end
+    end
+    school_to_be_updated = School.find_by_geofeedia_id(geofeedia_id)
+    school_to_be_updated.update_attributes(most_recent_post_time: most_recent_post_time)
+  end
+end
+
+# def call_geofeedia_api(url)
+#   # json_to_save.save_to_folder('db/#{geofeedia_id}.csv')
+# next_page = response.parsed_response["result"]["nextPage"]["url"]
+#   posts_count = response.parsed_response["items"].count
+
+# end
+
+# def save_json_file(json_object)
+#   File.open("db/#{geofeedia_id}.json","w") do |file|
+#     file.write(json_to_save.to_json)
+#   end
+# end
+
+make_call_to_geofeedia_and_save_json
+
+# def make_calls_to_geofeedia_every_hour
+
+# end
 

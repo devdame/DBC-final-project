@@ -53,19 +53,15 @@ class AnalyzedPost < ActiveRecord::Base
       ratings.each do |topic, keyword_match|
         topic_record = Topic.find_by_name(topic)
         school_rating = Rating.find_or_create_by(topic_id: topic_record.id, school_id: school.id)
-          school_rating.total_post_count += 1
-          aggregated_keywords_data = self.aggregate_keywords(keyword_match)
-          case aggregated_keywords_data
-          when "neutral"
-          school_rating.neutral_post_count +=1
-          when "positive"
-          school_rating.positive_post_count +=1
-          when "negative"
-          school_rating.negative_post_count +=1
-          when "mixed"
-          school_rating.mixed_post_count +=1
-          end 
-          school_rating.save
+        school_rating.total_post_count += 1
+        aggregated_keywords_data = self.aggregate_keywords(keyword_match)
+        case aggregated_keywords_data
+        when "neutral" then school_rating.neutral_post_count +=1
+        when "positive" then school_rating.positive_post_count +=1
+        when "negative" then school_rating.negative_post_count +=1
+        when "mixed" then school_rating.mixed_post_count +=1
+        end
+        school_rating.save
       end
     end
   end

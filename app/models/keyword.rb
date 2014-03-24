@@ -15,7 +15,7 @@ class Keyword < ActiveRecord::Base
 
 
   def check_for_confidence
-    self.confidence = 0 unless confidence
+    self.confidence = 0.0 unless confidence
   end
 
 

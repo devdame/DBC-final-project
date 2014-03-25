@@ -19,7 +19,7 @@ require 'fileutils'
         delete_all_files_in_seeds_directory
       end
 
-    desc "This is what to run if you already have a db and want to update your final tables with the geofeedia files in your seeds folder. DELETE FILES AFTERWARD."
+    desc "This is what to run if you already have a db and want to update your final tables with the geofeedia files in your seeds folder."
       task :json_to_alchemy_to_tables_and_csv => :environment do
         check_setup_for_updating_csv
         json_to_alchemy_to_tables_and_csv
@@ -30,86 +30,86 @@ require 'fileutils'
         delete_all_files_in_seeds_directory
       end
 
-    desc "Create topics and schools for empty db"
-      task :seed_schools_and_topics => :environment do
-        raise "Topics, reference words and schools must be empty!" unless Topic.all.empty? && School.all.empty? && ReferenceWord.all.empty?
-        make_topics_and_schools
+    desc "This is what to run if you want to go get new posts from geofeedia and then update your final tables with that info."
+      task :geofeedia_to_json_to_alchemy_to_tables_and_csv => :environment do
+        make_call_to_geofeedia_and_save_json({"32204" => ["asu", 10],
+          "32211" => ["uta", 13],
+          "32244" => ["uga", 4],
+          "32207" => ["msu", 13],
+          "32206" => ["uofm", 5]#,
+          # "32202" => "uofi",
+          # "32251" => "uwm",
+          # "32243" => "uws",
+          # "32241" => "ucd",
+          # "32210" => "cor"
+          })
+        check_setup_for_updating_csv
+        json_to_alchemy_to_tables_and_csv
+        increment_school_word_counts
+        increment_school_ratings
+        create_or_update_school_word_counts
+        wipe_temporary_tables
+        delete_all_files_in_seeds_directory
       end
 
-    desc "Overwrite topics and schools (deletes what's already in there and repopulates it from rake file)"
-      task :overwrite_schools_and_topics => :environment do
+    desc "Delete topics and schools"
+      task :delete_topics_and_schools => :environment do
         Topic.delete_all
         ReferenceWord.delete_all
         School.delete_all
         Rating.delete_all
         SchoolWordCount.delete_all
+      end
+
+    desc "Create topics and schools for empty db"
+      task :create_topics_and_schools => :environment do
+        raise "Topics, reference words and schools must be empty!" unless Topic.all.empty? && School.all.empty? && ReferenceWord.all.empty?
         make_topics_and_schools
       end
 
-    desc "Import rows from CSV into empty database (keywords and analyzed posts)--only to be called when initializing db!!!! Never again!!!"
+    desc "Import rows from CSV into empty database--only to be called when initializing db!!!! Never again!!!"
       task :populate_tables_from_csv => :environment do
         raise "Temporary databases must be empty, and you must have already made schools!" unless AnalyzedPost.all.empty? && OriginalPost.all.empty? && Keyword.all.empty? && School.all.any?
         check_for_previously_seeded_data
         populate_tables_from_csv
-        wipe_temporary_tables
       end
 
-    desc "Import rows from CSV  *AND*  send any json files in seeds folder to geofeedia and back to analyzed posts and keywords, from empty (but already created and migrated) database and wipe tables when done"
-      task :import_csv_get_json_wipe_tables => :environment do
-        check_for_previously_seeded_data
-        setup_from_empty
-        wipe_temporary_tables
+    desc "Send any json files in seeds folder to alchemy and update csv accordingly"
+      task :json_to_alchemy_to_tables_and_csv => :environment do
+        check_setup_for_updating_csv
+        json_to_alchemy_to_tables_and_csv
       end
 
-# Don't use this one unless you know what you're doing!
-    # desc "Import rows from CSV  *AND*  send any json files in seeds folder to geofeedia and back to analyzed posts and keywords, from empty (but already created and migrated) database"
-    # task :import_csv_get_json_keep_tables => :environment do
-    #   setup_from_empty
-    # end
-
-    # desc "Send any json files in seeds folder to alchemy and update csv accordingly, then wipe temporary tables"
-    #   task :json_to_alchemy_to_tables_and_csv_wipe_tables => :environment do
-    #     check_setup_for_updating_csv
-    #     json_to_alchemy_to_tables_and_csv
-    #     increment_school_word_counts
-    #     increment_school_ratings
-    #     create_or_update_school_word_counts
-    #     wipe_temporary_tables
-    #     delete_all_files_in_seeds_directory
-    #   end
-
-      task :blah => :environment do
-        Keyword.populate_reference_words
-        Keyword.create_or_update_school_word_counts
+    desc "Updates final tables with whatever data is in keywords and analyzed posts"
+      task :update_final_tables_from_temporary_tables => :environment do
+        raise "Tables must be properly populated before this task is run!" unless AnalyzedPost.any? && Keyword.any? && School.any? && Topic.any? && ReferenceWord.any? && Rating.any?
+        increment_school_word_counts
+        increment_school_ratings
+        create_or_update_school_word_counts
       end
-
-# Don't use this one unless you know what you're doing!
-    # desc "Send any json files in seeds folder to alchemy and update csv accordingly BUT DON'T wipe tables when done"
-    # task :json_to_alchemy_to_tables_and_csv_keep_tables => :environment do
-      # check_setup_for_updating_csv
-      # json_to_alchemy_to_tables_and_csv
-      # increment_school_word_counts
-      # increment_school_ratings
-      # create_or_update_school_word_counts
-      # delete_all_files_in_seeds_directory
-    # end
 
     desc "Wipe the temporary tables (keywords and analyzed posts)"
       task :wipe_temporary_tables => :environment do
         wipe_temporary_tables
       end
 
+    desc "Delete all files in the seeds directory"
+      task :delete_all_files_in_seeds => :environment do
+        delete_all_files_in_seeds_directory
+      end
+
     desc "Grabs data from geofeedia and stores in json files. Uncomment the schools that you want to grab from."
       task :create_json_from_geofeedia => :environment do
-        make_call_to_geofeedia_and_save_json({"32204" => "asu",
-          "32211" => "uta",
-          # "32244" => "uga",
-          "32207" => "msu",
-          "32206" => "uofm"#,
+        make_call_to_geofeedia_and_save_json({"32204" => ["asu", 10],
+          "32211" => ["uta", 13],
+          "32244" => ["uga", 4],
+          "32207" => ["msu", 13],
+          "32206" => ["uofm", 5]#,
           # "32202" => "uofi",
           # "32251" => "uwm",
           # "32243" => "uws",
           # "32241" => "ucd",
+          # "32244" => "uga",
           # "32210" => "cor"
           })
       end
@@ -329,30 +329,27 @@ end
 #####################################################
 
 
-def make_call_to_geofeedia_and_save_json(school_plus_abbreviation_hash)
-  # schools_and_calls = {"32204" => "asu",
-  #   "32211" => "uta"
-  #   }
-  school_plus_abbreviation_hash.each do |geofeedia_id, school_abbreviation|
-    most_recent_post_time = nil
-    url = "https://api.geofeedia.com/v1/search/geofeed/#{geofeedia_id}?format=json-default&appId=420880de&appKey=#REMEMBER TO ADD ME BACK"
-    4.times do
-      response = HTTParty.get(url)
-        if most_recent_post_time == nil
-          most_recent_post_time = response.parsed_response["items"][0]["publishDate"]
-        end
-      posts = response.parsed_response
-      url = response.parsed_response["result"]["nextPage"]["url"]
-      timestamp = Time.now.to_s.gsub(/\s|(:)/, '')
-      # p geofeedia_id
-      # p most_recent_post_time
-      # p response.parsed_response["items"].count
-      create_local_json_files(geofeedia_id, school_abbreviation, timestamp, posts)
+  def make_call_to_geofeedia_and_save_json(school_plus_abbreviation_hash)
+    school_plus_abbreviation_hash.each do |geofeedia_id, school_abbreviation_plus_call_amount|
+      most_recent_post_time = nil
+      url = "https://api.geofeedia.com/v1/search/geofeed/#{geofeedia_id}?format=json-default&appId=420880de&appKey=ADD ME BACK"
+      school_abbreviation_plus_call_amount[1].times do
+        response = HTTParty.get(url)
+          if most_recent_post_time == nil
+            most_recent_post_time = response.parsed_response["items"][0]["publishDate"]
+          end
+        posts = response.parsed_response
+        url = response.parsed_response["result"]["nextPage"]["url"]
+        timestamp = Time.now.to_s.gsub(/\s|(:)/, '')
+        # p geofeedia_id
+        # p most_recent_post_time
+        # p response.parsed_response["items"].count
+        create_local_json_files(geofeedia_id, school_abbreviation_plus_call_amount[0], timestamp, posts)
+        sleep 6
+      end
+      update_most_recent_post_time(geofeedia_id, most_recent_post_time)
     end
-    update_most_recent_post_time(geofeedia_id, most_recent_post_time)
-    sleep 40
   end
-end
 
 
 def create_local_json_files(geofeedia_id, school_abbreviation, timestamp, posts)
@@ -464,7 +461,7 @@ def make_topics_and_schools
     ReferenceWord.where(name: word, topic_id: Topic.find_by_name("fashion")).first_or_create
   end
 
-  food = ["cafeteria", "caf", "dining", "barista", "favorite barista", "favorite restaurant", "favorite cafe", "favorite food", "favorite drink", "eat", "eating", "ate", "over ate", "over eating", "over eat", "dining hall", "food", "donut", "good food", "muffin", "donuts", "muffins", "breakfast", "lunch", "dinner", "brunch", "grub", "grubhub", "lemon", "lime", "citrus", "green beans", "beans", "black beans", "refried beans", "cupcake", "cupcakes", "almond", "almonds", "nuts", "nut", "cranberry", "cranberries", "berries", "berry", "fruit", "dried fruit", "food", "foods", "fatty foods", "fried foods", "fatty food", "fried food", "country cooking", "country cookin", "soul food", "fried chicken", "collard greens", "greens", "kale chips", "kale chip", "grape", "grapes", "strawberry", "strawberries", "raspberry", "raspberries", "blueberry", "blueberries", "melon", "melons", "papaya", "milkshake", "fast food", "sit down restaurant", "fast food restaurant", "jalapenos", "brown rice", "tabasco", "sriracha", "hot sauce", "mustard", "ketchup", "catsup", "pickles", "pickle", "peppers", "pepper", "hot peppers", "meal plan", "meal", "vegan", "gluten free", "gf", "veganism", "vegetarianism", "vegetarian", "vegeterianism", "vegeterian", "gluten", "coffee", "caffiene", "caffeine", "hamburger", "burger", "pizza", "burgers", "fries", "eggs", "eggs benedict", "omelette", "pancakes", "waffles", "oatmeal", "cereal", "bacon", "sausage", "bacon fat", "bacon flavored", "bacon salt", "ham", "ham steak", "smoothie", "scrambled eggs", "sunny side up", "over easy", "eggs over easy", "hotcakes", "griddle cakes", "sandwich", "huevos rancheros", "breakfast sandwich", "bagel", "breakfast bagel", "bagel sandwich", "baguette", "toast", "club sandwich", "reuben", "italian beef", "italian beef sandwich", "philly cheese steak", "philly cheesesteak", "cheesesteak", "cheese steak", "hot dog", "bratwurst", "italian sausage", "beer and brats", "cheddarwurst", "knockwurst", "schnitzel", "milk", "almond", "peanut", "peanut butter", "almond butter", "nutella", "hazelnut", "walnut", "pecan", "pistachio", "cake", "pie", "chocolate cake", "cherry pie", "apple pie", "strawberry rhubarb pie", "pumpkin pie", "pecan pie", "ice cream", "frozen yogurt", "custard", "ice cream sundae", "ice cream sandwich", "sundae", "dessert", "sweets", "sugar", "coffee", "tea", "soda", "pasta", "spaghetti", "gnocchi", "noodles", "thai food", "thai restaurant", "thai place", "chinese food", "chinese restaurant", "chinese place", "takeout", "chinese takeout", "korean food", "korean restaurant", "korean place", "mexican food", "mexican restaurant", "mexican place", "kimchi", "lo mein", "lomein", "chow mein", "general tso's", "tofu", "chicken", "shrimp", "lamb", "eggrolls", "pot stickers", "pizza rolls", "onion rings", "curly fries", "bloomin onion", "steak", "dumplings", "fried dumplings", "dim sum", "sushi", "japanese food", "japanese restaurant", "japanese place", "curry", "spicy", "rice", "cashew butter", "fudge", "maple", "coconut", "orange", "apple", "peach", "pear", "plum", "banana", "fruit", "nectarine", "cherry", "cherries", "oranges", "coconuts", "apples", "peaches", "plums", "pears", "bananas", "fruits", "panang curry", "green curry", "red curry", "tom kha", "soup", "pad thai", "makimono", "nigiri", "gyoza", "bao", "pork buns", "pork belly", "carmelized", "onions", "mango", "ginger", "broccoli", "peanut sauce", "peanut chicken", "teriyaki", "chipotle", "garlic",  "carmelized onions", "bahn mi", "pho", "vietnamese food", "vietnamese restaurant", "vietnamese place", "italian restaurant", "italian food", "italian place", "russian food", "russian restaurant", "persian food", "persian restaurant", "ethnic food", "burrito", "burritos", "chalupa", "churro", "tostada", "enchilada", "enchiladas", "chili", "chili con queso", "cheese", "cheese fries", "chili fries", "chili cheese fries" ]
+  food = ["cafeteria", "caf", "dining", "barista", "favorite barista", "favorite restaurant", "favorite cafe", "favorite food", "favorite drink", "eat", "eating", "ate", "over ate", "over eating", "over eat", "dining hall", "food", "donut", "good food", "muffin", "donuts", "muffins", "breakfast", "lunch", "dinner", "brunch", "grub", "grubhub", "lemon", "lime", "citrus", "green beans", "beans", "black beans", "refried beans", "cupcake", "cupcakes", "almond", "almonds", "nuts", "nut", "cranberry", "cranberries", "berries", "berry", "fruit", "dried fruit", "food", "foods", "fatty foods", "fried foods", "fatty food", "fried food", "country cooking", "country cookin", "soul food", "fried chicken", "collard greens", "greens", "kale chips", "kale chip", "grape", "grapes", "strawberry", "strawberries", "raspberry", "raspberries", "blueberry", "blueberries", "melon", "melons", "papaya", "milkshake", "fast food", "sit down restaurant", "fast food restaurant", "jalapenos", "brown rice", "tabasco", "sriracha", "hot sauce", "mustard", "ketchup", "catsup", "pickles", "pickle", "peppers", "pepper", "hot peppers", "meal plan", "meal", "vegan", "gluten free", "gf", "veganism", "vegetarianism", "vegetarian", "vegeterianism", "vegeterian", "gluten", "coffee", "caffiene", "caffeine", "hamburger", "burger", "pizza", "burgers", "fries", "eggs", "eggs benedict", "omelette", "pancakes", "waffles", "oatmeal", "cereal", "bacon", "sausage", "bacon fat", "bacon flavored", "bacon salt", "ham", "ham steak", "smoothie", "scrambled eggs", "sunny side up", "over easy", "eggs over easy", "hotcakes", "griddle cakes", "sandwich", "huevos rancheros", "breakfast sandwich", "bagel", "breakfast bagel", "bagel sandwich", "baguette", "toast", "club sandwich", "reuben", "italian beef", "italian beef sandwich", "philly cheese steak", "philly cheesesteak", "cheesesteak", "cheese steak", "hot dog", "bratwurst", "italian sausage", "beer and brats", "cheddarwurst", "knockwurst", "schnitzel", "milk", "almond", "peanut", "peanut butter", "almond butter", "nutella", "hazelnut", "walnut", "pecan", "pistachio", "cake", "pie", "chocolate cake", "cherry pie", "apple pie", "strawberry rhubarb pie", "pumpkin pie", "pecan pie", "ice cream", "frozen yogurt", "custard", "ice cream sundae", "ice cream sandwich", "sundae", "dessert", "sweets", "sugar", "coffee", "tea", "soda", "pasta", "spaghetti", "gnocchi", "noodles", "froyo", "thai food", "thai restaurant", "thai place", "chinese food", "chinese restaurant", "chinese place", "takeout", "chinese takeout", "korean food", "korean restaurant", "korean place", "mexican food", "mexican restaurant", "mexican place", "kimchi", "lo mein", "lomein", "chow mein", "general tso's", "tofu", "chicken", "shrimp", "lamb", "eggrolls", "pot stickers", "pizza rolls", "onion rings", "curly fries", "bloomin onion", "steak", "dumplings", "fried dumplings", "dim sum", "sushi", "japanese food", "japanese restaurant", "japanese place", "curry", "spicy", "rice", "cashew butter", "fudge", "maple", "coconut", "orange", "apple", "peach", "pear", "plum", "banana", "fruit", "nectarine", "cherry", "cherries", "oranges", "coconuts", "apples", "peaches", "plums", "pears", "bananas", "fruits", "panang curry", "green curry", "red curry", "tom kha", "soup", "pad thai", "makimono", "nigiri", "gyoza", "bao", "pork buns", "pork belly", "carmelized", "onions", "mango", "ginger", "broccoli", "peanut sauce", "peanut chicken", "teriyaki", "chipotle", "garlic",  "carmelized onions", "bahn mi", "pho", "vietnamese food", "vietnamese restaurant", "vietnamese place", "italian restaurant", "italian food", "italian place", "russian food", "russian restaurant", "persian food", "persian restaurant", "ethnic food", "burrito", "burritos", "chalupa", "churro", "tostada", "enchilada", "enchiladas", "chili", "chili con queso", "cheese", "cheese fries", "chili fries", "chili cheese fries" ]
   food.each do |word|
     ReferenceWord.where(name: word, topic_id: Topic.find_by_name("food")).first_or_create
   end
@@ -494,34 +491,27 @@ def make_topics_and_schools
     ReferenceWord.where(name: word, topic_id: Topic.find_by_name("social life")).first_or_create
   end
 
-  sports = ["sports", "championship", "championship title", "bases loaded", "50 yard line", "jock strap", "cleats", "soccer ball", "golf", "golfer", "tennis", "tennis ball", "tennis court", "grand slam", "slam dunk", "quarterback", "lineman", "offensive lineman", "defensive lineman", "offense", "defense", "penalty", "penalty shot", "goalie", "juke", "field goal", "3 pointer", "2 pointer", "three pointer", "two pointer", "free throw", "punt", "bracket", "march madness", "basketball", "football", "nfl", "nba", "wba", "hockey", "aaron rodgers", "brett favre", "fantasy football", "fantasy football league", "football league", "football game", "basketball game", "baseball", "baseball game", "touchdown", "foul", "referee", "ref", "superbowl", "playoffs", "championship playoffs", "rose bowl", "espn", "sport", "sports team", "football team", "basketball team", "baseball team", "hockey team", "hockey game", "stanley cup", "halftime", "half time", "cheerleader", "cheerleaders", "inning", "ninth inning", "9th inning", "bottom of the ninth", "tennis", "wimbledon", "rowing", "lacrosse", "rugby", "baseball bat", "chicago bears", "packers", "green bay", "green bay packers", "longhorn", "da bears", "cubs", "chicago cubs", "white sox", "red sox", "sox", "ball game", "forty niners", "forty-niners", "giants", "new york giants", "dallas cowboys", "houston texans", "texas rangers", "rangers", "houston astros", "dallas stars", "houston dynamo", "houston rockets", "longhorns", "aggies", "wolverines", "spartans", "detroit tigers", "detroit lions", "detroit redwings", "lions", "tigers", "redwings", "pistons", "sun devils", "sundevils", "cardinals", "mascot", "phoenix suns", "world series", "soccer", "futbol", "world cup", "sugar bowl", "orange bowl", "championship playoff game", "playoff game", "division series", "championship series", "college basketball", "college football", "nba finals", "nhl", "mls", "mlb", "frozen four", "sports news", "lebron james", "michael jordan", "james harden", "the beard", "kevin durant", "chicago bulls", "bulls", "anthony davis", "puck", "andrew wiggins"]
+  sports = ["sports", "championship", "championship title", "bases loaded", "50 yard line", "jock strap", "cleats", "soccer ball", "golf", "golfer", "tennis", "tennis ball", "tennis court", "grand slam", "slam dunk", "quarterback", "lineman", "offensive lineman", "defensive lineman", "offense", "defense", "penalty", "penalty shot", "goalie", "juke", "field goal", "3 pointer", "2 pointer", "three pointer", "two pointer", "free throw", "punt", "bracket", "march madness", "basketball", "football", "nfl", "nba", "wba", "hockey", "aaron rodgers", "brett favre", "fantasy football", "fantasy football league", "football league", "football game", "basketball game", "baseball", "baseball game", "touchdown", "foul", "referee", "ref", "superbowl", "playoffs", "championship playoffs", "rose bowl", "espn", "sport", "sports team", "football team", "basketball team", "baseball team", "hockey team", "hockey game", "stanley cup", "halftime", "half time", "cheerleader", "cheerleaders", "inning", "ninth inning", "9th inning", "bottom of the ninth", "tennis", "wimbledon", "rowing", "lacrosse", "rugby", "baseball bat", "chicago bears", "packers", "green bay", "green bay packers", "longhorn", "da bears", "cubs", "chicago cubs", "white sox", "red sox", "sox", "ball game", "forty niners", "forty-niners", "giants", "new york giants", "dallas cowboys", "houston texans", "texas rangers", "rangers", "houston astros", "dallas stars", "houston dynamo", "houston rockets", "longhorns", "aggies", "wolverines", "spartans", "detroit tigers", "detroit lions", "detroit redwings", "lions", "tigers", "redwings", "pistons", "sun devils", "sundevils", "cardinals", "mascot", "phoenix suns", "world series", "soccer", "futbol", "world cup", "sugar bowl", "orange bowl", "championship playoff game", "playoff game", "division series", "championship series", "college basketball", "college football", "nba finals", "nhl", "mls", "mlb", "frozen four", "sports news", "lebron james", "michael jordan", "james harden", "the beard", "kevin durant", "chicago bulls", "bulls", "anthony davis", "puck", "andrew wiggins", "dawgs", "sanford", "sanford stadium", "stadium", "arena", "go pack", "hedges", "bulldogs", "georgia bulldogs", "hairydawg", "dawgwalk", "hunker", "bulldawgs", "bulldawg", "bulldog", "go dawgs", "go dogs", "go sundevils", "tix", "game tix", "tickets to the game", "tix to the game", "game tickets", "glory", "glory glory", "football field", "g-day", "spartans", "spartan", "spartan spirit", "school spirit", "go spartans", "sparty", "go sparty", "go longhorns", "go horns", "hook em", "hook 'em", "go team go", "go team", "great game", "good game", "ump", "umpire", "strike out", "play ball", "catcher", "hockey stick", "coach"]
   sports.each do |word|
     ReferenceWord.where(name: word, topic_id: Topic.find_by_name("sports")).first_or_create
   end
 
   School.where(id: 1, name: "Arizona State University", geofeedia_id: "32204", student_body_count: 59794 ).first_or_create
   School.where(id: 2, name: "University of Michigan, Ann Arbor", geofeedia_id: "32206", student_body_count: 43426).first_or_create
-  School.where(id: 3, name: "University of Texas, Austin", geofeedia_id: "32211", student_body_count: 38463).first_or_create
+  School.where(id: 3, name: "University of Texas, Austin", geofeedia_id: "32211", student_body_count: 51150).first_or_create
   School.where(id: 4, name: "Michigan State University", geofeedia_id: "32207", student_body_count: 47954).first_or_create
+  School.where(id: 5, name: "University of Georgia, Athens", geofeedia_id: "32244", student_body_count: 34475).first_or_create
 end
 
 
 def ping_geofeedia
   times_pinged = 0
   until times_pinged == 16
-  #{geofeedia_id => "abbrev"}
-  #schoools_and_calls = {Arizona State University => "asu",
-  #University of Texas Austin => "uta"}
-    make_call_to_geofeedia_and_save_json({"32204" => "asu",
-    "32211" => "uta",
-    "32244" => "uga",
-    "32207" => "msu",
-    "32206" => "uofm",
-    "32202" => "uofi",
-    "32251" => "uwm",
-    "32243" => "uws",
-    "32241" => "ucd",
-    "32210" => "cor"
+    make_call_to_geofeedia_and_save_json({"32204" => ["asu", 10],
+          "32211" => ["uta", 13],
+          "32244" => ["uga", 4],
+          "32207" => ["msu", 13],
+          "32206" => ["uofm", 5]
     })
     times_pinged += 1
     sleep 21600

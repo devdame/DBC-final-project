@@ -15,8 +15,19 @@ class SchoolsController < ApplicationController
     @school = School.find(params[:id])
     @topics = Topic.all
     @ratings = Rating.all.where(school_id: @school.id)
-    @social_media_profile = {:total_social_ratio => @school.social_media_activity,
-      :positive_social_ratio => @school.positive_vibe_ratio, :negative_social_ratio => @school.negative_vibe_ratio,
-      :mixed_social_ratio => @school.mixed_vibe_ratio, :neutral_social_ratio => @school.neutral_vibe_ratio}.to_json
+       #a hash of the 10 most talked about topics at each school
+    sorted_ratings = @ratings.order("total_post_count desc").limit(10)
+
+
+
+
+
+    #####################################################Send info to front
+    @social_media_profile = {:positive_social_ratio => @school.positive_vibe_ratio, :negative_social_ratio => @school.negative_vibe_ratio}.to_json
+
+    @ratings_profile = []
+    sorted_ratings.each do |rating|
+      @ratings_profile << {name: rating.topic.name, positive_count: rating.positive_post_count, negative_count: rating.negative_post_count}.to_json
+    end
   end
 end

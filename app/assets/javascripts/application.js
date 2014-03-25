@@ -15,3 +15,6 @@
 //= require d3
 //= require turbolinks
 //= require_tree .
+$( document ).ready(function() {
+    console.log( "JS ready!" );
+});

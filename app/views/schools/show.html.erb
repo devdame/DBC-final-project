@@ -1,90 +1,73 @@
 <h1><%= @school.name %></h1>
 
-<svg id="school-chart-bar" width="500" height="50">
-  <rect x="0" y="0" width="500" height="50"/>
-  <ellipse cx="250" cy="25" rx="100" ry="25" fill="purple"/>
-  <circle cx="250" cy="25" r="25" fill="red"/>
-  <line x1="0" y1="0" x2="500" y2="50" stroke="green"/>
-  <text x="250" y="25">Easy-peasy</text>
-</svg>
+<h2>Pie chart: Positive vs. Negative</h2>
+    <script type="text/javascript">
 
-<svg width="500" height="50">
-<circle cx="25" cy="25" r="20"
-        fill="rgba(128, 0, 128, 0.75)"
-        stroke="rgba(0, 255, 0, 0.25)" stroke-width="10"/>
-<circle cx="75" cy="25" r="20"
-        fill="rgba(0, 255, 0, 0.75)"
-        stroke="rgba(0, 0, 255, 0.25)" stroke-width="10"/>
-<circle cx="125" cy="25" r="20"
-        fill="rgba(255, 255, 0, 0.75)"
-        stroke="rgba(255, 0, 0, 0.25)" stroke-width="10"/>
-</svg>
+      //Width and height
+      var w = 300;
+      var h = 300;
 
-<br>
+      // var dataset = [ 60, 30, 10];
 
-<script type="text/javascript">
+      var dataset = [ {label: "Good", value: 60},
+                      {label: "Bad", value: 30},
+                      {label: "Eh?", value: 60}]
 
-// var dataset = [ 5, 10, 13, 19, 21, 25, 22, 18, 15, 13,
-//                 11, 12, 15, 20, 18, 17, 16, 18, 23, 25 ];
+      var json = '<%= @social_media_profile.html_safe %>';
+      var social = jQuery.parseJSON(json);
 
-var json = '<%= @social_media_profile.html_safe %>';
-var social = jQuery.parseJSON(json);
-var dataset = [ social.total_social_ratio, 10, 13, 19, 21, 25, 22, 18, 15, 13,
-                11, 12, 15, 20, 18, 17, 16, 18, 23, 25 ];
+      var outerRadius = w / 2;
+      var innerRadius = w / 4;
+      var arc = d3.svg.arc()
+              .innerRadius(innerRadius)
+              .outerRadius(outerRadius);
 
-var w = 500;
-var h = 100;
-var barPadding = 1;  // <-- New!
+      var pie = d3.layout.pie();
 
+      // purple is nice
+      var color = d3.scale.category20b();
 
-
-//Create SVG element
-var svg = d3.select("body")
+      //Create SVG element
+      var svg = d3.select("body")
             .append("svg")
             .attr("width", w)
             .attr("height", h);
 
-svg.selectAll("rect")
-   .data(dataset)
-   .enter()
-   .append("rect")
-.attr("x", function(d, i) {
-    return i * (w / dataset.length);
-})
-   .attr("y", function(d) {
-    return h - d * 4;  //Height minus data value
-})
-   .attr("width", w / dataset.length - barPadding)
-.attr("height", function(d) {
-    return d * 4;  //Just the data value
+      //Set up groups
+      var arcs = svg.selectAll("g.arc")
+              .data(pie(dataset))
+              .enter()
+              .append("g")
+              .attr("class", "arc")
+              .attr("transform", "translate(" + outerRadius + "," + outerRadius + ")");
 
-})
-.attr("fill", function(d) {
-    return "rgba(0, 0, 200," + (d/25) + ")";
-})
-svg.selectAll("text")
-   .data(dataset)
-   .enter()
-   .append("text")
-.text(function(d) {
-        return d;
-   })
-    .attr("x", function(d, i) {
-        return i * (w / dataset.length) + (w / dataset.length - barPadding) / 2;
-    })
+      //Draw arc paths
+      arcs.append("path")
+          .attr("fill", function(d, i) {
+            return color(i);
+          })
+          .attr("d.value", arc);
 
-   .attr("y", function(d) {
-        return h - (d * 4) + 15;              // +15
-   })
-   .attr("fill", "white")
-   .attr("text-anchor", "middle");
+      //Labels
+      arcs.append("text")
+          .attr("transform", function(d) {
+            return "translate(" + arc.centroid(d) + ")";
+          })
+          .attr("text-anchor", "middle")
+          .text(function(d) {
+            return d;
+          });
 
-svg.append("g")
-    .attr("class", "axis")  //Assign "axis" class
-    .call(xAxis);
-</script>
+      svg.append("text")
+          // .attr("transform", function(d) {
+          //   return "translate(" + arc.centroid(d) + ")";
+          // })
+          // .attr("text-anchor", "middle")
+          .text(function(d) {
+            return "hello";
+          });
 
-<h1><%= @social_media_profile.to_json %></h1>
+    </script>
 
 <h2>Student body count: <%= @school.student_body_count %></h2>
 <h2>Post (Social media) count: <%= @school.post_count %></h2>

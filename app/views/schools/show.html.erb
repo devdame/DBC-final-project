@@ -1,71 +1,72 @@
 <h1><%= @school.name %></h1>
 
 <h2>Pie chart: Positive vs. Negative</h2>
+
+    <!-- Helpful example from https://gist.github.com/enjalot/1203641 -->
     <script type="text/javascript">
 
-      //Width and height
-      var w = 300;
-      var h = 300;
+    var w = 500,                        //width
+    h = 500,                            //height
+    r = 200,                            //radius
+    color = d3.scale.category20c();     //builtin range of colors
 
-      // var dataset = [ 60, 30, 10];
+    // data = [{"label":"Good", "value":60},
+    //         {"label":"Bad", "value":30},
+    //         {"label":"Other", "value":10}];
 
-      var dataset = [ {label: "Good", value: 60},
-                      {label: "Bad", value: 30},
-                      {label: "Eh?", value: 60}]
+    var json = '<%= @social_media_profile.html_safe %>';
+    var data = jQuery.parseJSON(json);
 
-      var json = '<%= @social_media_profile.html_safe %>';
-      var social = jQuery.parseJSON(json);
 
-      var outerRadius = w / 2;
-      var innerRadius = w / 4;
-      var arc = d3.svg.arc()
-              .innerRadius(innerRadius)
-              .outerRadius(outerRadius);
+    data = [{"label":"Good", "value": data.positive_social_ratio},
+            {"label":"Bad", "value": data.negative_social_ratio}];
 
-      var pie = d3.layout.pie();
 
-      // purple is nice
-      var color = d3.scale.category20b();
 
-      //Create SVG element
-      var svg = d3.select("body")
-            .append("svg")
-            .attr("width", w)
-            .attr("height", h);
+    var vis = d3.select("body")
+        .append("svg:svg")              //create the SVG element inside the <body>
+        .data([data])                   //associate our data with the document
+            .attr("width", w)           //set the width and height of our visualization (these will be attributes of the <svg> tag
+            .attr("height", h)
+        .append("svg:g")                //make a group to hold our pie chart
+            .attr("transform", "translate(" + r + "," + r + ")")    //move the center of the pie chart from 0, 0 to radius, radius
 
-      //Set up groups
-      var arcs = svg.selectAll("g.arc")
-              .data(pie(dataset))
-              .enter()
-              .append("g")
-              .attr("class", "arc")
-              .attr("transform", "translate(" + outerRadius + "," + outerRadius + ")");
+    var arc = d3.svg.arc()              //this will create <path> elements for us using arc data
+        .outerRadius(r);
 
-      //Draw arc paths
-      arcs.append("path")
-          .attr("fill", function(d, i) {
-            return color(i);
-          })
-          .attr("d.value", arc);
+    var pie = d3.layout.pie()           //this will create arc data for us given a list of values
+        .value(function(d) { return d.value; });    //we must tell it out to access the value of each element in our data array
 
-      //Labels
-      arcs.append("text")
-          .attr("transform", function(d) {
-            return "translate(" + arc.centroid(d) + ")";
-          })
-          .attr("text-anchor", "middle")
-          .text(function(d) {
-            return d;
-          });
+    var arcs = vis.selectAll("g.slice")     //this selects all <g> elements with class slice (there aren't any yet)
+        .data(pie)                          //associate the generated pie data (an array of arcs, each having startAngle, endAngle and value properties)
+        .enter()                            //this will create <g> elements for every "extra" data element that should be associated with a selection. The result is creating a <g> for every object in the data array
+            .append("svg:g")                //create a group to hold each slice (we will have a <path> and a <text> element associated with each slice)
+                .attr("class", "slice");    //allow us to style things in the slices (like text)
 
-      svg.append("text")
-          // .attr("transform", function(d) {
-          //   return "translate(" + arc.centroid(d) + ")";
-          // })
-          // .attr("text-anchor", "middle")
-          .text(function(d) {
-            return "hello";
-          });
+        arcs.append("svg:path")
+                .attr("fill", function(d, i) { return color(i); } ) //set the color for each slice to be chosen from the color function defined above
+                .attr("d", arc);                                    //this creates the actual SVG path using the associated data (pie) with the arc drawing function
+
+        arcs.append("svg:text")                                     //add a label to each slice
+                .attr("transform", function(d) {                    //set the label's origin to the center of the arc
+                //we have to make sure to set these before calling arc.centroid
+                d.innerRadius = 0;
+                d.outerRadius = r;
+                return "translate(" + arc.centroid(d) + ")";        //this gives us a pair of coordinates like [50, 50]
+            })
+            .attr("text-anchor", "middle")                          //center the text on it's origin
+            .text(function(d, i) { return data[i].label; });        //get the label from our original data array
+
+
+    var data2 = <%= @ratings_profile.to_json.html_safe %>;
+
+
+    // data = [{"label":"Good", "value": data2.positive_social_ratio},
+    //         {"label":"Bad", "value": data2.negative_social_ratio}];
+
+    </script>
+
+    <script>
 
     </script>
 
@@ -110,6 +111,6 @@
 
 </table>
 
-----------------------------------------
+<p>----------------------------------------</p>
 
 <%= @ratings_profile %>

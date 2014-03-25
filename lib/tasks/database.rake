@@ -120,7 +120,7 @@ require 'fileutils'
         increment_school_word_counts
         increment_school_ratings
         create_or_update_school_word_counts
-        # wipe_temporary_tables
+        wipe_temporary_tables
       end
   end
 

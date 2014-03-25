@@ -11,13 +11,17 @@ class TopicsController < ApplicationController
     ##########################################
 
     #Most Popular Words in Topic
-    # holding = {"popular_words"}
+    holding = {"popular_words" => []}
 
     reference_words = @topic.reference_words.all
     @popular_words = []
     reference_words.each do |word|
-      @popular_words << SchoolWordCount.find_by(reference_word_id: word.id)
+      pop_word = SchoolWordCount.find_by(reference_word_id: word.id)
+      if pop_word
+        holding["popular_words"] << {name: pop_word.reference_word.name, count: pop_word.word_count}
+      end
     end
+    @popular_words = holding["popular_words"]
   end
 
 end

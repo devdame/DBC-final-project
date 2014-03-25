@@ -6,15 +6,15 @@
 
     <h2>Pie!</h2>
     <script>
-    var json = '<%= @social_media_profile.html_safe %>';
-    var data = jQuery.parseJSON(json);
-    pieChart(data);
+        var json = '<%= @social_media_profile.html_safe %>';
+        var data = jQuery.parseJSON(json);
+        pieChart(data);
     </script>
 
     <h2>bar!</h2>
     <script>
-    var data2 = <%= @ratings_profile.to_json.html_safe %>;
-    barChart(data2);
+        var data = <%= @ratings_profile.to_json.html_safe %>;
+        barChart(data);
     </script>
 
 <h2>Student body count: <%= @school.student_body_count %></h2>

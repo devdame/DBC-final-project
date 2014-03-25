@@ -2,7 +2,6 @@ class Keyword < ActiveRecord::Base
   validates :analyzed_post_id, presence: true
   validates :text, presence: true
   validates :sentiment, presence: true
-  validates :confidence, presence: true
   before_save :remove_spaces
   before_save :check_for_confidence
 

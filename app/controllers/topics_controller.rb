@@ -18,7 +18,7 @@ class TopicsController < ApplicationController
     reference_words.each do |word|
       pop_word = SchoolWordCount.find_by(reference_word_id: word.id)
       if pop_word
-        holding["popular_words"] << {name: pop_word.reference_word.name, count: pop_word.word_count}
+        holding["popular_words"] << {name: pop_word.reference_word.name, count: pop_word.word_count, multiplier: 30}
       end
     end
     @popular_words = holding["popular_words"]

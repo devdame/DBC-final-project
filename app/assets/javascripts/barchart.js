@@ -29,7 +29,7 @@ var width = 420,
       .attr("width", 0)
       .transition()
       .duration(800)
-      .attr("width", function(d) { return (d.positive_count)*3; })
+      .attr("width", function(d) { return (d.count)*d.multiplier; })
       .attr("height", barHeight - 1)
       .attr("fill", function(d, i) { return color(i); } );
     // data = [{"label":"Good", "value": data2.positive_social_ratio},

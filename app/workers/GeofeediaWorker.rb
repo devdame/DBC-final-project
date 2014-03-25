@@ -1,21 +1,13 @@
 require 'httparty'
 require 'json'
-require 'find'
-require './db/alchemyapi.rb'
-require 'fileutils'
-
 
 class GeofeediaWorker
   include Sidekiq::Worker
   include Sidetiq::Schedulable
 
-  recurrence { minutely }
+  recurrence { hourly.minute_of_hour(0, 30) }
 
   def perform
-    AnalyzedPost.create(school_id: 1, overall_sentiment: "positive", original_publish_time: Time.now)
-  end
-
-  def Worker1
   	geofeedia_id = 32206
   	school_id = 1
     url = "https://api.geofeedia.com/v1/search/geofeed/#{geofeedia_id}?format=json-default&appId=420880de&appKey=306ced14ef8ab2183b8264327c456806&take=10"

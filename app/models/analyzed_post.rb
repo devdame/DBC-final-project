@@ -32,7 +32,7 @@ class AnalyzedPost < ActiveRecord::Base
       ratings = self.get_ratings_hash(post)
       ratings.each do |topic, keyword_match|
         topic_record = Topic.find_by_name(topic)
-        school_rating = Rating.find_or_create_by(topic_id: topic_record.id, school_id: school.id)
+        school_rating = Rating.where(topic_id: topic_record.id, school_id: school.id).first_or_create
         school_rating.total_post_count += 1
         aggregated_keywords_data = self.aggregate_keywords(keyword_match)
         case aggregated_keywords_data

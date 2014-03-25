@@ -71,14 +71,9 @@ require 'fileutils'
       end
 
     desc "Allows for the updating of the post models on the school table"
-    task :update_school_models_from_analyzed_posts => :environment do
+    task :update_final_tables_from_temporary_tables => :environment do
       increment_school_word_counts
-      # increment_school_ratings
-      wipe_temporary_tables
-    end
-
-    desc "Allows for the creation or updating of school word counts"
-    task :create_or_update_school_word_counts => :environment do
+      increment_school_ratings
       create_or_update_school_word_counts
       wipe_temporary_tables
     end
@@ -92,7 +87,6 @@ end
 def increment_school_ratings
   AnalyzedPost.increment_school_ratings
 end
-
 
 def create_or_update_school_word_counts
   Keyword.populate_reference_words

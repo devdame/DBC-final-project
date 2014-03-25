@@ -25,3 +25,10 @@
  .right-col {
   /*border-left: 1px solid gray;*/
  }
+
+ /* to aid D3 development */
+ svg {
+  border: 1px solid lightgray;
+ }
+
+

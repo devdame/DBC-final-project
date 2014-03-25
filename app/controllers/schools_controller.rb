@@ -12,9 +12,11 @@ class SchoolsController < ApplicationController
   end
 
   def show
-    @schools = School.all
     @school = School.find(params[:id])
     @topics = Topic.all
     @ratings = Rating.all.where(school_id: @school.id)
+    @social_media_profile = {:total_social_ratio => @school.social_media_activity,
+      :positive_social_ratio => @school.positive_vibe_ratio, :negative_social_ratio => @school.negative_vibe_ratio,
+      :mixed_social_ratio => @school.mixed_vibe_ratio, :neutral_social_ratio => @school.neutral_vibe_ratio}.to_json
   end
 end

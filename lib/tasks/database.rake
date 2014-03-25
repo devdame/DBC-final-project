@@ -30,6 +30,28 @@ require 'fileutils'
         delete_all_files_in_seeds_directory
       end
 
+    desc "This is what to run if you already have a db and want to update your final tables with the geofeedia files in your seeds folder. DELETE FILES AFTERWARD."
+      task :geofeedia_to_json_to_alchemy_to_tables_and_csv => :environment do
+        make_call_to_geofeedia_and_save_json({"32204" => ["asu", 10],
+          "32211" => ["uta", 13],
+          "32244" => ["uga", 4],
+          "32207" => ["msu", 13],
+          "32206" => ["uofm", 5]#,
+          # "32202" => "uofi",
+          # "32251" => "uwm",
+          # "32243" => "uws",
+          # "32241" => "ucd",
+          # "32210" => "cor"
+          })
+        check_setup_for_updating_csv
+        json_to_alchemy_to_tables_and_csv
+        increment_school_word_counts
+        increment_school_ratings
+        create_or_update_school_word_counts
+        wipe_temporary_tables
+        delete_all_files_in_seeds_directory
+      end
+
     desc "Create topics and schools for empty db"
       task :seed_schools_and_topics => :environment do
         raise "Topics, reference words and schools must be empty!" unless Topic.all.empty? && School.all.empty? && ReferenceWord.all.empty?
@@ -84,15 +106,15 @@ require 'fileutils'
       end
 
 # Don't use this one unless you know what you're doing!
-    # desc "Send any json files in seeds folder to alchemy and update csv accordingly BUT DON'T wipe tables when done"
-    # task :json_to_alchemy_to_tables_and_csv_keep_tables => :environment do
-      # check_setup_for_updating_csv
-      # json_to_alchemy_to_tables_and_csv
-      # increment_school_word_counts
-      # increment_school_ratings
-      # create_or_update_school_word_counts
-      # delete_all_files_in_seeds_directory
-    # end
+    desc "Send any json files in seeds folder to alchemy and update csv accordingly BUT DON'T wipe tables when done"
+    task :json_to_alchemy_to_tables_and_csv_keep_tables => :environment do
+      check_setup_for_updating_csv
+      json_to_alchemy_to_tables_and_csv
+      increment_school_word_counts
+      increment_school_ratings
+      create_or_update_school_word_counts
+      delete_all_files_in_seeds_directory
+    end
 
     desc "Wipe the temporary tables (keywords and analyzed posts)"
       task :wipe_temporary_tables => :environment do
@@ -101,11 +123,11 @@ require 'fileutils'
 
     desc "Grabs data from geofeedia and stores in json files. Uncomment the schools that you want to grab from."
       task :create_json_from_geofeedia => :environment do
-        make_call_to_geofeedia_and_save_json({"32204" => "asu",
-          "32211" => "uta",
-          # "32244" => "uga",
-          "32207" => "msu",
-          "32206" => "uofm"#,
+        make_call_to_geofeedia_and_save_json({#{}"32204" => "asu",
+          # "32211" => "uta",
+          "32244" => "uga"#,
+           # "32207" => "msu"#,
+          # "32206" => "uofm",
           # "32202" => "uofi",
           # "32251" => "uwm",
           # "32243" => "uws",
@@ -120,7 +142,7 @@ require 'fileutils'
         increment_school_word_counts
         increment_school_ratings
         create_or_update_school_word_counts
-        # wipe_temporary_tables
+        wipe_temporary_tables
       end
   end
 
@@ -330,13 +352,10 @@ end
 
 
 def make_call_to_geofeedia_and_save_json(school_plus_abbreviation_hash)
-  # schools_and_calls = {"32204" => "asu",
-  #   "32211" => "uta"
-  #   }
-  school_plus_abbreviation_hash.each do |geofeedia_id, school_abbreviation|
+  school_plus_abbreviation_hash.each do |geofeedia_id, school_abbreviation_plus_call_amount|
     most_recent_post_time = nil
-    url = "https://api.geofeedia.com/v1/search/geofeed/#{geofeedia_id}?format=json-default&appId=420880de&appKey=#REMEMBER TO ADD ME BACK"
-    4.times do
+    url = "https://api.geofeedia.com/v1/search/geofeed/#{geofeedia_id}?format=json-default&appId=420880de&appKey=306ced14ef8ab2183b8264327c456806"
+    school_abbreviation_plus_call_amount[1].times do
       response = HTTParty.get(url)
         if most_recent_post_time == nil
           most_recent_post_time = response.parsed_response["items"][0]["publishDate"]
@@ -347,7 +366,8 @@ def make_call_to_geofeedia_and_save_json(school_plus_abbreviation_hash)
       # p geofeedia_id
       # p most_recent_post_time
       # p response.parsed_response["items"].count
-      create_local_json_files(geofeedia_id, school_abbreviation, timestamp, posts)
+      create_local_json_files(geofeedia_id, school_abbreviation_plus_call_amount[0], timestamp, posts)
+      sleep 6
     end
     update_most_recent_post_time(geofeedia_id, most_recent_post_time)
     sleep 40
@@ -499,10 +519,11 @@ def make_topics_and_schools
     ReferenceWord.where(name: word, topic_id: Topic.find_by_name("sports")).first_or_create
   end
 
-  School.where(id: 1, name: "Arizona State University", geofeedia_id: "32204", student_body_count: 59794 ).first_or_create
+  School.where(id: 1, name: "Arizona State University", geofeedia_id: "32204", student_body_count: 59794).first_or_create
   School.where(id: 2, name: "University of Michigan, Ann Arbor", geofeedia_id: "32206", student_body_count: 43426).first_or_create
-  School.where(id: 3, name: "University of Texas, Austin", geofeedia_id: "32211", student_body_count: 38463).first_or_create
+  School.where(id: 3, name: "University of Texas, Austin", geofeedia_id: "32211", student_body_count: 51150).first_or_create
   School.where(id: 4, name: "Michigan State University", geofeedia_id: "32207", student_body_count: 47954).first_or_create
+  School.where(id: 5, name: "University of Georgia, Athens", geofeedia_id: "32244", student_body_count: 34475).first_or_create
 end
 
 
@@ -512,16 +533,11 @@ def ping_geofeedia
   #{geofeedia_id => "abbrev"}
   #schoools_and_calls = {Arizona State University => "asu",
   #University of Texas Austin => "uta"}
-    make_call_to_geofeedia_and_save_json({"32204" => "asu",
-    "32211" => "uta",
-    "32244" => "uga",
-    "32207" => "msu",
-    "32206" => "uofm",
-    "32202" => "uofi",
-    "32251" => "uwm",
-    "32243" => "uws",
-    "32241" => "ucd",
-    "32210" => "cor"
+    make_call_to_geofeedia_and_save_json({"32204" => ["asu", 10],
+      "32211" => ["uta", 13],
+      "32244" => ["uga", 4],
+      "32207" => ["msu", 13],
+      "32206" => ["uofm", 5]#,
     })
     times_pinged += 1
     sleep 21600

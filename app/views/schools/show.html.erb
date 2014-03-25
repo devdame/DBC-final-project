@@ -1,5 +1,91 @@
 <h1><%= @school.name %></h1>
 
+<svg id="school-chart-bar" width="500" height="50">
+  <rect x="0" y="0" width="500" height="50"/>
+  <ellipse cx="250" cy="25" rx="100" ry="25" fill="purple"/>
+  <circle cx="250" cy="25" r="25" fill="red"/>
+  <line x1="0" y1="0" x2="500" y2="50" stroke="green"/>
+  <text x="250" y="25">Easy-peasy</text>
+</svg>
+
+<svg width="500" height="50">
+<circle cx="25" cy="25" r="20"
+        fill="rgba(128, 0, 128, 0.75)"
+        stroke="rgba(0, 255, 0, 0.25)" stroke-width="10"/>
+<circle cx="75" cy="25" r="20"
+        fill="rgba(0, 255, 0, 0.75)"
+        stroke="rgba(0, 0, 255, 0.25)" stroke-width="10"/>
+<circle cx="125" cy="25" r="20"
+        fill="rgba(255, 255, 0, 0.75)"
+        stroke="rgba(255, 0, 0, 0.25)" stroke-width="10"/>
+</svg>
+
+<br>
+
+<script type="text/javascript">
+
+// var dataset = [ 5, 10, 13, 19, 21, 25, 22, 18, 15, 13,
+//                 11, 12, 15, 20, 18, 17, 16, 18, 23, 25 ];
+
+var json = '<%= @social_media_profile.html_safe %>';
+var social = jQuery.parseJSON(json);
+var dataset = [ social.total_social_ratio, 10, 13, 19, 21, 25, 22, 18, 15, 13,
+                11, 12, 15, 20, 18, 17, 16, 18, 23, 25 ];
+
+var w = 500;
+var h = 100;
+var barPadding = 1;  // <-- New!
+
+
+
+//Create SVG element
+var svg = d3.select("body")
+            .append("svg")
+            .attr("width", w)
+            .attr("height", h);
+
+svg.selectAll("rect")
+   .data(dataset)
+   .enter()
+   .append("rect")
+.attr("x", function(d, i) {
+    return i * (w / dataset.length);
+})
+   .attr("y", function(d) {
+    return h - d * 4;  //Height minus data value
+})
+   .attr("width", w / dataset.length - barPadding)
+.attr("height", function(d) {
+    return d * 4;  //Just the data value
+
+})
+.attr("fill", function(d) {
+    return "rgba(0, 0, 200," + (d/25) + ")";
+})
+svg.selectAll("text")
+   .data(dataset)
+   .enter()
+   .append("text")
+.text(function(d) {
+        return d;
+   })
+    .attr("x", function(d, i) {
+        return i * (w / dataset.length) + (w / dataset.length - barPadding) / 2;
+    })
+
+   .attr("y", function(d) {
+        return h - (d * 4) + 15;              // +15
+   })
+   .attr("fill", "white")
+   .attr("text-anchor", "middle");
+
+svg.append("g")
+    .attr("class", "axis")  //Assign "axis" class
+    .call(xAxis);
+</script>
+
+<h1><%= @social_media_profile.to_json %></h1>
+
 <h2>Student body count: <%= @school.student_body_count %></h2>
 <h2>Post (Social media) count: <%= @school.post_count %></h2>
 <h2>Social Media Activity: <%= @school.social_media_activity %></h2>
@@ -40,3 +126,7 @@
   <% end %>
 
 </table>
+
+----------------------------------------
+
+<%= @ratings_profile %>

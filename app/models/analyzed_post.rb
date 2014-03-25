@@ -17,7 +17,6 @@ class AnalyzedPost < ActiveRecord::Base
   end
 
   def self.increment_school_word_count
-    puts "help meeeee"
     self.all.each do |post|
       puts post.id
       school = post.school
@@ -35,8 +34,10 @@ class AnalyzedPost < ActiveRecord::Base
   end
 
   def self.populate_reference_words
-    ReferenceWord.all.each do |reference_word|
-      @@reference_words << reference_word.canonical_name
+    if @@reference_words.length == 0
+      ReferenceWord.all.each do |reference_word|
+        @@reference_words << reference_word.canonical_name
+      end
     end
   end
 
@@ -62,7 +63,7 @@ class AnalyzedPost < ActiveRecord::Base
         puts "This is the topic and topic record:"
         puts topic
         puts topic_record
-        school_rating = Rating.where(topic_id: topic_record.id, school_id: school.id).first
+        school_rating = Rating.where(topic_id: topic_record.id, school_id: school.id).first_or_create
         if school_rating
           school_rating.total_post_count += 1
         else
@@ -70,7 +71,6 @@ class AnalyzedPost < ActiveRecord::Base
           puts topic
           puts keyword_match
         end
-        school_rating.total_post_count += 1
         aggregated_keywords_data = self.aggregate_keywords(keyword_match)
         case aggregated_keywords_data
         when "neutral" then school_rating.neutral_post_count +=1

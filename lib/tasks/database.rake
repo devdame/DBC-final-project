@@ -335,7 +335,7 @@ def make_call_to_geofeedia_and_save_json(school_plus_abbreviation_hash)
   #   }
   school_plus_abbreviation_hash.each do |geofeedia_id, school_abbreviation|
     most_recent_post_time = nil
-    url = "https://api.geofeedia.com/v1/search/geofeed/#{geofeedia_id}?format=json-default&appId=420880de&appKey=306ced14ef8ab2183b8264327c456806"
+    url = "https://api.geofeedia.com/v1/search/geofeed/#{geofeedia_id}?format=json-default&appId=420880de&appKey=#REMEMBER TO ADD ME BACK"
     4.times do
       response = HTTParty.get(url)
         if most_recent_post_time == nil

@@ -24,13 +24,13 @@ class Keyword < ActiveRecord::Base
     self.confidence = 0.0 unless confidence
   end
 
-
   def self.populate_reference_words
-    ReferenceWord.all.each do |reference_word|
-      @@reference_words << reference_word.canonical_name
+    if @@reference_words.length == 0
+      ReferenceWord.all.each do |reference_word|
+        @@reference_words << reference_word.canonical_name
+      end
     end
   end
-
 
   def self.determine_keyword_confidence(keyword, counter)
     confidence = keyword.confidence

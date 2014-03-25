@@ -15,3 +15,20 @@
  body {
   font-family: sans-serif;
  }
+
+ .col {
+  background-color: #EFEFEF;
+  border: 1px solid orange;
+  display: inline-block;
+  width: 49%;
+ }
+ .right-col {
+  /*border-left: 1px solid gray;*/
+ }
+
+ /* to aid D3 development */
+ svg {
+  border: 1px solid lightgray;
+ }
+
+

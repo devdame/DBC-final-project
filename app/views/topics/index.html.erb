@@ -1,1 +1,7 @@
 <h1>test topic index</h1>
+
+<ul>
+<% @topics.each do |topic| %>
+  <li>(ID: <%= topic.id %>) <%= topic.name %></li>
+<% end %>
+</ul>

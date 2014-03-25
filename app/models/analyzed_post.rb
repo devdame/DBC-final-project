@@ -8,10 +8,21 @@ class AnalyzedPost < ActiveRecord::Base
 
   @@reference_words = []
 
+  def self.reference_words
+    @@reference_words
+  end
+
+  def self.find_school(post)
+    post.school
+  end
+
   def self.increment_school_word_count
     self.all.each do |post|
-      school = self.find_school(post)
+      puts post.id
+      school = post.school
+      puts school.id
       school.post_count += 1
+      puts school.post_count
       case post.overall_sentiment
       when "positive" then school.positive_post_count += 1
       when "negative" then school.negative_post_count += 1
@@ -22,26 +33,10 @@ class AnalyzedPost < ActiveRecord::Base
     end
   end
 
-  def self.find_school(post)
-    post.school
-  end
-
-  def self.increment_school_ratings
-    self.all.each do |post|
-      school = self.find_school(post)
-      ratings = self.get_ratings_hash(post)
-      ratings.each do |topic, keyword_match|
-        topic_record = Topic.find_by_name(topic)
-        school_rating = Rating.where(topic_id: topic_record.id, school_id: school.id).first_or_create
-        school_rating.total_post_count += 1
-        aggregated_keywords_data = self.aggregate_keywords(keyword_match)
-        case aggregated_keywords_data
-        when "neutral" then school_rating.neutral_post_count +=1
-        when "positive" then school_rating.positive_post_count +=1
-        when "negative" then school_rating.negative_post_count +=1
-        when "mixed" then school_rating.mixed_post_count +=1
-        end
-        school_rating.save
+  def self.populate_reference_words
+    if @@reference_words.length == 0
+      ReferenceWord.all.each do |reference_word|
+        @@reference_words << reference_word.canonical_name
       end
     end
   end
@@ -51,7 +46,7 @@ class AnalyzedPost < ActiveRecord::Base
     post.keywords.each do |keyword|
       text = keyword.text.downcase
       if @@reference_words.include?(text)
-        lookup_reference_word = ReferenceWord.find_by_name(text)
+        lookup_reference_word = ReferenceWord.find_by_canonical_name(text)
         topic = lookup_reference_word.topic.name
         ratings.has_key?("#{topic}") ? ratings[topic].push(keyword) : ratings[topic] = [keyword]
       end
@@ -59,10 +54,31 @@ class AnalyzedPost < ActiveRecord::Base
     ratings
   end
 
-  def self.populate_reference_words
-    if @@reference_words.length == 0
-      ReferenceWord.all.each do |reference_word|
-        @@reference_words << reference_word.canonical_name
+  def self.increment_school_ratings
+    self.all.each do |post|
+      school = post.school
+      ratings = self.get_ratings_hash(post)
+      ratings.each do |topic, keyword_match|
+        topic_record = Topic.find_by_name(topic)
+        puts "This is the topic and topic record:"
+        puts topic
+        puts topic_record
+        school_rating = Rating.where(topic_id: topic_record.id, school_id: school.id).first_or_create
+        if school_rating
+          school_rating.total_post_count += 1
+        else
+          puts "didn't find school rating"
+          puts topic
+          puts keyword_match
+        end
+        aggregated_keywords_data = self.aggregate_keywords(keyword_match)
+        case aggregated_keywords_data
+        when "neutral" then school_rating.neutral_post_count +=1
+        when "positive" then school_rating.positive_post_count +=1
+        when "negative" then school_rating.negative_post_count +=1
+        when "mixed" then school_rating.mixed_post_count +=1
+        end
+        school_rating.save
       end
     end
   end

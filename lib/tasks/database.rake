@@ -6,97 +6,134 @@ require 'fileutils'
 
   namespace :db do
 
-    desc "Setup from empty database (adding new seed files if any) and wipe tables when done"
-    task :setup_from_empty => :environment do
-      setup_from_empty
-      wipe_temporary_tables
-    end
-
-    desc "Setup from empty database (adding new seed files if any) BUT DON'T wipe tables when done"
-    task :setup_from_empty_keep_tables => :environment do
-      setup_from_empty
-    end
-
-    desc "Populate empty database from csv file"
-    task :seed_from_csv => :environment do
-    raise "Temporary databases must be empty, and you must have already made schools!" unless AnalyzedPost.all.empty? && OriginalPost.all.empty? && Keyword.all.empty? && School.all.any?
-      seed_from_csv
-    end
-
-    desc "Create topics and schools"
-    task :seed_schools_and_topics => :environment do
-      raise "Topics, reference words and schools must be empty!" unless Topic.all.empty? && School.all.empty? && ReferenceWord.all.empty?
-      topics_and_schools
-    end
-
-    desc "Overwrite topics and schools"
-    task :overwrite_schools_and_topics => :environment do
-      Topic.all.each {|topic| topic.destroy}
-      ReferenceWord.all.each {|word| word.destroy}
-      School.all.each {|school| school.destroy}
-      topics_and_schools
-    end
-
-    desc "Update the csv file with new seeding info and wipe temporary tables"
-    task :update_csv => :environment do
-      check_setup_for_updating_csv
-      update_csv
-      wipe_temporary_tables
-    end
-
-    desc "Update the csv file with new seeding info BUT DON'T wipe tables when done"
-    task :update_csv_keep_tables => :environment do
-      check_setup_for_updating_csv
-      update_csv
-    end
-
-    desc "Wipe the temporary tables"
-    task :wipe_temporary_tables => :environment do
-      wipe_temporary_tables
-    end
-
-    desc "Grabs data from geofeedia and stores in json files"
-    task :create_json_from_geofeedia => :environment do
-      make_call_to_geofeedia_and_save_json({"32204" => "asu",
-        "32211" => "uta",
-        # "32244" => "uga",
-        "32207" => "msu",
-        "32206" => "uofm"#,
-        # "32202" => "uofi",
-        # "32251" => "uwm",
-        # "32243" => "uws",
-        # "32241" => "ucd",
-        # "32210" => "cor"
-        })
+    desc "This is what to run when setting up a completely new database."
+      task :setup_from_empty => :environment do
+        raise "Databases must be empty!" unless AnalyzedPost.all.empty? && OriginalPost.all.empty? && Keyword.all.empty? && School.all.empty? && Topic.all.empty? && Rating.all.empty? && ReferenceWord.all.empty?
+        make_topics_and_schools
+        populate_tables_from_csv
+        json_to_alchemy_to_tables_and_csv
+        increment_school_word_counts
+        increment_school_ratings
+        create_or_update_school_word_counts
+        wipe_temporary_tables
+        delete_all_files_in_seeds_directory
       end
 
-    desc "Allows for the updating of the post models on the school table"
-    task :update_final_tables_from_temporary_tables => :environment do
-      increment_school_word_counts
-      increment_school_ratings
-      create_or_update_school_word_counts
-      wipe_temporary_tables
-    end
+    desc "This is what to run if you already have a db and want to update your final tables with the geofeedia files in your seeds folder. DELETE FILES AFTERWARD."
+      task :json_to_alchemy_to_tables_and_csv => :environment do
+        check_setup_for_updating_csv
+        json_to_alchemy_to_tables_and_csv
+        increment_school_word_counts
+        increment_school_ratings
+        create_or_update_school_word_counts
+        wipe_temporary_tables
+        delete_all_files_in_seeds_directory
+      end
+
+    desc "Create topics and schools for empty db"
+      task :seed_schools_and_topics => :environment do
+        raise "Topics, reference words and schools must be empty!" unless Topic.all.empty? && School.all.empty? && ReferenceWord.all.empty?
+        make_topics_and_schools
+      end
+
+    desc "Overwrite topics and schools (deletes what's already in there and repopulates it from rake file)"
+      task :overwrite_schools_and_topics => :environment do
+        Topic.delete_all
+        ReferenceWord.delete_all
+        School.delete_all
+        Rating.delete_all
+        SchoolWordCount.delete_all
+        make_topics_and_schools
+      end
+
+    desc "Import rows from CSV into empty database (keywords and analyzed posts)--only to be called when initializing db!!!! Never again!!!"
+      task :populate_tables_from_csv => :environment do
+        raise "Temporary databases must be empty, and you must have already made schools!" unless AnalyzedPost.all.empty? && OriginalPost.all.empty? && Keyword.all.empty? && School.all.any?
+        check_for_previously_seeded_data
+        populate_tables_from_csv
+        wipe_temporary_tables
+      end
+
+    desc "Import rows from CSV  *AND*  send any json files in seeds folder to geofeedia and back to analyzed posts and keywords, from empty (but already created and migrated) database and wipe tables when done"
+      task :import_csv_get_json_wipe_tables => :environment do
+        check_for_previously_seeded_data
+        setup_from_empty
+        wipe_temporary_tables
+      end
+
+# Don't use this one unless you know what you're doing!
+    # desc "Import rows from CSV  *AND*  send any json files in seeds folder to geofeedia and back to analyzed posts and keywords, from empty (but already created and migrated) database"
+    # task :import_csv_get_json_keep_tables => :environment do
+    #   setup_from_empty
+    # end
+
+    # desc "Send any json files in seeds folder to alchemy and update csv accordingly, then wipe temporary tables"
+    #   task :json_to_alchemy_to_tables_and_csv_wipe_tables => :environment do
+    #     check_setup_for_updating_csv
+    #     json_to_alchemy_to_tables_and_csv
+    #     increment_school_word_counts
+    #     increment_school_ratings
+    #     create_or_update_school_word_counts
+    #     wipe_temporary_tables
+    #     delete_all_files_in_seeds_directory
+    #   end
+
+      task :blah => :environment do
+        Keyword.populate_reference_words
+        Keyword.create_or_update_school_word_counts
+      end
+
+# Don't use this one unless you know what you're doing!
+    # desc "Send any json files in seeds folder to alchemy and update csv accordingly BUT DON'T wipe tables when done"
+    # task :json_to_alchemy_to_tables_and_csv_keep_tables => :environment do
+      # check_setup_for_updating_csv
+      # json_to_alchemy_to_tables_and_csv
+      # increment_school_word_counts
+      # increment_school_ratings
+      # create_or_update_school_word_counts
+      # delete_all_files_in_seeds_directory
+    # end
+
+    desc "Wipe the temporary tables (keywords and analyzed posts)"
+      task :wipe_temporary_tables => :environment do
+        wipe_temporary_tables
+      end
+
+    desc "Grabs data from geofeedia and stores in json files. Uncomment the schools that you want to grab from."
+      task :create_json_from_geofeedia => :environment do
+        make_call_to_geofeedia_and_save_json({"32204" => "asu",
+          "32211" => "uta",
+          # "32244" => "uga",
+          "32207" => "msu",
+          "32206" => "uofm"#,
+          # "32202" => "uofi",
+          # "32251" => "uwm",
+          # "32243" => "uws",
+          # "32241" => "ucd",
+          # "32210" => "cor"
+          })
+      end
+
+    desc "Updates final tables with whatever data is in keywords and analyzed posts"
+      task :update_final_tables_from_temporary_tables => :environment do
+        raise "Tables must be properly populated before this task is run!" unless AnalyzedPost.any? && Keyword.any? && School.any? && Topic.any? && ReferenceWord.any? && Rating.any?
+        increment_school_word_counts
+        increment_school_ratings
+        create_or_update_school_word_counts
+        # wipe_temporary_tables
+      end
   end
 
-def increment_school_word_counts
-  AnalyzedPost.populate_reference_words
-  AnalyzedPost.increment_school_word_count
-end
 
-def increment_school_ratings
-  AnalyzedPost.increment_school_ratings
-end
+###############################################################################################################################################################
+##################################################### METHODS ##############################################################################################
+###############################################################################################################################################################
 
-def create_or_update_school_word_counts
-  Keyword.populate_reference_words
-  Keyword.create_or_update_school_word_counts
-end
 
 def setup_from_empty
   raise "Databases must be empty!" unless AnalyzedPost.all.empty? && OriginalPost.all.empty? && Keyword.all.empty? && School.all.empty? && Topic.all.empty? && Rating.all.empty? && ReferenceWord.all.empty?
-  topics_and_schools
-  seed_from_csv
+  make_topics_and_schools
+  populate_tables_from_csv
   ["analyzed_posts", "original_posts", "reference_words", "topics", "keywords", "schools"].each do |table|
     result = ActiveRecord::Base.connection.execute("SELECT id FROM #{table} ORDER BY id DESC LIMIT 1")
     if result.any?
@@ -105,11 +142,21 @@ def setup_from_empty
       ActiveRecord::Base.connection.execute("ALTER SEQUENCE #{table}_id_seq RESTART WITH #{ai_val}")
     end
   end
-  update_csv if Dir['db/seeds/*'].any?
+  json_to_alchemy_to_tables_and_csv if Dir['db/seeds/*'].any?
 end
 
+def check_for_previously_seeded_data
+  School.all.each do |school|
+    if school.post_count > 0
+      raise "Looks like you already have data in your school models from another pull.  You shouldn't run this if you already have data!"
+    end
+  end
+end
 
-def seed_from_csv
+#####################################################
+
+
+def populate_tables_from_csv
   post_csv = CSV.read('db/analyzed_posts.csv', :headers => true)
   post_csv.each do |post|
     AnalyzedPost.create(post.to_hash)
@@ -121,17 +168,16 @@ def seed_from_csv
 end
 
 
+#####################################################
+
+
 def check_setup_for_updating_csv
-  if AnalyzedPost.all.empty? || Keyword.all.empty? || OriginalPost.all.empty?
-    wipe_temporary_tables unless OriginalPost.all.empty? && Keyword.all.empty? && AnalyzedPost.all.empty?
-  end
-  if School.all.empty? || Topic.all.empty? || ReferenceWord.all.empty?
-    topics_and_schools
-  end
+  raise "Temporary tables should be empty if you're doing this!" if AnalyzedPost.all.any? || Keyword.all.any? || OriginalPost.all.any?
+  raise "Either your school, topic, or reference word table is empty." if School.all.empty? || Topic.all.empty? || ReferenceWord.all.empty?
 end
 
 
-def update_csv
+def json_to_alchemy_to_tables_and_csv
   new_posts = []
   original_post_seeding(new_posts)
   update_ids_for_posts_and_keywords
@@ -142,6 +188,9 @@ def update_csv
 
   write_to_csv_files(new_analyzed_posts, new_analyzed_keywords)
 end
+
+
+#####################################################
 
 
 def original_post_seeding(new_posts)
@@ -170,7 +219,8 @@ def create_original_posts(parsed_items, batch, feed_id, school)
     if post.save
       batch << post
     else
-      puts "original post didn't pass validations"
+      puts "original post didn't pass validations:"
+      puts post.inspect
     end
   end
 end
@@ -183,6 +233,16 @@ def log_batch_to_new_posts(batch, new_posts)
 end
 
 
+def delete_all_files_in_seeds_directory
+  Dir['db/seeds/*'].each do |file|
+    FileUtils.rm(file)
+  end
+end
+
+
+#####################################################
+
+
 def update_ids_for_posts_and_keywords
   new_first_post_id = CSV.read('db/analyzed_posts.csv').last[0].to_i + 1
   new_first_keyword_id = CSV.read('db/keywords.csv').last[0].to_i + 1
@@ -191,6 +251,9 @@ def update_ids_for_posts_and_keywords
   puts "Resetting auto increment ID for keywords to #{new_first_keyword_id}"
   ActiveRecord::Base.connection.execute("ALTER SEQUENCE keywords_id_seq RESTART WITH #{new_first_keyword_id}")
 end
+
+
+#####################################################
 
 
 def get_alchemy_responses(new_analyzed_posts, new_analyzed_keywords, new_posts)
@@ -210,7 +273,8 @@ def get_alchemy_responses(new_analyzed_posts, new_analyzed_keywords, new_posts)
         if new_keyword.save
           new_analyzed_keywords << new_keyword
         else
-          puts "keyword didn't pass validations"
+          puts "keyword didn't pass validations:"
+          puts new_keyword.inspect
         end
       end
     else
@@ -252,11 +316,17 @@ def write_to_csv_files(new_analyzed_posts, new_analyzed_keywords)
 end
 
 
+#####################################################
+
+
 def wipe_temporary_tables
-  OriginalPost.all.each {|post| post.destroy}
-  AnalyzedPost.all.each {|post| post.destroy}
-  Keyword.all.each {|word| word.destroy}
+  OriginalPost.delete_all
+  AnalyzedPost.delete_all
+  Keyword.delete_all
 end
+
+
+#####################################################
 
 
 def make_call_to_geofeedia_and_save_json(school_plus_abbreviation_hash)
@@ -299,10 +369,30 @@ def update_most_recent_post_time(geofeedia_id, most_recent_post_time)
 end
 
 
+##########################################
 
 
+def increment_school_word_counts
+  AnalyzedPost.populate_reference_words
+  AnalyzedPost.increment_school_word_count
+end
 
-def topics_and_schools
+
+def increment_school_ratings
+  AnalyzedPost.increment_school_ratings
+end
+
+
+def create_or_update_school_word_counts
+  Keyword.populate_reference_words
+  Keyword.create_or_update_school_word_counts
+end
+
+
+#####################################
+
+
+def make_topics_and_schools
 
   topics = ["food", "tech", "nerd_culture", "art", "sports", "partying", "academics", "romance", "music", "lgbt", "fitness", "social life", "career", "finance", "gender", "housing", "politics", "religion", "fashion"]
   topics.each do |topic|
@@ -314,12 +404,12 @@ def topics_and_schools
     ReferenceWord.where(name: word, topic_id: Topic.find_by_name("nerd_culture")).first_or_create
   end
 
-  partying = ["king cobra", "schwasted", "schwasty", "40 oz", "40s", "forties", "fourtys", "shenanigans", "fotie", "foties", "rally", "boones farm", "boone's farm", "mad dog", "drunk life", "high life", "franzia", "box wine", "boxed wine", "chillable red", "liquor store", "party hard", "party hardy", "get shitty", 'St Patty', "St. Patty's", "fancy drinks", "struggle bus", "circle of death", "kings cup", "king's cup", "darts", "saturday night", "friday night", "tgif", "beer porn", "beer snob", "beergasm", "beerstagram", "craft beer", "hangover", "hung over", "so hung over", "hung over as shit", "huge hangover", "party on", "hookah", "hookah bar", "jack daniels", "jim beam", "jameson", "captain morgan", "moonshine", "smirnoff", "absolut", "312", "goose island", "whiskey sour", "gin and tonic", "whiskey coke", "whiskey and diet", "whisky", "absinthe", "ouzo", "jager bomb", "sake", "sake bomb", "sake bombs", "jager bombs", "corona", "heineken", "dos equis", "bud light", "coors light", "miller light", "coors", "sauza", "jose cuervo", "el jimador", "russian standard", "svedka", "patron", "hennessy", "dom perignon", "champagne", "champagne of beers", "don julio", "beefeater", "seagrams", "malort", "bitters", "bombay gin", "tanqueray", "coconut rum", "baileys", "baileys irish cream", "grey goose", "gray goose", "ketel one", "belvedere", "stolichnaya", "uv blue", "lush", "alkie", "alcoholic", "booze hound", "Saturday", "Friday", "tailgate", "pregame", "pre-game", "pregaming", "pre-gaming", "after bar", "after-bar", "a-bar", "cut loose", "get down", "party down", "hotbox", "smokeout", "reefer", "rave", "raver", "orgy", "blunt", "after hours", "spliff", "joint", "walk of shame", "sex cult", "vermouth", "alcohol delivery", "boozahol", "boozaholic", "booze", "margaritas", "martini", "martinis", "margarita", "margs", "tailgaiting", "stoner", "spring break", "tgif", "freakin weekend", "stoner mindset", "bottle",  "drinks", "unlimited ass", "beer", "alcohol", "shots", "rage", "ragin", "ragin'", "vape", "vaporizer", "codeine", "morphine", "vicodin", "hydrocodone", "oxycontin", "oxy cotton", "hopped up", "nugs", "dank weed", "good weed", "chronic", "dank nugs", "tripping", "hallucinating", "ball so hard", "dope", "karaoke", "head shop", "dat ass", "raging", "rager", "get down", "hammered", "spring break", "springbreak", "collegelife", "blacked out", "drugs", "drink", "smoke", "wasted", "shitfaced", "shit faced", "shithoused", "browned out", "blasted", "tipsy", "drunk", "drank", "blotto", "smokin", "kush", "dank", "pot", "weed", "blazed", "blazing", "party", "partying", "cig", "cigarettes", "acid", "lsd", "mdma", "ecstasy", "blackout", "black out", "wine", "liquor", "whiskey", "rum", "gin", "vodka", "tequila", "rumpleminze", "goldschlager", "kahlua", "jager", "jagermeister", "budweiser", "leinenkugels", "leinies", "pbr", "pabst", "pabst blue ribbon", "miller high life", "mgd", "blatts", "hamms", "porter", "stout", "ipa", "amber ale", "red ale", "beer pong", "frat", "greek", "sorority", "club", "420", "4:20", "four twenty", "so high", "get high", "get blazed", "get drunk", "get shitty", "get shitfaced", "get wasted", "get blackout", "blackout drunk", "bath salts", "busch", "schlitz", "keystone", "30 rack", "thirty rack", "rolling rock", "steel reserve", "house party", "hookah", "hooka", "ritalin", "adderall", "shinerbock", "coors", "cocktail", "kings cup", "king's cup", "circle of death"]
+  partying = ["king cobra", "schwasted", "schwasty", "40 oz", "40s", "forties", "fourtys", "shenanigans", "fotie", "foties", "rally", "boones farm", "boone's farm", "mad dog", "drunk life", "high life", "franzia", "box wine", "boxed wine", "chillable red", "liquor store", "party hard", "party hardy", "get shitty", 'St Patty', "St. Patty's", "fancy drinks", "struggle bus", "circle of death", "kings cup", "king's cup", "darts", "taco bell", "saturday night", "friday night", "tgif", "beer porn", "beer snob", "beergasm", "beerstagram", "craft beer", "hangover", "hung over", "so hung over", "hung over as shit", "huge hangover", "party on", "hookah", "hookah bar", "jack daniels", "jim beam", "jameson", "captain morgan", "moonshine", "smirnoff", "absolut", "312", "goose island", "whiskey sour", "gin and tonic", "whiskey coke", "whiskey and diet", "whisky", "absinthe", "ouzo", "jager bomb", "sake", "sake bomb", "sake bombs", "jager bombs", "corona", "heineken", "dos equis", "bud light", "coors light", "miller light", "coors", "sauza", "jose cuervo", "el jimador", "russian standard", "svedka", "patron", "hennessy", "dom perignon", "champagne", "champagne of beers", "don julio", "beefeater", "seagrams", "malort", "bitters", "bombay gin", "tanqueray", "coconut rum", "baileys", "baileys irish cream", "grey goose", "gray goose", "ketel one", "belvedere", "stolichnaya", "uv blue", "lush", "alkie", "alcoholic", "booze hound", "Saturday", "Friday", "tailgate", "pregame", "pre-game", "pregaming", "pre-gaming", "after bar", "after-bar", "a-bar", "cut loose", "get down", "party down", "hotbox", "smokeout", "reefer", "rave", "raver", "orgy", "blunt", "after hours", "spliff", "joint", "walk of shame", "sex cult", "vermouth", "alcohol delivery", "boozahol", "boozaholic", "booze", "margaritas", "martini", "martinis", "margarita", "margs", "tailgaiting", "stoner", "spring break", "tgif", "freakin weekend", "stoner mindset", "bottle",  "drinks", "unlimited ass", "beer", "alcohol", "shots", "rage", "ragin", "ragin'", "vape", "vaporizer", "codeine", "morphine", "vicodin", "hydrocodone", "oxycontin", "oxy cotton", "hopped up", "nugs", "dank weed", "good weed", "chronic", "dank nugs", "tripping", "hallucinating", "ball so hard", "dope", "karaoke", "head shop", "dat ass", "raging", "rager", "get down", "hammered", "spring break", "springbreak", "collegelife", "blacked out", "drugs", "drink", "smoke", "wasted", "shitfaced", "shit faced", "shithoused", "browned out", "blasted", "tipsy", "drunk", "drank", "blotto", "smokin", "kush", "dank", "pot", "weed", "blazed", "blazing", "party", "partying", "cig", "cigarettes", "acid", "lsd", "mdma", "ecstasy", "blackout", "black out", "wine", "liquor", "whiskey", "rum", "gin", "vodka", "tequila", "rumpleminze", "goldschlager", "kahlua", "jager", "jagermeister", "budweiser", "leinenkugels", "leinies", "pbr", "pabst", "pabst blue ribbon", "miller high life", "mgd", "blatts", "hamms", "porter", "stout", "ipa", "amber ale", "red ale", "beer pong", "frat", "greek", "sorority", "club", "420", "4:20", "four twenty", "so high", "get high", "get blazed", "get drunk", "get shitty", "get shitfaced", "get wasted", "get blackout", "blackout drunk", "bath salts", "busch", "schlitz", "keystone", "30 rack", "thirty rack", "rolling rock", "steel reserve", "house party", "hookah", "hooka", "ritalin", "adderall", "shinerbock", "coors", "cocktail", "kings cup", "king's cup", "circle of death"]
   partying.each do |word|
     ReferenceWord.where(name: word, topic_id: Topic.find_by_name("partying")).first_or_create
   end
 
-  academics = ["study", "test", "class", "school", "essay", "essays", "final paper", "classes", "schools", "colleges", "academics", "courses", "tests", "lab", "lab report", "lab reports", "discussion group", "quiz", "quizzes", "quizes", "pop quiz", "classroom", "college bound", "go study", "all-nighter", "all nighter", "pull an all nighter", "pull an all-nighter", "hard test", "easy test", "hard class", "easy class", "easy a", "drop out", "drop-out", "college", "academic", "ace", "grade", "studying", "professor", "guest speaker", "study break", "prof", "homework", "hw", "philosophy", "statistics", "botany", "degree", "office hours", "students", "student", "anthropology", "physics", "biology", "neuroscience", "neuro", "microbiology", "teacher", "grad school", "graduate school", "graduate", "grad student", "graduate student", "graduate studies", "grad students", "graduate students", "undergrads", "upperclassmen", "upperclassman", "underclassmen", "underclassman", "freshman", "sophomore", "junior", "senior", "college freshmen", "college freshman", "freshmen", "sophomores", "juniors", "seniors", "freshman year", "senior year", "graduation", "college graduation", "university", "study hall", "engineering", "productive", "science", "scholar", "scholarship", "brain", "liberal arts", "humanities", "english", "history", "women's studies", "creative writing", "essay", "paper", "midterm", "final", "chem", "chemistry", "allnighter", "all nighter", "internship", "grad", "grad school", "semester", "quarter", "trimester", "term", "terms", "semesters", "quarters", "trimesters", "econ", "study guide", "grades", "studybreak", "lab", "laboratory", "calc", "calculus", "trig", "trigonometry", "algebra", "thesis", "advisor", "dissertation", "seminar", "report", "lab report", "admissions", "prereqs", "prerequisites", "gen eds", "general education", "education", "GRE", "LSAT", "project", "MCAT", "academics", "academic", "academy", "library", "math", "computer science", "comp sci", "j-term"]
+  academics = ["study", "test", "class", "school", "essay", "essays", "final paper", "classes", "schools", "colleges", "academics", "courses", "tests", "lab", "lab report", "panelist", "panelists", "ta", "teachers assistant", "teaching assistant", "lab reports", "discussion group", "quiz", "quizzes", "quizes", "pop quiz", "classroom", "college bound", "go study", "all-nighter", "all nighter", "pull an all nighter", "pull an all-nighter", "hard test", "easy test", "hard class", "easy class", "easy a", "drop out", "drop-out", "college", "academic", "ace", "grade", "studying", "professor", "guest speaker", "study break", "prof", "homework", "hw", "philosophy", "statistics", "botany", "degree", "office hours", "students", "student", "anthropology", "physics", "biology", "neuroscience", "neuro", "microbiology", "teacher", "grad school", "graduate school", "graduate", "grad student", "graduate student", "graduate studies", "grad students", "graduate students", "undergrads", "upperclassmen", "upperclassman", "underclassmen", "underclassman", "freshman", "sophomore", "junior", "senior", "college freshmen", "college freshman", "freshmen", "sophomores", "juniors", "seniors", "freshman year", "senior year", "graduation", "college graduation", "university", "study hall", "engineering", "productive", "science", "scholar", "scholarship", "brain", "liberal arts", "humanities", "english", "history", "women's studies", "creative writing", "essay", "paper", "midterm", "final", "chem", "chemistry", "allnighter", "all nighter", "internship", "grad", "grad school", "semester", "quarter", "trimester", "term", "terms", "semesters", "quarters", "trimesters", "econ", "study guide", "grades", "studybreak", "lab", "laboratory", "calc", "calculus", "trig", "trigonometry", "algebra", "thesis", "advisor", "dissertation", "seminar", "report", "lab report", "admissions", "prereqs", "prerequisites", "gen eds", "general education", "education", "GRE", "LSAT", "project", "MCAT", "academics", "academic", "academy", "library", "math", "computer science", "comp sci", "j-term"]
   academics.each do |word|
     ReferenceWord.where(name: word, topic_id: Topic.find_by_name("academics")).first_or_create
   end
@@ -369,12 +459,12 @@ def topics_and_schools
     ReferenceWord.where(name: word, topic_id: Topic.find_by_name("tech")).first_or_create
   end
 
-  fashion = ["fashion", "clothes", "clothing", "shopping", "hair", "fashionista", "fashion plate", "nails", "fingernails", "blouse", "cardigan", "sweater", "nail polish", "nail art", "beauty", "uggs", "notd", "ootd", "outfit", "fashion freak", "fashion tip", "fashion slave", "slave to fashion", "style blog", "my haul", "makeup", "flawless", "gorgeous", "sephora", "sunnies", "sunglasses", "accessories", "accessory", "purse", "clutch", "scarf", "necklace", "earring", "earrings", "jewelry", "diamond ring", "diamond", "sapphire", "emerald", "jewels", "bangles", "necklaces", "bracelet", "bracelets", "lipstick", "lippy", "toner", "primer", "eyeshadow", "blush", "makeup primer", "face primer", "eye primer", "lotion", "body lotion", "face lotion", "eyeliner", "smudge pot", "lip gloss", "lip liner", "mascara", "ulta", "legging", "leggings", "urban outfitters", "anthropologie", "forever 21", "american apparel", "gucci", "prada", "louis vuitton", "chanel", "bcbg", "fendi", "nordstrom", "bloomingdales", "bloomies", "saks", "manolo blahnik", "salon", "louboutins", "louboutin", "armani", "burberry", "j-crew", "j crew", "banana republic", "dress", "rag and bone", "skirt", "shirt", "jacket", "leather jacket", "outfit", "cutest outfit", "cute outfit", "looking good", "cute dress", "shoes", "cute shoes", "hat", "slouchy boots", "boots", "knee high boots", "tights", "fleece lined tights", "fleece tights", "mz wallace", "kate spade", "michael kors", "project runway", "model", "supermodel", "high fashion", "new york fashion week", "fashion week", "runway", "runway show", "fashion model", "haute couture", "couture", "stylist", "celebrity stylist", "rachel zoe", "fashion consultant", "get my hair done", "get my hair cut", "hair cut", "hair dye", "hair bow", "ascot", "hair accessories", "locket", "brooch", "high heels", "heels", "stilettos", "high heeled", "pumps", "high heeled shoes", "high heeled boots", "three inch heels", "four inch heels", "two inch heels", "3 inch heels", "4 inch heels", "2 inch heels", "mani pedi", "mani", "pedi", "manicure", "pedicure", "brazilian blowout", "bikini wax", "full face of slap", "full face o slap", "no makeup", "without makeup", "sans makeup", "spanx", "kitten heels", "bronzer", "moisturize", "moisturizer", "daily moisturizer", "facial moisturizer", "body moisturizer", "juicy couture", "heidi klum", "tim gunn", "make it work"]
+  fashion = ["fashion", "clothes", "clothing", "shopping", "hair", "fashionista", "apparel", "fashion plate", "nails", "fingernails", "blouse", "cardigan", "sweater", "nail polish", "nail art", "beauty", "uggs", "notd", "ootd", "outfit", "fashion freak", "fashion tip", "fashion slave", "slave to fashion", "style blog", "my haul", "makeup", "flawless", "gorgeous", "sephora", "sunnies", "sunglasses", "accessories", "accessory", "purse", "clutch", "scarf", "necklace", "earring", "earrings", "jewelry", "diamond ring", "diamond", "sapphire", "emerald", "jewels", "bangles", "necklaces", "bracelet", "bracelets", "lipstick", "lippy", "toner", "primer", "eyeshadow", "blush", "makeup primer", "face primer", "eye primer", "lotion", "body lotion", "face lotion", "eyeliner", "smudge pot", "lip gloss", "lip liner", "mascara", "ulta", "legging", "leggings", "urban outfitters", "anthropologie", "forever 21", "american apparel", "gucci", "prada", "louis vuitton", "chanel", "bcbg", "fendi", "nordstrom", "bloomingdales", "bloomies", "saks", "manolo blahnik", "salon", "louboutins", "louboutin", "armani", "burberry", "j-crew", "j crew", "banana republic", "dress", "rag and bone", "skirt", "shirt", "jacket", "leather jacket", "outfit", "cutest outfit", "cute outfit", "looking good", "cute dress", "shoes", "cute shoes", "hat", "slouchy boots", "boots", "knee high boots", "tights", "fleece lined tights", "fleece tights", "mz wallace", "kate spade", "michael kors", "project runway", "model", "supermodel", "high fashion", "new york fashion week", "fashion week", "runway", "runway show", "fashion model", "haute couture", "couture", "stylist", "celebrity stylist", "rachel zoe", "fashion consultant", "get my hair done", "get my hair cut", "hair cut", "hair dye", "hair bow", "ascot", "hair accessories", "locket", "brooch", "high heels", "heels", "stilettos", "high heeled", "pumps", "high heeled shoes", "high heeled boots", "three inch heels", "four inch heels", "two inch heels", "3 inch heels", "4 inch heels", "2 inch heels", "mani pedi", "mani", "pedi", "manicure", "pedicure", "brazilian blowout", "bikini wax", "full face of slap", "full face o slap", "no makeup", "without makeup", "sans makeup", "spanx", "kitten heels", "bronzer", "moisturize", "moisturizer", "daily moisturizer", "facial moisturizer", "body moisturizer", "juicy couture", "heidi klum", "tim gunn", "make it work"]
   fashion.each do |word|
     ReferenceWord.where(name: word, topic_id: Topic.find_by_name("fashion")).first_or_create
   end
 
-  food = ["cafeteria", "caf", "dining", "barista", "favorite barista", "favorite restaurant", "favorite cafe", "favorite food", "favorite drink", "eat", "eating", "ate", "over ate", "over eating", "over eat", "dining hall", "food", "donut", "good food", "muffin", "donuts", "muffins", "breakfast", "lunch", "dinner", "brunch", "grub", "grubhub", "lemon", "lime", "citrus", "green beans", "beans", "black beans", "refried beans", "jalapenos", "brown rice", "tabasco", "sriracha", "hot sauce", "mustard", "ketchup", "catsup", "pickles", "pickle", "peppers", "pepper", "hot peppers", "meal plan", "meal", "vegan", "gluten free", "gf", "veganism", "vegetarianism", "vegetarian", "vegeterianism", "vegeterian", "gluten", "coffee", "caffiene", "caffeine", "hamburger", "burger", "pizza", "burgers", "fries", "eggs", "eggs benedict", "omelette", "pancakes", "waffles", "oatmeal", "cereal", "bacon", "sausage", "bacon fat", "bacon flavored", "bacon salt", "ham", "ham steak", "smoothie", "scrambled eggs", "sunny side up", "over easy", "eggs over easy", "hotcakes", "griddle cakes", "sandwich", "huevos rancheros", "breakfast sandwich", "bagel", "breakfast bagel", "bagel sandwich", "baguette", "toast", "club sandwich", "reuben", "italian beef", "italian beef sandwich", "philly cheese steak", "philly cheesesteak", "cheesesteak", "cheese steak", "hot dog", "bratwurst", "italian sausage", "beer and brats", "cheddarwurst", "knockwurst", "schnitzel", "milk", "almond", "peanut", "peanut butter", "almond butter", "nutella", "hazelnut", "walnut", "pecan", "pistachio", "cake", "pie", "chocolate cake", "cherry pie", "apple pie", "strawberry rhubarb pie", "pumpkin pie", "pecan pie", "ice cream", "frozen yogurt", "custard", "ice cream sundae", "ice cream sandwich", "sundae", "dessert", "sweets", "sugar", "coffee", "tea", "soda", "pasta", "spaghetti", "gnocchi", "noodles", "thai food", "thai restaurant", "thai place", "chinese food", "chinese restaurant", "chinese place", "takeout", "chinese takeout", "korean food", "korean restaurant", "korean place", "mexican food", "mexican restaurant", "mexican place", "kimchi", "lo mein", "lomein", "chow mein", "general tso's", "tofu", "chicken", "shrimp", "lamb", "eggrolls", "pot stickers", "pizza rolls", "onion rings", "curly fries", "bloomin onion", "steak", "dumplings", "fried dumplings", "dim sum", "sushi", "japanese food", "japanese restaurant", "japanese place", "curry", "spicy", "rice", "cashew butter", "fudge", "maple", "coconut", "orange", "apple", "peach", "pear", "plum", "banana", "fruit", "nectarine", "cherry", "cherries", "oranges", "coconuts", "apples", "peaches", "plums", "pears", "bananas", "fruits", "panang curry", "green curry", "red curry", "tom kha", "soup", "pad thai", "makimono", "nigiri", "gyoza", "bao", "pork buns", "pork belly", "carmelized", "onions", "mango", "ginger", "broccoli", "peanut sauce", "peanut chicken", "teriyaki", "chipotle", "garlic",  "carmelized onions", "bahn mi", "pho", "vietnamese food", "vietnamese restaurant", "vietnamese place", "italian restaurant", "italian food", "italian place", "russian food", "russian restaurant", "persian food", "persian restaurant", "ethnic food", "burrito", "burritos", "chalupa", "churro", "tostada", "enchilada", "enchiladas", "chili", "chili con queso", "cheese", "cheese fries", "chili fries", "chili cheese fries" ]
+  food = ["cafeteria", "caf", "dining", "barista", "favorite barista", "favorite restaurant", "favorite cafe", "favorite food", "favorite drink", "eat", "eating", "ate", "over ate", "over eating", "over eat", "dining hall", "food", "donut", "good food", "muffin", "donuts", "muffins", "breakfast", "lunch", "dinner", "brunch", "grub", "grubhub", "lemon", "lime", "citrus", "green beans", "beans", "black beans", "refried beans", "cupcake", "cupcakes", "almond", "almonds", "nuts", "nut", "cranberry", "cranberries", "berries", "berry", "fruit", "dried fruit", "food", "foods", "fatty foods", "fried foods", "fatty food", "fried food", "country cooking", "country cookin", "soul food", "fried chicken", "collard greens", "greens", "kale chips", "kale chip", "grape", "grapes", "strawberry", "strawberries", "raspberry", "raspberries", "blueberry", "blueberries", "melon", "melons", "papaya", "milkshake", "fast food", "sit down restaurant", "fast food restaurant", "jalapenos", "brown rice", "tabasco", "sriracha", "hot sauce", "mustard", "ketchup", "catsup", "pickles", "pickle", "peppers", "pepper", "hot peppers", "meal plan", "meal", "vegan", "gluten free", "gf", "veganism", "vegetarianism", "vegetarian", "vegeterianism", "vegeterian", "gluten", "coffee", "caffiene", "caffeine", "hamburger", "burger", "pizza", "burgers", "fries", "eggs", "eggs benedict", "omelette", "pancakes", "waffles", "oatmeal", "cereal", "bacon", "sausage", "bacon fat", "bacon flavored", "bacon salt", "ham", "ham steak", "smoothie", "scrambled eggs", "sunny side up", "over easy", "eggs over easy", "hotcakes", "griddle cakes", "sandwich", "huevos rancheros", "breakfast sandwich", "bagel", "breakfast bagel", "bagel sandwich", "baguette", "toast", "club sandwich", "reuben", "italian beef", "italian beef sandwich", "philly cheese steak", "philly cheesesteak", "cheesesteak", "cheese steak", "hot dog", "bratwurst", "italian sausage", "beer and brats", "cheddarwurst", "knockwurst", "schnitzel", "milk", "almond", "peanut", "peanut butter", "almond butter", "nutella", "hazelnut", "walnut", "pecan", "pistachio", "cake", "pie", "chocolate cake", "cherry pie", "apple pie", "strawberry rhubarb pie", "pumpkin pie", "pecan pie", "ice cream", "frozen yogurt", "custard", "ice cream sundae", "ice cream sandwich", "sundae", "dessert", "sweets", "sugar", "coffee", "tea", "soda", "pasta", "spaghetti", "gnocchi", "noodles", "thai food", "thai restaurant", "thai place", "chinese food", "chinese restaurant", "chinese place", "takeout", "chinese takeout", "korean food", "korean restaurant", "korean place", "mexican food", "mexican restaurant", "mexican place", "kimchi", "lo mein", "lomein", "chow mein", "general tso's", "tofu", "chicken", "shrimp", "lamb", "eggrolls", "pot stickers", "pizza rolls", "onion rings", "curly fries", "bloomin onion", "steak", "dumplings", "fried dumplings", "dim sum", "sushi", "japanese food", "japanese restaurant", "japanese place", "curry", "spicy", "rice", "cashew butter", "fudge", "maple", "coconut", "orange", "apple", "peach", "pear", "plum", "banana", "fruit", "nectarine", "cherry", "cherries", "oranges", "coconuts", "apples", "peaches", "plums", "pears", "bananas", "fruits", "panang curry", "green curry", "red curry", "tom kha", "soup", "pad thai", "makimono", "nigiri", "gyoza", "bao", "pork buns", "pork belly", "carmelized", "onions", "mango", "ginger", "broccoli", "peanut sauce", "peanut chicken", "teriyaki", "chipotle", "garlic",  "carmelized onions", "bahn mi", "pho", "vietnamese food", "vietnamese restaurant", "vietnamese place", "italian restaurant", "italian food", "italian place", "russian food", "russian restaurant", "persian food", "persian restaurant", "ethnic food", "burrito", "burritos", "chalupa", "churro", "tostada", "enchilada", "enchiladas", "chili", "chili con queso", "cheese", "cheese fries", "chili fries", "chili cheese fries" ]
   food.each do |word|
     ReferenceWord.where(name: word, topic_id: Topic.find_by_name("food")).first_or_create
   end
@@ -389,7 +479,7 @@ def topics_and_schools
     ReferenceWord.where(name: word, topic_id: Topic.find_by_name("art")).first_or_create
   end
 
-  climate = ["weather", "cold outside", "hot outside", "cold out", "hot out", "sunshine", "clouds", "sunny", "sun", "sunset", "sweltering", "sunscreen", "air conditioner", "ac unit", "freezing", "freeze", "snow", "snowy", "chilly", "snowing", "rain", "rainy", "raining", "windy", "cloudy", "partly cloudy", "clear skies", "cloudy day", "rainy day", "sunny day", "snowy day", "snow day", "snowday", "great weather", "nice weather", "shitty weather", "horrible weather", "awesome weather", "worst weather", "best weather", "sunrise", "beautiful sunset", "beautiful sunrise", "sleet", "sleeting", "hailing", "hail", "icy rain", "blustery", "shivering", "overheated", "nice out", "shitty out", "horrible out", "nice outside", "shitty outside", "horrible outside", "beautiful outside", "beautiful out", "below zero", "below freezing", "celsius", "fahrenheit", "weather", "weather report", "weather forecast", "forecast", "weather man", "weather woman", "weatherman", "weatherwoman", "weather person", "weather.com", "winter", "winter coat", "summer", "spring", "autumn", "humid", "dry heat", "dry air"]
+  climate = ["weather", "cold outside", "hot outside", "cold out", "hot out", "misty", "foggy", "sunshine", "clouds", "sunny", "sun", "sunset", "sweltering", "sunscreen", "air conditioner", "ac unit", "freezing", "freeze", "snow", "snowy", "chilly", "snowing", "rain", "rainy", "raining", "windy", "cloudy", "partly cloudy", "clear skies", "cloudy day", "rainy day", "sunny day", "snowy day", "snow day", "snowday", "great weather", "nice weather", "shitty weather", "horrible weather", "awesome weather", "worst weather", "best weather", "sunrise", "beautiful sunset", "beautiful sunrise", "sleet", "sleeting", "hailing", "hail", "icy rain", "blustery", "shivering", "overheated", "nice out", "shitty out", "horrible out", "nice outside", "shitty outside", "horrible outside", "beautiful outside", "beautiful out", "below zero", "below freezing", "celsius", "fahrenheit", "weather", "weather report", "weather forecast", "forecast", "weather man", "weather woman", "weatherman", "weatherwoman", "weather person", "weather.com", "winter", "winter coat", "summer", "spring", "autumn", "humid", "dry heat", "dry air"]
   climate.each do |word|
     ReferenceWord.where(name: word, topic_id: Topic.find_by_name("climate")).first_or_create
   end

@@ -8,29 +8,20 @@ class Keyword < ActiveRecord::Base
 
   belongs_to :analyzed_post
 
-
   @@reference_words = []
+
 
   def remove_spaces
     self.text = self.text.downcase.split(' ').join.gsub("#", "").gsub(/sohf\d{3}/, '')
   end
 
-  def check_for_confidence
-    self.confidence = 0 unless confidence
+  def self.reference_words
+    @@reference_words
   end
 
-  def self.create_or_update_school_word_counts
-    self.all.each do |keyword|
-      text = keyword.text.downcase
-      confidence = keyword.confidence
-      if @@reference_words.include?(text)
-        lookup_reference_word = ReferenceWord.find_by_name(text)
-        counter = SchoolWordCount.where(school_id: keyword.analyzed_post.school_id, reference_word_id: lookup_reference_word.id).first_or_create
-        counter.word_count += 1
-        self.determine_keyword_confidence(keyword, counter)
-        counter.save
-      end
-    end
+
+  def check_for_confidence
+    self.confidence = 0.0 unless confidence
   end
 
   def self.populate_reference_words
@@ -54,4 +45,22 @@ class Keyword < ActiveRecord::Base
     end
   end
 
+
+  def self.create_or_update_school_word_counts
+    self.all.each do |keyword|
+      text = keyword.text.downcase
+      confidence = keyword.confidence
+      # puts text
+      # puts @@reference_words.inspect
+      if @@reference_words.include?(text)
+        lookup_reference_word = ReferenceWord.find_by_canonical_name(text)
+        puts "lookup reference word:"
+        puts lookup_reference_word
+        counter = SchoolWordCount.where(school_id: keyword.analyzed_post.school_id, reference_word_id: lookup_reference_word.id).first_or_create
+        counter.word_count += 1
+        self.determine_keyword_confidence(keyword, counter)
+        counter.save
+      end
+    end
+  end
 end

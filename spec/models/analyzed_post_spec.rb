@@ -2,9 +2,9 @@ require 'spec_helper'
 
 describe AnalyzedPost do
 
+  let(:topic) {Topic.create(name: "sports")}
   let(:school) {School.create(name: "ASU", student_body_count: 52_140, first_post_time: "2014-03-21 12:14:33", most_recent_post_time: "2014-03-21 15:14:33", geofeedia_id: "12234")}
   let(:analyzed_post) {AnalyzedPost.create(school_id: school.id, overall_sentiment: "neutral", original_publish_time: "2014-03-21 16:29:33")}
-  let(:topic) {Topic.create(name: "sports")}
   let(:reference_word) {ReferenceWord.create(topic_id: topic.id, name: "basketball")}
 
   context "initialization" do
@@ -79,10 +79,17 @@ describe AnalyzedPost do
   end
 
   context "increment school ratings" do
+    it "should have access to all the reference word texts" do
+      reference_word
+      AnalyzedPost.populate_reference_words
+      expect(AnalyzedPost.reference_words.first).to eq ReferenceWord.first.canonical_name
+    end
+
     it "school rating total post count goes up by 1" do
       analyzed_post
       Keyword.create(analyzed_post_id: analyzed_post.id, text: "basketball", sentiment: "positive", confidence: 0.5)
       reference_word
+      AnalyzedPost.populate_reference_words
       AnalyzedPost.increment_school_ratings
       expect(Rating.first.total_post_count).to eq 1
     end
@@ -91,6 +98,7 @@ describe AnalyzedPost do
       analyzed_post
       Keyword.create(analyzed_post_id: analyzed_post.id, text: "basketball", sentiment: "positive", confidence: 0.01)
       reference_word
+      AnalyzedPost.populate_reference_words
       AnalyzedPost.increment_school_ratings
       expect(Rating.first.positive_post_count).to eq 0
     end
@@ -99,6 +107,7 @@ describe AnalyzedPost do
       analyzed_post
       Keyword.create(analyzed_post_id: analyzed_post.id, text: "basketball", sentiment: "negative", confidence: -0.01)
       reference_word
+      AnalyzedPost.populate_reference_words
       AnalyzedPost.increment_school_ratings
       expect(Rating.first.negative_post_count).to eq 0
     end
@@ -107,6 +116,7 @@ describe AnalyzedPost do
       analyzed_post
       Keyword.create(analyzed_post_id: analyzed_post.id, text: "basketball", sentiment: "mixed", confidence: 0.01)
       reference_word
+      AnalyzedPost.populate_reference_words
       AnalyzedPost.increment_school_ratings
       expect(Rating.first.mixed_post_count).to eq 1
     end
@@ -115,6 +125,7 @@ describe AnalyzedPost do
       analyzed_post
       Keyword.create(analyzed_post_id: analyzed_post.id, text: "basketball", sentiment: "neutral", confidence: 0.0)
       reference_word
+      AnalyzedPost.populate_reference_words
       AnalyzedPost.increment_school_ratings
       expect(Rating.first.neutral_post_count).to eq 1
     end
@@ -123,6 +134,7 @@ describe AnalyzedPost do
       analyzed_post
       Keyword.create(analyzed_post_id: analyzed_post.id, text: "basketball", sentiment: "positive", confidence: 0.5)
       reference_word
+      AnalyzedPost.populate_reference_words
       AnalyzedPost.increment_school_ratings
       expect(Rating.first.positive_post_count).to eq 1
     end
@@ -131,6 +143,7 @@ describe AnalyzedPost do
       analyzed_post
       Keyword.create(analyzed_post_id: analyzed_post.id, text: "basketball", sentiment: "negative", confidence: -0.5)
       reference_word
+      AnalyzedPost.populate_reference_words
       AnalyzedPost.increment_school_ratings
       expect(Rating.first.positive_post_count).to eq 0
     end
@@ -139,6 +152,7 @@ describe AnalyzedPost do
       analyzed_post
       Keyword.create(analyzed_post_id: analyzed_post.id, text: "basketball", sentiment: "neutral", confidence: 0.0)
       reference_word
+      AnalyzedPost.populate_reference_words
       AnalyzedPost.increment_school_ratings
       expect(Rating.first.positive_post_count).to eq 0
     end
@@ -147,6 +161,7 @@ describe AnalyzedPost do
       analyzed_post
       Keyword.create(analyzed_post_id: analyzed_post.id, text: "basketball", sentiment: "mixed", confidence: 0.05)
       reference_word
+      AnalyzedPost.populate_reference_words
       AnalyzedPost.increment_school_ratings
       expect(Rating.first.positive_post_count).to eq 0
     end
@@ -155,6 +170,7 @@ describe AnalyzedPost do
       analyzed_post
       Keyword.create(analyzed_post_id: analyzed_post.id, text: "basketball", sentiment: "negative", confidence: -0.5)
       reference_word
+      AnalyzedPost.populate_reference_words
       AnalyzedPost.increment_school_ratings
       expect(Rating.first.negative_post_count).to eq 1
     end
@@ -163,6 +179,7 @@ describe AnalyzedPost do
       analyzed_post
       Keyword.create(analyzed_post_id: analyzed_post.id, text: "basketball", sentiment: "neutral", confidence: 0.0)
       reference_word
+      AnalyzedPost.populate_reference_words
       AnalyzedPost.increment_school_ratings
       expect(Rating.first.neutral_post_count).to eq 1
     end
@@ -171,6 +188,7 @@ describe AnalyzedPost do
       analyzed_post
       Keyword.create(analyzed_post_id: analyzed_post.id, text: "basketball", sentiment: "mixed", confidence: 0.02)
       reference_word
+      AnalyzedPost.populate_reference_words
       AnalyzedPost.increment_school_ratings
       expect(Rating.first.mixed_post_count).to eq 1
     end
@@ -180,6 +198,7 @@ describe AnalyzedPost do
       Keyword.create(analyzed_post_id: analyzed_post.id, text: "basketball", sentiment: "positive", confidence: 0.5)
       Keyword.create(analyzed_post_id: analyzed_post.id, text: "basketball", sentiment: "positive", confidence: 0.5)
       reference_word
+      AnalyzedPost.populate_reference_words
       AnalyzedPost.increment_school_ratings
       expect(Rating.first.positive_post_count).to eq 1
     end
@@ -189,6 +208,7 @@ describe AnalyzedPost do
       Keyword.create(analyzed_post_id: analyzed_post.id, text: "basketball", sentiment: "positive", confidence: 0.51)
       Keyword.create(analyzed_post_id: analyzed_post.id, text: "basketball", sentiment: "negative", confidence: -0.50)
       reference_word
+      AnalyzedPost.populate_reference_words
       AnalyzedPost.increment_school_ratings
       expect(Rating.first.positive_post_count).to eq 0
     end
@@ -198,6 +218,7 @@ describe AnalyzedPost do
       Keyword.create(analyzed_post_id: analyzed_post.id, text: "basketball", sentiment: "positive", confidence: 0.50)
       Keyword.create(analyzed_post_id: analyzed_post.id, text: "basketball", sentiment: "negative", confidence: -0.51)
       reference_word
+      AnalyzedPost.populate_reference_words
       AnalyzedPost.increment_school_ratings
       expect(Rating.first.negative_post_count).to eq 0
     end

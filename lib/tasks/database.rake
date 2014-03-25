@@ -20,7 +20,7 @@ require 'fileutils'
       end
 
     desc "This is what to run if you already have a db and want to update your final tables with the geofeedia files in your seeds folder. DELETE FILES AFTERWARD."
-      task :setup_from_empty => :environment do
+      task :json_to_alchemy_to_tables_and_csv => :environment do
         check_setup_for_updating_csv
         json_to_alchemy_to_tables_and_csv
         increment_school_word_counts
@@ -38,9 +38,11 @@ require 'fileutils'
 
     desc "Overwrite topics and schools (deletes what's already in there and repopulates it from rake file)"
       task :overwrite_schools_and_topics => :environment do
-        Topic.all.each {|topic| topic.delete}
-        ReferenceWord.all.each {|word| word.delete}
-        School.all.each {|school| school.delete}
+        Topic.delete_all
+        ReferenceWord.delete_all
+        School.delete_all
+        Rating.delete_all
+        SchoolWordCount.delete_all
         make_topics_and_schools
       end
 
@@ -65,15 +67,20 @@ require 'fileutils'
     #   setup_from_empty
     # end
 
-    desc "Send any json files in seeds folder to alchemy and update csv accordingly, then wipe temporary tables"
-      task :json_to_alchemy_to_tables_and_csv_wipe_tables => :environment do
-        check_setup_for_updating_csv
-        json_to_alchemy_to_tables_and_csv
-        increment_school_word_counts
-        increment_school_ratings
-        create_or_update_school_word_counts
-        wipe_temporary_tables
-        delete_all_files_in_seeds_directory
+    # desc "Send any json files in seeds folder to alchemy and update csv accordingly, then wipe temporary tables"
+    #   task :json_to_alchemy_to_tables_and_csv_wipe_tables => :environment do
+    #     check_setup_for_updating_csv
+    #     json_to_alchemy_to_tables_and_csv
+    #     increment_school_word_counts
+    #     increment_school_ratings
+    #     create_or_update_school_word_counts
+    #     wipe_temporary_tables
+    #     delete_all_files_in_seeds_directory
+    #   end
+
+      task :blah => :environment do
+        Keyword.populate_reference_words
+        Keyword.create_or_update_school_word_counts
       end
 
 # Don't use this one unless you know what you're doing!
@@ -113,7 +120,7 @@ require 'fileutils'
         increment_school_word_counts
         increment_school_ratings
         create_or_update_school_word_counts
-        wipe_temporary_tables
+        # wipe_temporary_tables
       end
   end
 
@@ -212,7 +219,8 @@ def create_original_posts(parsed_items, batch, feed_id, school)
     if post.save
       batch << post
     else
-      puts "original post didn't pass validations"
+      puts "original post didn't pass validations:"
+      puts post.inspect
     end
   end
 end
@@ -265,7 +273,8 @@ def get_alchemy_responses(new_analyzed_posts, new_analyzed_keywords, new_posts)
         if new_keyword.save
           new_analyzed_keywords << new_keyword
         else
-          puts "keyword didn't pass validations"
+          puts "keyword didn't pass validations:"
+          puts new_keyword.inspect
         end
       end
     else
@@ -311,9 +320,9 @@ end
 
 
 def wipe_temporary_tables
-  OriginalPost.all.each {|post| post.delete}
-  AnalyzedPost.all.each {|post| post.delete}
-  Keyword.all.each {|word| word.delete}
+  OriginalPost.delete_all
+  AnalyzedPost.delete_all
+  Keyword.delete_all
 end
 
 
@@ -470,7 +479,7 @@ def make_topics_and_schools
     ReferenceWord.where(name: word, topic_id: Topic.find_by_name("art")).first_or_create
   end
 
-  climate = ["weather", "cold outside", "hot outside", "cold out", "hot out", "sunshine", "clouds", "sunny", "sun", "sunset", "sweltering", "sunscreen", "air conditioner", "ac unit", "freezing", "freeze", "snow", "snowy", "chilly", "snowing", "rain", "rainy", "raining", "windy", "cloudy", "partly cloudy", "clear skies", "cloudy day", "rainy day", "sunny day", "snowy day", "snow day", "snowday", "great weather", "nice weather", "shitty weather", "horrible weather", "awesome weather", "worst weather", "best weather", "sunrise", "beautiful sunset", "beautiful sunrise", "sleet", "sleeting", "hailing", "hail", "icy rain", "blustery", "shivering", "overheated", "nice out", "shitty out", "horrible out", "nice outside", "shitty outside", "horrible outside", "beautiful outside", "beautiful out", "below zero", "below freezing", "celsius", "fahrenheit", "weather", "weather report", "weather forecast", "forecast", "weather man", "weather woman", "weatherman", "weatherwoman", "weather person", "weather.com", "winter", "winter coat", "summer", "spring", "autumn", "humid", "dry heat", "dry air"]
+  climate = ["weather", "cold outside", "hot outside", "cold out", "hot out", "misty", "foggy", "sunshine", "clouds", "sunny", "sun", "sunset", "sweltering", "sunscreen", "air conditioner", "ac unit", "freezing", "freeze", "snow", "snowy", "chilly", "snowing", "rain", "rainy", "raining", "windy", "cloudy", "partly cloudy", "clear skies", "cloudy day", "rainy day", "sunny day", "snowy day", "snow day", "snowday", "great weather", "nice weather", "shitty weather", "horrible weather", "awesome weather", "worst weather", "best weather", "sunrise", "beautiful sunset", "beautiful sunrise", "sleet", "sleeting", "hailing", "hail", "icy rain", "blustery", "shivering", "overheated", "nice out", "shitty out", "horrible out", "nice outside", "shitty outside", "horrible outside", "beautiful outside", "beautiful out", "below zero", "below freezing", "celsius", "fahrenheit", "weather", "weather report", "weather forecast", "forecast", "weather man", "weather woman", "weatherman", "weatherwoman", "weather person", "weather.com", "winter", "winter coat", "summer", "spring", "autumn", "humid", "dry heat", "dry air"]
   climate.each do |word|
     ReferenceWord.where(name: word, topic_id: Topic.find_by_name("climate")).first_or_create
   end

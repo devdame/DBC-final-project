@@ -1,90 +1,105 @@
 <h1><%= @school.name %></h1>
 
-<svg id="school-chart-bar" width="500" height="50">
-  <rect x="0" y="0" width="500" height="50"/>
-  <ellipse cx="250" cy="25" rx="100" ry="25" fill="purple"/>
-  <circle cx="250" cy="25" r="25" fill="red"/>
-  <line x1="0" y1="0" x2="500" y2="50" stroke="green"/>
-  <text x="250" y="25">Easy-peasy</text>
-</svg>
+<h2>Pie chart: Positive vs. Negative</h2>
 
-<svg width="500" height="50">
-<circle cx="25" cy="25" r="20"
-        fill="rgba(128, 0, 128, 0.75)"
-        stroke="rgba(0, 255, 0, 0.25)" stroke-width="10"/>
-<circle cx="75" cy="25" r="20"
-        fill="rgba(0, 255, 0, 0.75)"
-        stroke="rgba(0, 0, 255, 0.25)" stroke-width="10"/>
-<circle cx="125" cy="25" r="20"
-        fill="rgba(255, 255, 0, 0.75)"
-        stroke="rgba(255, 0, 0, 0.25)" stroke-width="10"/>
-</svg>
+    <!-- Helpful example from https://gist.github.com/enjalot/1203641 -->
+    <script type="text/javascript">
 
-<br>
+    var w = 1000,                        //width
+    h = 500,                            //height
+    r = 200,                            //radius
+    color = d3.scale.category20c();     //builtin range of colors
 
-<script type="text/javascript">
+    // data = [{"label":"Good", "value":60},
+    //         {"label":"Bad", "value":30},
+    //         {"label":"Other", "value":10}];
 
-// var dataset = [ 5, 10, 13, 19, 21, 25, 22, 18, 15, 13,
-//                 11, 12, 15, 20, 18, 17, 16, 18, 23, 25 ];
+    var json = '<%= @social_media_profile.html_safe %>';
+    var data = jQuery.parseJSON(json);
 
-var json = '<%= @social_media_profile.html_safe %>';
-var social = jQuery.parseJSON(json);
-var dataset = [ social.total_social_ratio, 10, 13, 19, 21, 25, 22, 18, 15, 13,
-                11, 12, 15, 20, 18, 17, 16, 18, 23, 25 ];
 
-var w = 500;
-var h = 100;
-var barPadding = 1;  // <-- New!
+    data = [{"label":"Good", "value": data.positive_social_ratio},
+            {"label":"Bad", "value": data.negative_social_ratio}];
 
 
 
-//Create SVG element
-var svg = d3.select("body")
-            .append("svg")
-            .attr("width", w)
-            .attr("height", h);
+    var vis = d3.select("body")
+        .append("svg:svg")              //create the SVG element inside the <body>
+        .data([data])                   //associate our data with the document
+            .attr("width", w)           //set the width and height of our visualization (these will be attributes of the <svg> tag
+            .attr("height", h)
+        .append("svg:g")                //make a group to hold our pie chart
+            .attr("transform", "translate(" + r + "," + r + ")")    //move the center of the pie chart from 0, 0 to radius, radius
 
-svg.selectAll("rect")
-   .data(dataset)
-   .enter()
-   .append("rect")
-.attr("x", function(d, i) {
-    return i * (w / dataset.length);
-})
-   .attr("y", function(d) {
-    return h - d * 4;  //Height minus data value
-})
-   .attr("width", w / dataset.length - barPadding)
-.attr("height", function(d) {
-    return d * 4;  //Just the data value
+    var arc = d3.svg.arc()              //this will create <path> elements for us using arc data
+        .outerRadius(r);
 
-})
-.attr("fill", function(d) {
-    return "rgba(0, 0, 200," + (d/25) + ")";
-})
-svg.selectAll("text")
-   .data(dataset)
-   .enter()
-   .append("text")
-.text(function(d) {
-        return d;
-   })
-    .attr("x", function(d, i) {
-        return i * (w / dataset.length) + (w / dataset.length - barPadding) / 2;
-    })
+    var pie = d3.layout.pie()           //this will create arc data for us given a list of values
+        .value(function(d) { return d.value; });    //we must tell it out to access the value of each element in our data array
 
-   .attr("y", function(d) {
-        return h - (d * 4) + 15;              // +15
-   })
-   .attr("fill", "white")
-   .attr("text-anchor", "middle");
+    var arcs = vis.selectAll("g.slice")     //this selects all <g> elements with class slice (there aren't any yet)
+        .data(pie)                          //associate the generated pie data (an array of arcs, each having startAngle, endAngle and value properties)
+        .enter()                            //this will create <g> elements for every "extra" data element that should be associated with a selection. The result is creating a <g> for every object in the data array
+            .append("svg:g")                //create a group to hold each slice (we will have a <path> and a <text> element associated with each slice)
+                .attr("class", "slice");    //allow us to style things in the slices (like text)
 
-svg.append("g")
-    .attr("class", "axis")  //Assign "axis" class
-    .call(xAxis);
-</script>
+        arcs.append("svg:path")
+                .attr("fill", function(d, i) { return color(i); } ) //set the color for each slice to be chosen from the color function defined above
+                .attr("d", arc);                                    //this creates the actual SVG path using the associated data (pie) with the arc drawing function
 
-<h1><%= @social_media_profile.to_json %></h1>
+        arcs.append("svg:text")                                     //add a label to each slice
+                .attr("transform", function(d) {                    //set the label's origin to the center of the arc
+                //we have to make sure to set these before calling arc.centroid
+                d.innerRadius = 0;
+                d.outerRadius = r;
+                return "translate(" + arc.centroid(d) + ")";        //this gives us a pair of coordinates like [50, 50]
+            })
+            .attr("text-anchor", "middle")                          //center the text on it's origin
+            .text(function(d, i) { return data[i].label; });        //get the label from our original data array
+
+
+    var data2 = <%= @ratings_profile.to_json.html_safe %>;
+
+    // Bar graph
+    var width = 420,
+    barHeight = 20;
+
+    var w = 1000,                        //width
+        h = 1000,                       //height
+        color = d3.scale.category20c(),     //builtin range of colors
+        x = d3.scale.linear()
+          .range([0, width]);
+
+    var chart = d3.select("body")
+        .append("svg:svg")              //create the SVG element inside the <body>
+        .data([data])                   //associate our data with the document
+            .attr("width", w)           //set the width and height of our visualization (these will be attributes of the <svg> tag
+            .attr("height", h)
+        .append("svg:g")                //make a group to hold our bar
+
+    var bar = chart.selectAll("g")
+        .data(data2)
+      .enter().append("g")
+        .attr("transform", function(d, i) { return "translate(0," + i * barHeight + ")"; });
+
+    bar.append("rect")
+      .attr("width", function(d) { return (d.positive_count)*3; })
+      .attr("height", barHeight - 1)
+      .attr("fill", "purple");
+    // data = [{"label":"Good", "value": data2.positive_social_ratio},
+    //         {"label":"Bad", "value": data2.negative_social_ratio}];
+
+    bar.append("text")
+    .attr("x", function(d) { return x(d) - 3; })
+    .attr("y", barHeight / 2)
+    .attr("dy", ".35em")
+    .text(function(d) { return d.name; })
+    .attr("fill", "white");
+
+
+
+
+    </script>
 
 <h2>Student body count: <%= @school.student_body_count %></h2>
 <h2>Post (Social media) count: <%= @school.post_count %></h2>
@@ -127,6 +142,6 @@ svg.append("g")
 
 </table>
 
-----------------------------------------
+<p>----------------------------------------</p>
 
 <%= @ratings_profile %>

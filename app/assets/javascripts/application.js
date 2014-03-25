@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require d3
+//= require d3.layout
 //= require turbolinks
 //= require_tree .
 $( document ).ready(function() {

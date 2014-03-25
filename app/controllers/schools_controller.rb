@@ -25,9 +25,13 @@ class SchoolsController < ApplicationController
     #####################################################Send info to front
     @social_media_profile = {:positive_social_ratio => @school.positive_vibe_ratio, :negative_social_ratio => @school.negative_vibe_ratio}.to_json
 
-    @ratings_profile = []
+    holding = {"ratings_profile" => []}
+
     sorted_ratings.each do |rating|
-      @ratings_profile << {name: rating.topic.name, positive_count: rating.positive_post_count, negative_count: rating.negative_post_count}.to_json
+      # p sorted_ratings
+      # @holding["ratings_profile"] << {"rating_#{rating.id}" => {name: rating.topic.name, positive_count: rating.positive_post_count, negative_count: rating.negative_post_count}}
+      holding["ratings_profile"] << {name: rating.topic.name, positive_count: rating.positive_post_count, negative_count: rating.negative_post_count}
     end
+    @ratings_profile = holding["ratings_profile"]
   end
 end

@@ -114,6 +114,14 @@ require 'fileutils'
           })
       end
 
+    desc "Updates final tables with whatever data is in keywords and analyzed posts"
+      task :update_final_tables_from_temporary_tables => :environment do
+        raise "Tables must be properly populated before this task is run!" unless AnalyzedPost.any? && Keyword.any? && School.any? && Topic.any? && ReferenceWord.any? && Rating.any?
+        increment_school_word_counts
+        increment_school_ratings
+        create_or_update_school_word_counts
+        wipe_temporary_tables
+      end
   end
 
 

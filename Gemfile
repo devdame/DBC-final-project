@@ -34,6 +34,9 @@ gem 'multi_xml'
 
 gem 'httparty'
 
+# D3 uses established web standards such as JS and SVG to make data visualizations
+gem 'd3_rails'
+
 gem 'rails_12factor', group: :production
 
 

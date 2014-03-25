@@ -1,3 +1,11 @@
 <h1><%= @topic.name %></h1>
+
+
+
+<% @popular_words.each do |word| %>
+  <% if word %>
+    <li><%= word.reference_word.name %></li>
+  <% end %>
+<% end %>
 <h2>test topic show</h2>
 

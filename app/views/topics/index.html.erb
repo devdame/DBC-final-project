@@ -2,6 +2,7 @@
 
 <ul>
 <% @topics.each do |topic| %>
-  <li>(ID: <%= topic.id %>) <%= topic.name %></li>
+  <li><%= link_to topic.name, topic_path(topic) %></li>
 <% end %>
+
 </ul>

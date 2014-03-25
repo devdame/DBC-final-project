@@ -28,7 +28,7 @@ class AnalyzedPost < ActiveRecord::Base
       when "negative" then school.negative_post_count += 1
       when "neutral" then school.neutral_post_count += 1
       when "mixed" then school.mixed_post_count += 1
-      endqqa
+      end
       school.save
     end
   end

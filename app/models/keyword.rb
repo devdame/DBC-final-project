@@ -50,8 +50,12 @@ class Keyword < ActiveRecord::Base
     self.all.each do |keyword|
       text = keyword.text.downcase
       confidence = keyword.confidence
+      # puts text
+      # puts @@reference_words.inspect
       if @@reference_words.include?(text)
-        lookup_reference_word = ReferenceWord.find_by_name(text)
+        lookup_reference_word = ReferenceWord.find_by_canonical_name(text)
+        puts "lookup reference word:"
+        puts lookup_reference_word
         counter = SchoolWordCount.where(school_id: keyword.analyzed_post.school_id, reference_word_id: lookup_reference_word.id).first_or_create
         counter.word_count += 1
         self.determine_keyword_confidence(keyword, counter)

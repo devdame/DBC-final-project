@@ -14,6 +14,8 @@
 
  body {
   font-family: sans-serif;
+  background: lightgray;
+  font-family: 'noto_sansregular';
  }
 
  .col {
@@ -32,3 +34,46 @@
  }
 
 
+#front-page-logo {
+  width: 30%;
+  margin: auto;
+  margin-bottom: 0;
+  position: relative;
+/*  left: 3%;*/
+}
+
+#front-page-header {
+  text-align: center;
+  font-size: 1.5em;
+}
+
+#front-page-header h2 {
+  margin-top: 0;
+  font-family: 'abeezeeregular';
+}
+
+#front-page-header p {
+  width: 60%;
+  display: block;
+  margin: auto;
+}
+
+#front-page-buttons {
+
+  width: 30%;
+  margin: 30px auto;
+}
+
+#front-page-buttons div {
+  margin: 0 5%;
+}
+
+.button {
+  width: 35%;
+  background: gray;
+  color: white;
+  display: inline-block;
+  height: 10%;
+  border-radius: 10px;
+  text-align: center;
+}

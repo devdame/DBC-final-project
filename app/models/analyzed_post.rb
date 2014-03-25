@@ -12,10 +12,6 @@ class AnalyzedPost < ActiveRecord::Base
     @@reference_words
   end
 
-  def self.find_school(post)
-    post.school
-  end
-
   def self.increment_school_word_count
     self.all.each do |post|
       puts post.id
@@ -66,10 +62,6 @@ class AnalyzedPost < ActiveRecord::Base
         school_rating = Rating.where(topic_id: topic_record.id, school_id: school.id).first_or_create
         if school_rating
           school_rating.total_post_count += 1
-        else
-          puts "didn't find school rating"
-          puts topic
-          puts keyword_match
         end
         aggregated_keywords_data = self.aggregate_keywords(keyword_match)
         case aggregated_keywords_data

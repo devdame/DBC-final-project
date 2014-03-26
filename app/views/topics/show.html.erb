@@ -1,3 +1,17 @@
 <h1><%= @topic.name %></h1>
-<h2>test topic show</h2>
+<div>
+    <h2>Bar graph of the most popular words in <%= @topic.name %></h2>
+    <script>
+    var data = <%= @popular_words.to_json.html_safe %>;
+    barChart(data);
+    </script>
+</div>
+
+<div>
+    <h2>Activity in <%= @topic.name %> by school</h2>
+    <script>
+    var data = <%= @ratings_by_school.to_json.html_safe %>;
+    barChart(data);
+    </script>
+</div>
 

@@ -3,7 +3,10 @@
 <h3>These are the topics we've been collecting data on so far.  Click on a topic to see how each school in our database has been talking about it!</h3>
 
 <ul>
+  <h3>Here are the topics that people talk about</h3>
+  <h3>Click on a topic to get more information</h3>
 <% @topics.each do |topic| %>
-  <li>(ID: <%= topic.id %>) <%= topic.name %></li>
+  <li><%= link_to topic.name, topic_path(topic) %></li>
 <% end %>
+
 </ul>

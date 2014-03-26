@@ -1,5 +1,7 @@
-<h1>test school index</h1>
+<h1>Schools</h1>
+<h3>Choose a school to see its cultural profile and find out what its students have been talking about:</h3>
 
 <%@schools.each do |school|%>
   <%= link_to school.name, school_path(school) %>
 <%end%>
+

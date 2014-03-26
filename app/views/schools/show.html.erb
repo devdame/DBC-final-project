@@ -1,21 +1,19 @@
 <h1><%= @school.name %></h1>
 
-<h2>Pie chart: Positive vs. Negative</h2>
+<h3>A breakdown of all of the social media posts we've collected on this school so far:</h3>
 
     <!-- Helpful example from https://gist.github.com/enjalot/1203641 -->
-
-    <h2>Pie!</h2>
-    <script>
+<script>
     var json = '<%= @social_media_profile.html_safe %>';
     var data = jQuery.parseJSON(json);
     pieChart(data);
-    </script>
+</script>
 
-    <h2>bar!</h2>
-    <script>
+<h3>These are the ten most prevalent topics students at <%= @school.name %> have been talking about:</h3>
+<script>
     var data2 = <%= @ratings_profile.to_json.html_safe %>;
     barChart(data2);
-    </script>
+ </script>
 
 <h2>Student body count: <%= @school.student_body_count %></h2>
 <h2>Post (Social media) count: <%= @school.post_count %></h2>

@@ -1,1 +1,16 @@
-<h1>test index welcome</h1>
+<div id="front-page-header">
+  <%= image_tag("truism_logo_2.png", id: "front-page-logo") %>
+  <h2>Colleges talk. We listen. You learn.</h2>
+  <p>trUism is a tool to help prospective college students find a school that's a good culture fit. We listen to social media output on different college campuses and report to you what students are <i>actually</i> talking about.</p>
+  <br>
+  <p>Let's get started!</p>
+</div>
+<div id="front-page-buttons">
+  <div class="button">
+    <p><%= link_to "View By Schools", controller: "schools" %></p>
+  </div>
+  <div class="button">
+    <p><%= link_to "View By Topics", controller: "topics" %></p>
+  </div>
+</div>
+

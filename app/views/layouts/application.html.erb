@@ -3,25 +3,19 @@
 <head>
   <title>trUism</title>
   <%= stylesheet_link_tag "noto_font/stylesheet.css", media: "all", "data-turbolinks-track" => true %>
+  <%= stylesheet_link_tag "abeezee_font/stylesheet.css", media: "all", "data-turbolinks-track" => true %>
+  <%= stylesheet_link_tag "normalize", media: "all", "data-turbolinks-track" => true %>
   <%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true %>
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   <%= csrf_meta_tags %>
   <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 </head>
 <body>
-  <h1>WOW IT'S AN APP</h1>
-
-  <%= link_to "Home", controller: "welcome" %>
-  <%= link_to "Topics", controller: "topics" %>
-  <%= link_to "Schools (index)", controller: "schools" %>
-  <%= link_to "Schools (compare)", compare_path %>
-  <%= link_to "About", controller: "about" %>
-
+  <%= render 'layouts/header'%>
   <hr>
 
 <%= yield %>
 <hr>
-<p>Footer stuff. Andrew, Daniel, Jay, Jess, Lauren.</p>
-
+<%= render 'layouts/footer'%>
 </body>
 </html>

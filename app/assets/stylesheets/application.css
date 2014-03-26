@@ -32,10 +32,7 @@
   /*border-left: 1px solid gray;*/
  }
 
- /* to aid D3 development */
- svg {
-  border: 5px solid red;
- }
+
 
 
 h2 {
@@ -140,3 +137,20 @@ nav {
 #topics-list li {
   margin: 10px auto;
 }
+
+/*Graph stylings*/
+/*.slice:text {
+  color: white;
+}*/
+
+.chart-div {
+  /*border: 1px solid blue;*/
+  display: inline-block;
+  vertical-align: top;
+  width: 40%;
+}
+
+ /* to aid D3 development */
+ svg {
+  /*border: 5px solid red;*/
+ }

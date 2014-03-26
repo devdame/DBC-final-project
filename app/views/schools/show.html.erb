@@ -6,17 +6,17 @@
     <h2>The possi-vibes versus negi-vibes of a school</h2>
     <h3>Based on the overall sentiment of their input</h3>
     <script>
-<<<<<<< HEAD
+
     var data2 = <%= @ratings_profile.to_json.html_safe %>;
     barChart(data2);
 
     var allSchoolData = <%= @all_school_data.to_json.html_safe %>;
 
-=======
-        var json = '<%= @social_media_profile.html_safe %>';
-        var data = jQuery.parseJSON(json);
-        pieChart(data);
->>>>>>> master
+
+    var json = '<%= @social_media_profile.html_safe %>';
+    var data = jQuery.parseJSON(json);
+    pieChart(data);
+
     </script>
 </div>
 

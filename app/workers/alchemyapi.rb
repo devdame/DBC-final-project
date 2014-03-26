@@ -80,7 +80,7 @@ class AlchemyAPI
 	def initialize()
 	
 		begin
-			key = 'F1e168120685a7e21834fce443695cdb5ae1a3b37'
+			key = '1e168120685a7e21834fce443695cdb5ae1a3b37'
 			key.strip!
 
 			if key.empty?

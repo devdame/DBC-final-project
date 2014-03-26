@@ -14,6 +14,8 @@ class AlchemyWorker
   def perform
     puts "in the alchemy call now"
     alchemyapi = AlchemyAPI.new()
+    new_analyzed_posts = []
+    new_analyzed_keywords = []
     OriginalPost.all.each do |post|
     	alchemy_post_response = alchemyapi.sentiment('text', post.text)
 	    overall_sentiment = get_overall_sentiment(alchemy_post_response)

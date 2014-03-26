@@ -18,10 +18,11 @@
 /*  background: lightgray;*/
   font-family: lato, sans-serif;
   font-weight: 200;
-  padding-top: 30px;
+  padding-top: 70px;
   margin-bottom: 0;
   padding-bottom: 0;
   text-align: center;
+  padding-bottom: 5%;
  }
 
  .col {
@@ -35,10 +36,13 @@
  }
 
 
+h1 {
+  font-family: lato, sans-serif;
+}
 
 
 h2 {
-  font-family: lato, sans-serif;
+  font-family: source-sans-pro, sans-serif;
   font-weight: 400;
 }
 
@@ -52,10 +56,11 @@ nav {
   padding-top: 5px;
   top: 0;
   width: 100%;
-  height: 170px;
+  padding: 5px;
   clear: both;
   font-weight: 300;
-  border-top: 3px solid #527F3F;
+  background: #7596A8;
+  box-shadow: 0 1px 20px gray;
 }
 
 .button {
@@ -133,7 +138,11 @@ nav {
   width: 60%;
   display: block;
   margin: auto;
-  text-shadow: 0.1em 0.1em 0.3em #0A0A0A, 0.2em 0.2em 0.3em #0A0A0A;
+  text-shadow: 0.1em 0.1em 0.3em #0A0A0A, 0.2em 0.2em 0.3em #0A0A0A, 0.0em 0.0em 0.3em #0A0A0A;
+}
+
+#front-page-sub-header {
+  width: 40%;
 }
 
 #front-page-about-link {
@@ -171,13 +180,20 @@ nav {
 }
 
 #schools-list, #topics-list {
- width: 50%;
+ width: 55%;
  margin: auto;
 }
 
-#schools-list p {
-  margin: 10px auto;
-  list-style: none;
+#schools-list div {
+  width: 49%;
+  display: inline-block;
+  margin-top: 25px;
+}
+
+#schools-list div img {
+  height: 100px;
+  max-width: 80%;
+  margin: auto;
 }
 
 #topics-list li {

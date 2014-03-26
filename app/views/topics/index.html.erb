@@ -2,7 +2,6 @@
 
 <h3>These are the topics we've been collecting data on so far.  Click on a topic to see how each school in our database has been talking about it!</h3>
 
-
 <ul id="topics-list">
 <% @topics.each do |topic| %>
   <li><%= link_to(topic.name, topic_path(topic), class: "button") %></li>

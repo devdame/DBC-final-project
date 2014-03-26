@@ -1,17 +1,22 @@
 <h1><%= @topic.name %></h1>
-<div>
-    <h2>Bar graph of the most popular words in <%= @topic.name %></h2>
-    <script>
-    var data = <%= @popular_words.to_json.html_safe %>;
-    barChart(data);
-    </script>
+
+<div class="single-bar-chart">
+  <h2>Activity in <%= @topic.name %> by school</h2>
+  <div id="bar-chart-topic-school" class="chart"></div>
 </div>
 
-<div>
-    <h2>Activity in <%= @topic.name %> by school</h2>
-    <script>
-    var data = <%= @ratings_by_school.to_json.html_safe %>;
-    barChart(data);
-    </script>
+<div class="single-bar-chart">
+  <h2>Bar graph of the most popular words in <%= @topic.name %></h2>
+  <div id="bar-chart-topic" class="chart"></div>
 </div>
+
+<script>
+  var data2 = <%= @ratings_by_school.to_json.html_safe %>;
+  barChart(data2);
+
+  var data = <%= @popular_words.to_json.html_safe %>;
+  barChartTopic(data);
+</script>
+
+
 

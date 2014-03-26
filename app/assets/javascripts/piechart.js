@@ -16,8 +16,8 @@ function pieChart(message) {
 
 
     data = [{"label":"Positive", "value": data.positive_social_ratio},
-            {"label":"Neutral", "value": data.neutral_social_ratio},
-            {"label":"Negative", "value": data.negative_social_ratio}];
+            {"label":"Negative", "value": data.negative_social_ratio},
+            {"label":"Neutral", "value": data.neutral_social_ratio}];
 
     var vis = d3.select("#pie-chart")
         .append("svg:svg")              //create the SVG element inside the <body>
@@ -25,7 +25,7 @@ function pieChart(message) {
             .attr("width", w)           //set the width and height of our visualization (these will be attributes of the <svg> tag
             .attr("height", h)
         .append("svg:g")                //make a group to hold our pie chart
-            .attr("transform", "translate(" + r + "," + r + ")")    //move the center of the pie chart from 0, 0 to radius, radius
+            .attr("transform", "translate(" + w/2 + "," + h/2 + ")")    //move the center of the pie chart from 0, 0 to radius, radius
 
     var arc = d3.svg.arc()              //this will create <path> elements for us using arc data
         .outerRadius(r);
@@ -67,5 +67,5 @@ function pieChart(message) {
             .attr("text-anchor", "middle")                          //center the text on it's origin
             .text(function(d, i) { return data[i].label; })           //get the label from our original data array
             .attr("fill", "white")  // text
-            .attr("font-family", "Sans-Serif");
+            .attr("font-family", "Sans-Serif")
 }

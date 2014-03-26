@@ -1,10 +1,8 @@
 <h1><%= @school.name %></h1>
 
-<h3>A breakdown of all of the social media posts we've collected on this school so far:</h3>
+<h3>A breakdown of all of the social media posts we've collected on this school so far based on their overall sentiment:</h3>
 
 <div>
-    <h2>The possi-vibes versus negi-vibes of a school</h2>
-    <h3>Based on the overall sentiment of their input</h3>
     <script>
         var json = '<%= @social_media_profile.html_safe %>';
         var data = jQuery.parseJSON(json);

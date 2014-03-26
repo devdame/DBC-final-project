@@ -18,7 +18,7 @@ function pieChart(message) {
     data = [{"label":"Good", "value": data.positive_social_ratio},
             {"label":"Bad", "value": data.negative_social_ratio}];
 
-    var vis = d3.select("body")
+    var vis = d3.select("#pie-chart")
         .append("svg:svg")              //create the SVG element inside the <body>
         .data([data])                   //associate our data with the document
             .attr("width", w)           //set the width and height of our visualization (these will be attributes of the <svg> tag

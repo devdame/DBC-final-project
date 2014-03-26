@@ -16,6 +16,8 @@
   font-family: sans-serif;
   background: lightgray;
   font-family: 'noto_sansregular';
+  margin-bottom: 0;
+  padding-bottom: 0;
  }
 
  .col {
@@ -33,6 +35,24 @@
   border: 1px solid lightgray;
  }
 
+h2 {
+  font-family: 'abeezeeregular';
+}
+
+#nav-bar-logo {
+  height: 50px;
+}
+
+#footer {
+  background: gray;
+  color: white;
+  text-align: center;
+  font-size: .8em;
+  width: 100%;
+  padding: 10px 0;
+  position: absolute;
+  bottom: 0;
+}
 
 #front-page-logo {
   width: 30%;
@@ -49,7 +69,6 @@
 
 #front-page-header h2 {
   margin-top: 0;
-  font-family: 'abeezeeregular';
 }
 
 #front-page-header p {
@@ -76,4 +95,9 @@
   height: 10%;
   border-radius: 10px;
   text-align: center;
+}
+
+.button a {
+  color: white;
+  text-decoration: none;
 }

@@ -12,7 +12,6 @@
 
     var allSchoolData = <%= @all_school_data.to_json.html_safe %>;
 
-
     var json = '<%= @social_media_profile.html_safe %>';
     var data = jQuery.parseJSON(json);
     pieChart(data);

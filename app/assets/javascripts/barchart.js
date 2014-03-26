@@ -21,7 +21,7 @@ var width = 420,
         .append("svg:g")                //make a group to hold our bar
 
     var bar = chart.selectAll("g")
-        .data(data2)
+        .data(data)
       .enter().append("g")
         .attr("transform", function(d, i) { return "translate(0," + i * barHeight + ")"; });
 
@@ -29,7 +29,7 @@ var width = 420,
       .attr("width", 0)
       .transition()
       .duration(800)
-      .attr("width", function(d) { return (d.positive_count)*3; })
+      .attr("width", function(d) { return (d.count)*d.multiplier;})
       .attr("height", barHeight - 1)
       .attr("fill", function(d, i) { return color(i); } );
     // data = [{"label":"Good", "value": data2.positive_social_ratio},
@@ -40,5 +40,5 @@ var width = 420,
     .attr("y", barHeight / 2)
     .attr("dy", ".35em")
     .text(function(d) { return d.name; })
-    .attr("fill", "white");
+    .attr("fill", "black");
 }

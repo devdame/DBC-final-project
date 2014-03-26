@@ -37,6 +37,9 @@
   border: 1px solid lightgray;
  }
 
+nav ul li {
+  display:inline;
+  padding: 10px;
 h2 {
   font-family: 'abeezeeregular';
 }

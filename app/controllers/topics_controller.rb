@@ -31,7 +31,7 @@ class TopicsController < ApplicationController
     ratings_by_school = @ratings.where(topic_id: @topic.id).all
     ratings_by_school.each do |rating|
       if rating
-        holding2["ratings_by_school"] << {name: rating.school.name, count: rating.total_post_count, multiplier: 20}
+        holding2["ratings_by_school"] << {name: rating.school.name, count: rating.total_post_count, multiplier: 15}
       end
     end
     @ratings_by_school = holding2["ratings_by_school"]

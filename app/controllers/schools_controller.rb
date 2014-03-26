@@ -29,7 +29,7 @@ class SchoolsController < ApplicationController
     sorted_ratings.each do |rating|
       # p sorted_ratings
       # @holding["ratings_profile"] << {"rating_#{rating.id}" => {name: rating.topic.name, positive_count: rating.positive_post_count, negative_count: rating.negative_post_count}}
-      ratings_holding["ratings_profile"] << {name: rating.topic.name, positive_count: rating.positive_post_count, negative_count: rating.negative_post_count}
+      ratings_holding["ratings_profile"] << {name: rating.topic.name, positive_count: rating.positive_post_count, negative_count: rating.negative_post_count, count: (rating.positive_post_count + rating.negative_post_count), multiplier: 3}
     end
     @ratings_profile = ratings_holding["ratings_profile"]
 
@@ -39,7 +39,7 @@ class SchoolsController < ApplicationController
 
     @school.ratings.each_with_index do |rating, index|
       # puts "------------------------------------------"
-      school_data["school_topic_posts_count"] << {school: rating.school.name, topic_name: rating.topic.name, total_post_count: rating.total_post_count, positive_post_count: rating.positive_post_count, negative_post_count: rating.negative_post_count, neutral_post_count: rating.neutral_post_count, mixed_post_count: rating.mixed_post_count, top_twenty_topic_words: []}
+      school_data["school_topic_posts_count"] << {school: rating.school.name, name: rating.topic.name, count: rating.total_post_count, positive_post_count: rating.positive_post_count, negative_post_count: rating.negative_post_count, neutral_post_count: rating.neutral_post_count, mixed_post_count: rating.mixed_post_count, top_twenty_topic_words: []}
       # puts school_data
       popular_words = []
       # puts "======================================="

@@ -1,66 +1,30 @@
 <h1><%= @school.name %></h1>
 
-<h2>Pie chart: Positive vs. Negative</h2>
+<h3>A breakdown of all of the social media posts we've collected on this school so far:</h3>
 
-    <!-- Helpful example from https://gist.github.com/enjalot/1203641 -->
-
-    <h2>Pie!</h2>
+<div>
+    <h2>The possi-vibes versus negi-vibes of a school</h2>
+    <h3>Based on the overall sentiment of their input</h3>
     <script>
-    var json = '<%= @social_media_profile.html_safe %>';
-    var data = jQuery.parseJSON(json);
-    pieChart(data);
-    </script>
-
-    <h2>bar!</h2>
-    <script>
+<<<<<<< HEAD
     var data2 = <%= @ratings_profile.to_json.html_safe %>;
     barChart(data2);
 
     var allSchoolData = <%= @all_school_data.to_json.html_safe %>;
 
+=======
+        var json = '<%= @social_media_profile.html_safe %>';
+        var data = jQuery.parseJSON(json);
+        pieChart(data);
+>>>>>>> master
     </script>
+</div>
 
-<h2>Student body count: <%= @school.student_body_count %></h2>
-<h2>Post (Social media) count: <%= @school.post_count %></h2>
-<h2>Social Media Activity: <%= @school.social_media_activity %></h2>
-<h2>Positive Vibe Count: <%= @school.positive_vibe_ratio %></h2>
-<h2>Negative Vibe Count: <%= @school.negative_vibe_ratio %></h2>
-<h2>Neutral Vibe Count*: <%= @school.neutral_vibe_ratio %></h2>
-<h2>Mixed Vibe Count*: <%= @school.mixed_vibe_ratio %></h2>
-<p>*mixed_vibe_ratio may be dropped from final product</p>
+<div>
+<h3>These are the ten most prevalent topics students at <%= @school.name %> have been talking about:</h3>
+<script>
+    var data = <%= @ratings_profile.to_json.html_safe %>;
+    barChart(data);
+ </script>
 
-
-<h1>Ratings</h1>
-
-<table>
-  <tr>
-    <td>Rating ID</td>
-    <td>Topic</td>
-    <td>School</td>
-    <td>Activity</td>
-    <td>Pos</td>
-    <td>Neg</td>
-    <td>Neu</td>
-    <td>Mix</td>
-  </tr>
-
-  <% @ratings.each do |rating| %>
-
-  <tr>
-    <td><%= rating.id %></td>
-    <td>(<%= rating.topic_id %>) <%= rating.topic.name %></td>
-    <td>(<%= rating.school_id %>) <%= rating.school.name %></td>
-    <td><%= rating.topic_activity_ratio %></td>
-    <td><%= rating.topic_positivity_ratio %></td>
-    <td><%= rating.topic_negativity_ratio %></td>
-    <td><%= rating.topic_neutral_ratio %></td>
-    <td><%= rating.topic_mixed_ratio %></td>
-  </tr>
-
-  <% end %>
-
-</table>
-
-<p>----------------------------------------</p>
-
-<%= @ratings_profile %>
+</div>

@@ -23,7 +23,7 @@ class SchoolsController < ApplicationController
     sorted_ratings = @ratings.order("total_post_count desc").limit(10)
 
     @social_media_profile = {:positive_social_ratio => @school.positive_vibe_ratio, :negative_social_ratio => @school.negative_vibe_ratio}.to_json
-
+    #####################################################
     ratings_holding = {"ratings_profile" => []}
 
     sorted_ratings.each do |rating|
@@ -32,11 +32,13 @@ class SchoolsController < ApplicationController
       ratings_holding["ratings_profile"] << {name: rating.topic.name, positive_count: rating.positive_post_count, negative_count: rating.negative_post_count, count: (rating.positive_post_count + rating.negative_post_count), multiplier: 3}
     end
     @ratings_profile = ratings_holding["ratings_profile"]
-
+    p @ratings_profile
     #Post count and sentiment by topic and most popular words by topic for a particular school
     ##########################################
     school_data = {"school_topic_posts_count" => []}
 
+    school_sorted_ratings = @ratings.order("total_post_count desc")
+    # p school_sorted_ratings
     @school.ratings.each_with_index do |rating, index|
       # puts "------------------------------------------"
       school_data["school_topic_posts_count"] << {school: rating.school.name, name: rating.topic.name, count: rating.total_post_count, positive_post_count: rating.positive_post_count, negative_post_count: rating.negative_post_count, neutral_post_count: rating.neutral_post_count, mixed_post_count: rating.mixed_post_count, top_twenty_topic_words: []}
@@ -66,7 +68,7 @@ class SchoolsController < ApplicationController
       # puts "---------------------------"
       # p popular_words
       top_twenty = popular_words.sort{|least_popular,most_popular| most_popular[:count] <=> least_popular[:count]}
-      top_twenty.first(50).each do |popular_word_hash|
+      top_twenty.first(20).each do |popular_word_hash|
         school_data["school_topic_posts_count"][index][:top_twenty_topic_words] << popular_word_hash
       end
       popular_words = []

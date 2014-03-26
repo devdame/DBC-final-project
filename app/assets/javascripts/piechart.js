@@ -15,16 +15,17 @@ function pieChart(message) {
 
 
 
-    data = [{"label":"Good", "value": data.positive_social_ratio},
-            {"label":"Bad", "value": data.negative_social_ratio}];
+    data = [{"label":"Positive", "value": data.positive_social_ratio},
+            {"label":"Negative", "value": data.negative_social_ratio},
+            {"label":"Neutral", "value": data.neutral_social_ratio}];
 
-    var vis = d3.select("body")
+    var vis = d3.select("#pie-chart")
         .append("svg:svg")              //create the SVG element inside the <body>
         .data([data])                   //associate our data with the document
             .attr("width", w)           //set the width and height of our visualization (these will be attributes of the <svg> tag
             .attr("height", h)
         .append("svg:g")                //make a group to hold our pie chart
-            .attr("transform", "translate(" + r + "," + r + ")")    //move the center of the pie chart from 0, 0 to radius, radius
+            .attr("transform", "translate(" + w/2 + "," + h/2 + ")")    //move the center of the pie chart from 0, 0 to radius, radius
 
     var arc = d3.svg.arc()              //this will create <path> elements for us using arc data
         .outerRadius(r);
@@ -43,7 +44,7 @@ function pieChart(message) {
 
         arcs.append("svg:path")
                 .attr("fill", function(d, i) { return color(i); } ) //set the color for each slice to be chosen from the color function defined above
-                .transition().delay(function(d, i) { return i * 1000; }).duration(800)
+                .transition().delay(function(d, i) { return i * 500; }).duration(500)
                 // return i * 100 is delay between sector animations
                 //.duration(2000) is animation speed
                 // .transition()
@@ -64,6 +65,7 @@ function pieChart(message) {
                 return "translate(" + arc.centroid(d) + ")";        //this gives us a pair of coordinates like [50, 50]
             })
             .attr("text-anchor", "middle")                          //center the text on it's origin
-            .text(function(d, i) { return data[i].label; });        //get the label from our original data array
-
+            .text(function(d, i) { return data[i].label; })           //get the label from our original data array
+            .attr("fill", "white")  // text
+            .attr("font-family", "Sans-Serif")
 }

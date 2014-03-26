@@ -49,9 +49,9 @@ class SchoolsController < ApplicationController
 
     #a hash of the 10 most talked about topics at each school
     #####################################################General School Activity Info
-    sorted_ratings = @ratings.order("total_post_count desc").limit(10)
+    sorted_ratings = @ratings.order("total_post_count desc")
 
-    @social_media_profile = {:positive_social_ratio => @school.positive_vibe_ratio, :negative_social_ratio => @school.negative_vibe_ratio}.to_json
+    @social_media_profile = {:positive_social_ratio => @school.positive_vibe_ratio, :negative_social_ratio => @school.negative_vibe_ratio, :neutral_social_ratio => @school.neutral_vibe_ratio}.to_json
     #####################################################
     ratings_holding = {"ratings_profile" => []}
 

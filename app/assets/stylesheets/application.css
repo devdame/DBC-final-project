@@ -37,12 +37,12 @@
 
 
 h1 {
-  font-family: lato, sans-serif;
+  font-family: 'Noto Sans', sans-serif;
 }
 
 
 h2 {
-  font-family: source-sans-pro, sans-serif;
+  font-family: 'Noto Sans', sans-serif;
   font-weight: 400;
 }
 
@@ -72,7 +72,7 @@ nav {
   text-align: center;
   border: 2px solid white;
   border-radius: 40px;
-  box-shadow: .1em .1em .1em black;
+  box-shadow: 1px 1px 8px black;
 }
 
 .button a {
@@ -138,7 +138,7 @@ nav {
   width: 60%;
   display: block;
   margin: auto;
-  text-shadow: 0.1em 0.1em 0.3em #0A0A0A, 0.2em 0.2em 0.3em #0A0A0A, 0.0em 0.0em 0.3em #0A0A0A;
+  text-shadow: 0.1em 0.1em 0.3em #0A0A0A, 0.2em 0.2em 0.3em #0A0A0A, 0.0em 0.0em 0.3em #0A0A0A, -0.1em -0.1em 0.3em #0A0A0A;
 }
 
 #front-page-sub-header {

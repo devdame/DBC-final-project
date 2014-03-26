@@ -16,7 +16,7 @@ class SchoolsController < ApplicationController
     @topics = Topic.all
     @ratings = Rating.all.where(school_id: @school.id)
        #a hash of the 10 most talked about topics at each school
-    sorted_ratings = @ratings.order("total_post_count desc").limit(10)
+    sorted_ratings = @ratings.order("total_post_count desc")
 
 
 
@@ -30,7 +30,7 @@ class SchoolsController < ApplicationController
     sorted_ratings.each do |rating|
       # p sorted_ratings
       # @holding["ratings_profile"] << {"rating_#{rating.id}" => {name: rating.topic.name, positive_count: rating.positive_post_count, negative_count: rating.negative_post_count}}
-      holding["ratings_profile"] << {name: rating.topic.name, positive_count: rating.positive_post_count, negative_count: rating.negative_post_count, count: (rating.positive_post_count + rating.negative_post_count), multiplier: 3}
+      holding["ratings_profile"] << {name: rating.topic.name, positive_count: rating.positive_post_count, negative_count: rating.negative_post_count, neutral_count: rating.neutral_post_count, count: (rating.positive_post_count + rating.negative_post_count + rating.neutral_post_count), multiplier: 3}
     end
     @ratings_profile = holding["ratings_profile"]
   end

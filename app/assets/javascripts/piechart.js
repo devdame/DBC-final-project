@@ -60,7 +60,7 @@ function pieChart(message) {
         arcs.append("svg:text")                                     //add a label to each slice
                 .attr("transform", function(d) {                    //set the label's origin to the center of the arc
                 //we have to make sure to set these before calling arc.centroid
-                d.innerRadius = 0;
+                d.innerRadius = 120;
                 d.outerRadius = r;
                 return "translate(" + arc.centroid(d) + ")";        //this gives us a pair of coordinates like [50, 50]
             })

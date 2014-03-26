@@ -1,10 +1,90 @@
 <h1>test school compare</h1>
 
 <div class="col left-col">
-  <h1><%= @school_one.name %></h2>
+  <form id="choose_school_one" action="/schoolcompare" method="GET">
+    <select name="school_selector_one" id="school_one_selector">
+      <option>Please choose your first school...</option>
+      <option value="0">Arizona State University</option>
+      <option value="1">University of Michigan, Ann Arbor</option>
+      <option value="2">University of Texas, Austin</option>
+      <option value="3">Michigan State University</option>
+      <option value="4">University of Georgia, Athens</option>
+    </select>
+  </form>
 </div>
 
 
 <div class="col right-col">
-  <h1><%= @school_two.name %></h2>
+  <form id="choose_school_two" action="/schoolcompare" method="GET">
+    <select name="school_selector_two" id="school_two_selector">
+      <option>Please choose your second school...</option>
+      <option value="0">Arizona State University</option>
+      <option value="1">University of Michigan, Ann Arbor</option>
+      <option value="2">University of Texas, Austin</option>
+      <option value="3">Michigan State University</option>
+      <option value="4">University of Georgia, Athens</option>
+    </select>
+  </form>
 </div>
+
+<div id="school_one_display">
+
+</div>
+
+<div id="school_two_display">
+
+</div>
+
+
+<script type="text/javascript">
+
+  $(document).on('change', '#school_one_selector', function(event) {
+    event.preventDefault();
+
+    var url = $('#choose_school_one').attr('action');
+    var schoolId = (parseInt($('#school_one_selector option:selected').val()) + 1);
+
+    $.get(url, {school_id: schoolId}, function(serverResponse) {
+      console.log(serverResponse);
+      $('#school_one_display').html(serverResponse);
+    })
+  });
+
+  $(document).on('change', '#school_two_selector', function(event) {
+    event.preventDefault();
+
+    var url = $('#choose_school_two').attr('action');
+    var schoolId = (parseInt($('#school_two_selector option:selected').val()) + 1);
+
+    $.get(url, {school_id: schoolId}, function(serverResponse) {
+      var divTwo = $('#school_two_display')
+      // divTwo.addClass('.hide_div');
+      console.log(divTwo);
+
+      // console.log(divTwo);
+
+      // divTwo.animate({
+      //   opacity: 0,
+      // });
+      // divTwo.removeClass('.display-none');
+      divTwo.html(serverResponse)
+      // divTwo.animate({
+      //   opacity: 5
+      //   }, 5000, function() {
+      //     console.log("test");
+      //   });
+    });
+});
+
+
+
+  //   $( "#clickme" ).click(function() {
+  // $( "#book" ).animate({
+  //   opacity: 0.25,
+  //   left: "+=50",
+  //   height: "toggle"
+  // }, 5000, function() {
+  //   // Animation complete.
+
+
+</script>

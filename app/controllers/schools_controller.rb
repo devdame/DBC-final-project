@@ -5,10 +5,39 @@ class SchoolsController < ApplicationController
     @topics = Topic.all
   end
 
+  def schoolcompare
+    if request.xhr?
+      @school = School.find(params[:school_id])
+      @ratings = Rating.all.where(school_id: @school.id)
+      @topics = Topic.all
+      # @topic = Topic.find(params[:id])
+      # @ratings = Rating.all
+
+      #a hash of the 10 most talked about topics at each school
+      #####################################################General School Activity Info
+      sorted_ratings = @ratings.order("total_post_count desc").limit(10)
+
+      @social_media_profile = {:positive_social_ratio => @school.positive_vibe_ratio, :negative_social_ratio => @school.negative_vibe_ratio}.to_json
+      if params[:school_id] == "1"
+        render "_school_compare", :layout => false
+      elsif params[:school_id] == "2"
+        render "_school_compare", :layout => false
+      elsif params[:school_id] == "3"
+        render "_school_compare", :layout => false
+      elsif params[:school_id] == "4"
+        render "_school_compare", :layout => false
+      elsif params[:school_id] == "5"
+        render "_school_compare", :layout => false
+      end
+      puts "Hello, I got here!"
+    else
+      render "_sadffsdadfs"
+    end
+
+  end
+
   def compare
-    # http://localhost:3000/compare?school_one_id=1&school_two_id=4
-    @school_one = School.find(params[:school_one_id])
-    @school_two = School.find(params[:school_two_id])
+
   end
 
   def show

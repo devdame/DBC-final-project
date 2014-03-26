@@ -48,7 +48,7 @@ nav {
   padding-top: 5px;
   top: 0;
   width: 100%;
-  height: 170px;
+  height: 20px;
   clear: both;
 }
 
@@ -139,4 +139,22 @@ nav {
 
 #topics-list li {
   margin: 10px auto;
+}
+
+.col .left-col {
+  z-index: 100;
+}
+
+.col .right-col {
+  z-index: 100;
+}
+
+#compare_50 {
+  width: 49%;
+  clear: both;
+  float: left;
+}
+
+.hide_div {
+  display: none;
 }

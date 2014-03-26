@@ -6,5 +6,15 @@
     barChart(data);
     </script>
 </div>
-<h2>test topic show</h2>
+
+
+
+
+<div>
+    <h2>more bar!</h2>
+    <script>
+    var data = <%= @ratings_by_school.to_json.html_safe %>;
+    barChart(data);
+    </script>
+</div>
 

@@ -37,9 +37,7 @@
   border: 1px solid lightgray;
  }
 
-nav ul li {
-  display:inline;
-  padding: 10px;
+
 h2 {
   font-family: 'abeezeeregular';
 }
@@ -78,7 +76,7 @@ nav {
   font-size: .8em;
   width: 100%;
   padding: 10px 0;
-  position: absolute;
+  position: fixed;
   bottom: 0;
 }
 
@@ -106,7 +104,6 @@ nav {
 }
 
 #front-page-buttons {
-
   width: 30%;
   margin: 30px auto;
 }

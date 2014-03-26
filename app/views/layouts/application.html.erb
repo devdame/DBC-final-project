@@ -11,21 +11,11 @@
   <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 </head>
 <body>
-  <h1>trUism</h1>
-  <nav>
-    <ul>
-      <li><%= link_to "Home", controller: "welcome" %></li>
-      <li><%= link_to "Topics", controller: "topics" %></li>
-      <li><%= link_to "Schools (index)", controller: "schools" %></li>
-      <li><%= link_to "About", controller: "about" %></li>
-    </ul>
-  </nav>
   <%= render 'layouts/header'%>
   <hr>
 
 <%= yield %>
 <hr>
-<p style='position:fixed;bottom:0'>Footer stuff. Andrew, Daniel, Jay, Jess, Lauren.</p>
 <%= render 'layouts/footer'%>
 </body>
 </html>

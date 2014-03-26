@@ -3,6 +3,8 @@
 <head>
   <title>trUism</title>
   <%= stylesheet_link_tag "noto_font/stylesheet.css", media: "all", "data-turbolinks-track" => true %>
+  <%= stylesheet_link_tag "abeezee_font/stylesheet.css", media: "all", "data-turbolinks-track" => true %>
+  <%= stylesheet_link_tag "normalize", media: "all", "data-turbolinks-track" => true %>
   <%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true %>
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   <%= csrf_meta_tags %>
@@ -18,11 +20,12 @@
       <li><%= link_to "About", controller: "about" %></li>
     </ul>
   </nav>
+  <%= render 'layouts/header'%>
   <hr>
 
 <%= yield %>
 <hr>
 <p style='position:fixed;bottom:0'>Footer stuff. Andrew, Daniel, Jay, Jess, Lauren.</p>
-
+<%= render 'layouts/footer'%>
 </body>
 </html>

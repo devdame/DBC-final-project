@@ -1,6 +1,8 @@
-= CampusLyfe (Working Title) {<img src="https://coveralls.io/repos/devdame/DBC-final-project/badge.png" alt="Coverage Status" />}[https://coveralls.io/r/devdame/DBC-final-project]
+{<img src="https://coveralls.io/repos/devdame/DBC-final-project/badge.png" alt="Coverage Status" />}[https://coveralls.io/r/devdame/DBC-final-project]
 
-CampusLyfe (Working Title) is a tool for prospective college students to view the student culture at different colleges via analysis of social media output on campuses.
+http://truism.herokuapp.com/assets/truism_logo_2-307567e9f5d2e9fdcc3498d03f57540b.png
+
+<b>trUism</b> is a tool to help prospective college students find a school that's a good culture fit. We listen to social media output on different college campuses and report to you what students are actually talking about.
 
 === System Requirements
 - Ruby 2.0.0 p-451
@@ -11,13 +13,24 @@ CampusLyfe (Working Title) is a tool for prospective college students to view th
 === External APIs and Libraries
 <b>Geofeedia</b>
 
+Location-based social media aggregation and monitoring.
+
 - API: https://app.geofeedia.com/account/apisetup
 - Docs: https://app.geofeedia.com/Content/APIQuickStartGuide.pdf
 
 <b>AlchemyAPI</b>
 
+Natural Language Processing and sentiment analysis.
+
 - Demo: http://www.alchemyapi.com/products/demo
 - Docs: http://www.alchemyapi.com/api
+
+<b>D3.js</b>
+
+JavaScript data visualization library utilizing web standards such as SVG, HTML5, and CSS3.
+
+- Gallery: https://github.com/mbostock/d3/wiki/Gallery
+- Docs: https://github.com/mbostock/d3/wiki
 
 === Getting Started
 
@@ -73,11 +86,15 @@ CampusLyfe (Working Title) is a tool for prospective college students to view th
 
 12. Submit a pull request on Github for code review.
 
-=== Running the test suite
+=== Database Schema
+
+http://i29.photobucket.com/albums/c259/dandydanny/DBC/truism_db_schema_zpsbaade552.png
+
+=== Running the Test Suite
 
 <tt>rspec</tt>
 
-=== Brought to you by
+=== Brought to You By
 http://i29.photobucket.com/albums/c259/dandydanny/DBC/team_foxsandwich_zps9492f352.jpg
 
 Jay:: https://github.com/jayrogers889csa

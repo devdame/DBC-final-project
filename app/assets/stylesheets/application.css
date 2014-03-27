@@ -13,36 +13,51 @@
  */
 
  body {
-  background-image: url('noisy_grid.png');
   font-family: sans-serif;
-/*  background: lightgray;*/
+  height: 100%;
+  background-image: url('paint.JPG');
   font-family: lato, sans-serif;
   font-weight: 200;
   padding-top: 70px;
   margin-bottom: 0;
-  padding-bottom: 0;
   text-align: center;
-  padding-bottom: 5%;
+}
+
+ .container {
+    background-color: #FAF3E3;
+    padding: 2% 5% 100px 5%;
+    overflow: auto;
+    display: block;
+    width: 65%;
+    margin: auto;
+    margin-top: 50px;
+    box-shadow: 1px 1px 40px gray;
  }
 
  .col {
-  background-color: #EFEFEF;
-  border: 1px solid orange;
+  /*background-color: #EFEFEF;*/
+  /*border: 1px solid orange;*/
   display: inline-block;
-  width: 49%;
+  vertical-align: top;
+  width: 50%;
+
+   background-color: #EFEFEF;
+   border: 1px solid orange;
+   display: inline-block;
+   width: 49%;
  }
+
  .right-col {
   /*border-left: 1px solid gray;*/
  }
 
 
 h1 {
-  font-family: lato, sans-serif;
+  font-family: 'Noto Sans', sans-serif;
 }
 
-
 h2 {
-  font-family: source-sans-pro, sans-serif;
+  font-family: 'Noto Sans', sans-serif;
   font-weight: 400;
 }
 
@@ -56,23 +71,30 @@ nav {
   padding-top: 5px;
   top: 0;
   width: 100%;
+  height: 20px;
   padding: 5px;
   clear: both;
   font-weight: 300;
-  background: #7596A8;
+  background: #527F3F;
   box-shadow: 0 1px 20px gray;
+  z-index: 1;
+}
+
+#wrapper {
+  min-height: 100%;
+  position: relative;
 }
 
 .button {
   width: 35%;
-  background: #4A87A8;
+  background: #6588A2;
   color: white;
   display: inline-block;
   height: 10%;
   text-align: center;
   border: 2px solid white;
   border-radius: 40px;
-  box-shadow: .1em .1em .1em black;
+  box-shadow: 1px 1px 8px black;
 }
 
 .button a {
@@ -95,6 +117,11 @@ nav {
   text-decoration: none;
   float: right;
   margin-left: 15px;
+  text-shadow: 0.1em 0.1em 0.3em #0A0A0A;
+}
+
+#nav-links a:visited {
+  color: white;
 }
 
 #footer {
@@ -123,6 +150,7 @@ nav {
   margin: auto;
   margin-bottom: 0;
   position: relative;
+/*  left: 2%;*/
 }
 
 #front-page-header {
@@ -138,7 +166,7 @@ nav {
   width: 60%;
   display: block;
   margin: auto;
-  text-shadow: 0.1em 0.1em 0.3em #0A0A0A, 0.2em 0.2em 0.3em #0A0A0A, 0.0em 0.0em 0.3em #0A0A0A;
+  text-shadow: 0.1em 0.1em 0.3em #0A0A0A, 0.2em 0.2em 0.3em #0A0A0A, 0.0em 0.0em 0.3em #0A0A0A, -0.1em -0.1em 0.3em #0A0A0A;
 }
 
 #front-page-sub-header {
@@ -179,7 +207,7 @@ nav {
   text-shadow: 0.12em 0.12em 0.2em #333;
 }
 
-#schools-list, #topics-list {
+#schools-list {
  width: 55%;
  margin: auto;
 }
@@ -191,14 +219,72 @@ nav {
 }
 
 #schools-list div img {
-  height: 100px;
+  max-height: 100px;
   max-width: 80%;
   margin: auto;
 }
 
-#topics-list li {
-  margin: 10px auto;
+#topics-list {
+  width: 70%;
+  margin: 0 auto;
+/*  padding-top: 30px;*/
+  background-color: #6588A2;
+/*  padding: 25px 0;*/
 }
+
+.col .left-col {
+  z-index: 100;
+}
+
+.col .right-col {
+  z-index: 100;
+}
+
+#compare_50 {
+  width: 50%;
+  clear: both;
+  float: left;
+}
+
+#compare_50 {
+  width: 100%;
+  clear: both;
+  float: left;
+}
+
+.hide_div {
+  display: none;
+}
+
+
+.topics-grid {
+  width: 19.5%;
+  display: inline-block;
+  height: 90px;
+  margin: -1px -2px;
+  padding: 0;
+  border: 2px solid white;
+  background-color: #E78841;
+}
+
+#topics-list a {
+  color: white;
+  text-decoration: none;
+  font-weight: 400;
+  line-height: 80px;
+  text-shadow: 0.12em 0.12em 0.2em #333;
+  font-size: 1.05em;
+}
+
+/*#topics-list .button {
+  width: 70%;
+  padding: 10px;
+  text-decoration: none;
+  text-shadow: 0.12em 0.12em 0.2em #333;
+  font-weight: 400;
+  font-size: 1.1em;
+}*/
+
 
 /*Graph stylings*/
 /*.slice:text {
@@ -212,7 +298,35 @@ nav {
   width: 40%;
 }
 
- /* to aid D3 development */
- svg {
-  /*border: 5px solid red;*/
- }
+.display-none {
+  display: none;
+}
+
+div {
+  /*border: 1px solid red;*/
+  /*background-color: pink;*/
+}
+
+/*.partial {
+  min-height: 100px;
+  background-color: yellow;
+}*/
+
+.content {
+  overflow: hidden;
+  /*background-color: red;*/
+}
+
+.left {
+
+}
+
+.right {
+
+}
+
+.pie-chart {
+  min-height: 500px;
+}
+
+

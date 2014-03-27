@@ -22,11 +22,7 @@ function barChartTopic(data) {
       // resiing SVG container size
       scaler.range([0, newwidth]);
       d3.select(chart.node().parentNode)
-          // .style('height', (y.rangeExtent()[1] + margin.top + margin.bottom) + 'px')
           .style('width', (newwidth) + 'px');
-
-      // chart.selectAll('rect')
-      //   .attr('width', newwidth);
     }
 
 
@@ -55,6 +51,7 @@ function barChartTopic(data) {
       .attr("y", 100)
       .attr("transform", function(d, i) { return "translate(0," + i * barHeight + ")"; });
 
+
     // posivibe bars
     bar.append("rect")
       .attr("width", 0)
@@ -67,7 +64,7 @@ function barChartTopic(data) {
       .attr("height", barHeight - 1)
       .attr("opacity", 1)
       .style("fill", function(d, i) { return d3.rgb(color(i)).brighter(0.5);})
-      .attr("id", "bar-pos");
+      .attr("class", "bar-pos");
 
     // negavibe bars
     bar.append("rect")
@@ -81,7 +78,7 @@ function barChartTopic(data) {
       .attr("height", barHeight - 1)
       .attr("opacity", 1)
       .style("fill", function(d, i) { return d3.rgb(color(i)).darker(1.3);})
-      .attr("id", "bar-neg");
+      .attr("class", "bar-neg");
 
     // background bars for keyword terms
     bar.append("rect")
@@ -90,7 +87,19 @@ function barChartTopic(data) {
       .attr("x", w/2 - 75 + 1)
       .attr("height", barHeight - 1)
       .style("fill", function(d, i) { return color(i); })
-      .attr("id", "bar-term-background");
+      .attr("class", "bar-term-background");
+
+    // keyword terms (as text shadow)
+    bar.append("text")
+      .attr("x", (w/2) +1)
+      .attr("y", barHeight / 2 +1)
+      .attr("text-anchor", "middle")
+      .attr("dy", ".30em")
+      .text(function(d) { return d.name; })
+      .attr("fill", "black")
+      .attr("font-family", "Sans-Serif")
+      .style("text-shadow", "0px 0px 4px black")
+      .attr("class", "term");
 
     // keyword terms
     bar.append("text")
@@ -101,8 +110,8 @@ function barChartTopic(data) {
       .text(function(d) { return d.name; })
       .attr("fill", "white")
       .attr("font-family", "Sans-Serif")
-      .style("text-shadow", "0 0 2px dimgray")
-      .attr("id", "term");
+      .style("text-shadow", "2px 2px 3px black")
+      .attr("class", "term");
 
     // label: more negative
     chart.append("text")
@@ -114,7 +123,8 @@ function barChartTopic(data) {
       .attr("fill", "gray")
       .attr("font-family", "Sans-Serif")
       .attr("font-size", "12px")
-      .attr("id", "neg-label");
+      .attr("font-weight","bold")
+      .attr("class", "neg-label");
 
     // label: more positive
     chart.append("text")
@@ -126,7 +136,8 @@ function barChartTopic(data) {
       .attr("fill", "gray")
       .attr("font-family", "Sans-Serif")
       .attr("font-size", "12px")
-      .attr("id", "pos-label");
+      .attr("font-weight","bold")
+      .attr("class", "pos-label");
 
 
 

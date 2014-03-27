@@ -1,13 +1,39 @@
 function barChartTopic(data) {
-
+    // bunch of vars and inits
     var width = 600;                     //bar length
     var barHeight = 20;
     var w = 1200,                        //viewport width
+        w = newwidth = parseInt(d3.select('.chart').style('width'), 10);
         h = 22*data.length,              //viewport height
         color = d3.scale.category20b();
 
     var scaler = d3.scale.sqrt()
           .range([0, w/2]);
+
+    // Resize SVG on browser viewport resize
+    // var w = window;
+    function resize(){
+    // update width
+      newwidth = parseInt(d3.select('.chart').style('width'), 10);
+      // width = width - margin.left - margin.right;
+      console.log(newwidth);
+      w = newwidth;
+
+      // resiing SVG container size
+      scaler.range([0, newwidth]);
+      d3.select(chart.node().parentNode)
+          // .style('height', (y.rangeExtent()[1] + margin.top + margin.bottom) + 'px')
+          .style('width', (newwidth) + 'px');
+
+      chart.selectAll('g')
+        .attr('width', newwidth);
+
+
+    }
+    // resize on page display
+    d3.select(window).on('onload', resize);
+    // invoke resize function on window resize
+    d3.select(window).on('resize', resize);
 
     var chart = d3.select("#bar-chart-topic")
         .append("svg:svg")              //create the SVG element inside the <body>
@@ -95,5 +121,7 @@ function barChartTopic(data) {
       .attr("fill", "gray")
       .attr("font-family", "Sans-Serif")
       .attr("font-size", "12px");
+
+
 
 }

@@ -24,9 +24,7 @@ var width = 420,
         .data(data)
       .enter().append("g")
         .attr("transform", function(d, i) { return "translate(0," + i * barHeight + ")"; })
-        // .on("click", mapZoom)
-        // .on("mouseover", mapMouseOver)
-        // .on("mouseout", mapMouseOut);
+
     bar.append("rect")
       .attr("width", 0)
       .transition()
@@ -34,8 +32,6 @@ var width = 420,
       .attr("width", function(d) { return (d.count)*1.5;})
       .attr("height", barHeight - 1)
       .attr("fill", function(d, i) { return color(i); } );
-    // data = [{"label":"Good", "value": data2.positive_social_ratio},
-    //         {"label":"Bad", "value": data2.negative_social_ratio}];
 
     bar.append("text")
     .attr("x", function(d) { return x(d) - 3; })
@@ -44,6 +40,7 @@ var width = 420,
     .text(function(d) { return d.name; })
     .attr("fill", "black")
     .attr("font-family", "sans-serif")
-    .attr("textWidth", function(d, i) { return this.getComputedTextLength() ;});
+    .attr("fill", "black")
+    .attr("font-family", "Sans-Serif");
 
 }

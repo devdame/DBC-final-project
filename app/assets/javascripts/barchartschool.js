@@ -1,4 +1,5 @@
-function barChartSchool(data) {
+function barChartSchool(data, targetId) {
+    console.log("barchart called");
 
     var width = 600,                     //bar length
         barHeight = 40;
@@ -12,7 +13,7 @@ function barChartSchool(data) {
 
 
 
-    var chart = d3.select("#bar-chart-school")
+    var chart = d3.select(targetId)
         .append("svg:svg")              //create the SVG element inside the <body>
         .data([data])                   //associate our data with the document
             .attr("width", w)           //set the width and height of our visualization (these will

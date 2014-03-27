@@ -1,5 +1,3 @@
-
-
 <h1><%= @school.name %></h1>
 
 <h3>A breakdown of all of the social media posts we've collected on this school so far based on their overall sentiment:</h3>
@@ -22,8 +20,8 @@
 <script>
   var json = '<%= @social_media_profile.html_safe %>';
   var data = jQuery.parseJSON(json);
-  pieChart(data);
+  pieChart(data, "#pie-chart");
 
   var data2 = <%= @ratings_profile.to_json.html_safe %>;
-  barChartSchool(data2);
+  barChartSchool(data2, "#bar-chart-school");
 </script>

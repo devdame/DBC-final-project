@@ -1,7 +1,7 @@
-function pieChart(message) {
+function pieChart(data, targetId) {
   console.log("pieChart invoked");
   console.log(data);
-  console.log(message);
+  console.log(targetId);
 
 
   var w = 500,                        //width
@@ -19,7 +19,7 @@ function pieChart(message) {
             {"label":"Negative", "value": data.negative_social_ratio},
             {"label":"Neutral", "value": data.neutral_social_ratio}];
 
-    var vis = d3.select("#pie-chart")
+    var vis = d3.select(targetId)
         .append("svg:svg")              //create the SVG element inside the <body>
         .data([data])                   //associate our data with the document
             .attr("width", w)           //set the width and height of our visualization (these will be attributes of the <svg> tag
@@ -70,3 +70,4 @@ function pieChart(message) {
             .attr("fill", "white")  // text
             .attr("font-family", "Sans-Serif")
 }
+

@@ -9,11 +9,19 @@
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script src="//use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9.js"></script>
     <script src="//use.edgefonts.net/quicksand;lato:n1,i1,n3,i3,n4,i4,n7,i7,n9,i9.js"></script>
+    <link href='http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic' rel='stylesheet' type='text/css'>
   </head>
   <body>
-    <%= render 'layouts/header' unless @disable_nav%>
+    <div id="transparent-background">
+      <% unless @disable_nav %>
+        <%= render 'layouts/header'%>
+        <div class="container">
+                <% end %>
 
-    <%= yield %>
-    <%= render 'layouts/footer'%>
+          <%= yield %>
+
+        </div>
+        <%= render 'layouts/footer'%>
+    </div>
   </body>
 </html>

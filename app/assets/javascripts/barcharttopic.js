@@ -25,11 +25,11 @@ function barChartTopic(data) {
           // .style('height', (y.rangeExtent()[1] + margin.top + margin.bottom) + 'px')
           .style('width', (newwidth) + 'px');
 
-      chart.selectAll('g')
-        .attr('width', newwidth);
-
-
+      // chart.selectAll('rect')
+      //   .attr('width', newwidth);
     }
+
+
     // resize on page display
     d3.select(window).on('onload', resize);
     // invoke resize function on window resize
@@ -66,7 +66,8 @@ function barChartTopic(data) {
       .attr("x", (w/2) + 75)
       .attr("height", barHeight - 1)
       .attr("opacity", 1)
-      .style("fill", function(d, i) { return d3.rgb(color(i)).brighter(0.5);});
+      .style("fill", function(d, i) { return d3.rgb(color(i)).brighter(0.5);})
+      .attr("id", "bar-pos");
 
     // negavibe bars
     bar.append("rect")
@@ -79,7 +80,8 @@ function barChartTopic(data) {
       .attr("x", function(d) { return (w/2) - scaler(d.negative_count/totalRange) - 75; })
       .attr("height", barHeight - 1)
       .attr("opacity", 1)
-      .style("fill", function(d, i) { return d3.rgb(color(i)).darker(1.3);});
+      .style("fill", function(d, i) { return d3.rgb(color(i)).darker(1.3);})
+      .attr("id", "bar-neg");
 
     // background bars for keyword terms
     bar.append("rect")
@@ -87,7 +89,8 @@ function barChartTopic(data) {
       .attr("opacity", 1)
       .attr("x", w/2 - 75 + 1)
       .attr("height", barHeight - 1)
-      .style("fill", function(d, i) { return color(i); });
+      .style("fill", function(d, i) { return color(i); })
+      .attr("id", "bar-term-background");
 
     // keyword terms
     bar.append("text")
@@ -98,7 +101,8 @@ function barChartTopic(data) {
       .text(function(d) { return d.name; })
       .attr("fill", "white")
       .attr("font-family", "Sans-Serif")
-      .style("text-shadow", "0 0 2px dimgray");
+      .style("text-shadow", "0 0 2px dimgray")
+      .attr("id", "term");
 
     // label: more negative
     chart.append("text")
@@ -109,7 +113,8 @@ function barChartTopic(data) {
       .text("MORE NEGATIVE ←")
       .attr("fill", "gray")
       .attr("font-family", "Sans-Serif")
-      .attr("font-size", "12px");
+      .attr("font-size", "12px")
+      .attr("id", "neg-label");
 
     // label: more positive
     chart.append("text")
@@ -120,7 +125,8 @@ function barChartTopic(data) {
       .text("→ MORE POSITIVE")
       .attr("fill", "gray")
       .attr("font-family", "Sans-Serif")
-      .attr("font-size", "12px");
+      .attr("font-size", "12px")
+      .attr("id", "pos-label");
 
 
 

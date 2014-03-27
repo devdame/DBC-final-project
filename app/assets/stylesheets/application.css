@@ -29,7 +29,8 @@
     padding: 2% 5% 100px 5%;
     overflow: auto;
     display: block;
-    width: 65%;
+    width: 75%;
+    overflow: hidden;
     margin: auto;
     margin-top: 50px;
     box-shadow: 1px 1px 40px gray;
@@ -218,6 +219,11 @@ nav {
   width: 49%;
   display: inline-block;
   margin-top: 25px;
+/*  height: 100px;
+  background-color: rgba(1,1,1,0.05);
+  border-radius: 10px;
+  border: 1px solid black;*/
+
 }
 
 #schools-list div img {
@@ -230,7 +236,6 @@ nav {
   width: 70%;
   margin: 0 auto;
 /*  padding-top: 30px;*/
-  background-color: #6588A2;
 /*  padding: 25px 0;*/
 }
 

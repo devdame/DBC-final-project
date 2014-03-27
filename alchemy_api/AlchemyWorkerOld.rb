@@ -125,6 +125,8 @@ class AlchemyAPI
 	
 	def initialize()
 
+		@apiKey = ENV['ALCHEMY_KEY']
+
 		# begin
 		# 	key = File.read('api_key.txt')
 		# 	key.strip!

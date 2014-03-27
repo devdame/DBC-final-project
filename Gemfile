@@ -43,8 +43,6 @@ gem 'sidekiq'
 
 gem 'sidetiq'
 
-gem 'alchemy-api-rb', :require => 'alchemy_api'
-
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.

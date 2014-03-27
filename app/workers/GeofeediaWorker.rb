@@ -9,8 +9,8 @@ class GeofeediaWorker
   # recurrence { hourly.minute_of_hour(0, 15, 30, 45) }
 
   def perform
-  	geofeedia_id = 32206
-  	school_id = 1
+  	geofeedia_id = 32210
+  	school_id = 6
     appId = ENV['GEOFEEDIA_ID']
     appKey = ENV['GEOFEEDIA_KEY']
     url = "https://api.geofeedia.com/v1/search/geofeed/#{geofeedia_id}?format=json-default&appId=#{appId}&appKey=#{appKey}&take=10"

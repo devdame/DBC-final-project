@@ -106,7 +106,7 @@ function barChartTopic(data) {
 
     // label: more negative
     chart.append("text")
-      .attr("x", w*0.3)
+      .attr("x", w*0.1)
       .attr("y", -10)
       .attr("text-anchor", "start")
       .attr("dy", ".30em")
@@ -118,7 +118,7 @@ function barChartTopic(data) {
 
     // label: more positive
     chart.append("text")
-      .attr("x", w*0.7)
+      .attr("x", w*0.9)
       .attr("y", -10)
       .attr("text-anchor", "end")
       .attr("dy", ".30em")

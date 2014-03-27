@@ -4,13 +4,32 @@ function barChart(data) {
 var width = 800,
     barHeight = 30;
 
-    var w = 800,                        //width
+    var w = newwidth = parseInt(d3.select('.chart').style('width'), 10);                        //width
         h = 30*data.length,                       //height
         color = d3.scale.category20c(),     //builtin range of colors
         scaler = d3.scale.linear()
           .range([0, w-250]);
 
+    // Resize SVG on browser viewport resize
+    // var w = window;
+    function resize(){
+    // update width
+      newwidth = parseInt(d3.select('.chart').style('width'), 10);
+      // width = width - margin.left - margin.right;
+      console.log(newwidth);
+      w = newwidth;
 
+      // resiing SVG container size
+      scaler.range([0, newwidth]);
+      d3.select(chart.node().parentNode)
+          .style('width', (newwidth) + 'px');
+    }
+
+
+    // resize on page display
+    d3.select(window).on('onload', resize);
+    // invoke resize function on window resize
+    d3.select(window).on('resize', resize);
 
     var chart = d3.select("#bar-chart-topic-school")
         .append("svg:svg")              //create the SVG element inside the <body>

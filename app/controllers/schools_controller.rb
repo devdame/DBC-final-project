@@ -95,7 +95,7 @@ class SchoolsController < ApplicationController
       ratings_holding["ratings_profile"] << {name: rating.topic.name, positive_count: rating.positive_post_count, negative_count: rating.negative_post_count, count: (rating.positive_post_count + rating.negative_post_count), multiplier: 3}
     end
     @ratings_profile = ratings_holding["ratings_profile"]
-    p @ratings_profile
+    p @ratings_profile.to_json
     #Post count and sentiment by topic and most popular words by topic for a particular school
     ##########################################
     school_data = {"school_topic_posts_count" => []}

@@ -25,17 +25,16 @@
  }
 
  .col {
-  background-color: #EFEFEF;
-  border: 1px solid orange;
+  /*background-color: #EFEFEF;*/
+  /*border: 1px solid orange;*/
   display: inline-block;
-  width: 49%;
+  vertical-align: top;
+  width: 50%;
  }
+
  .right-col {
   /*border-left: 1px solid gray;*/
  }
-
-
-
 
 h2 {
   font-family: lato, sans-serif;
@@ -193,7 +192,13 @@ nav {
 }
 
 #compare_50 {
-  width: 49%;
+  width: 50%;
+  clear: both;
+  float: left;
+}
+
+#compare_50 {
+  width: 100%;
   clear: both;
   float: left;
 }
@@ -212,3 +217,28 @@ nav {
 .display-none {
   display: none;
 }
+
+div {
+  /*border: 1px solid red;*/
+  background-color: pink;
+}
+
+/*.partial {
+  min-height: 100px;
+  background-color: yellow;
+}*/
+
+.content {
+  overflow: hidden;
+  /*background-color: red;*/
+}
+
+.left {
+
+}
+
+.right {
+
+}
+
+

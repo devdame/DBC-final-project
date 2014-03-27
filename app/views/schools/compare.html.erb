@@ -1,6 +1,6 @@
 <h1>test school compare</h1>
 
-<div class="col left-col">
+<div class="col menu left">
   <form id="choose_school_one" action="/schoolcompare" method="GET">
     <select name="school_selector_one" id="school_one_selector">
       <option>Please choose your first school...</option>
@@ -11,10 +11,7 @@
       <option value="4">University of Georgia, Athens</option>
     </select>
   </form>
-</div>
-
-
-<div class="col right-col">
+</div><div class="col menu right">
   <form id="choose_school_two" action="/schoolcompare" method="GET">
     <select name="school_selector_two" id="school_two_selector">
       <option>Please choose your second school...</option>
@@ -27,64 +24,43 @@
   </form>
 </div>
 
-<div id="school_one_display">
-
+<div class="col content left">
+  <div id="school_one_display" class="partial">
+  </div>
+</div><div class="col content right">
+  <div id="school_two_display" class="partial">
+  </div>
 </div>
-
-<div id="school_two_display">
-
-</div>
-
 
 <script type="text/javascript">
 
   $(document).on('change', '#school_one_selector', function(event) {
     event.preventDefault();
+    $('#school_one_display').css({'position': 'relative', 'right': '950px', '-webkit-transition': 'all 0.7s ease-in'})
 
     var url = $('#choose_school_one').attr('action');
     var schoolId = (parseInt($('#school_one_selector option:selected').val()) + 1);
 
     $.get(url, {school_id: schoolId}, function(serverResponse) {
       console.log(serverResponse);
-      $('#school_one_display').html(serverResponse);
+      var divOne = $('#school_one_display')
+      divOne.css({'position': 'relative', 'right': '0px', '-webkit-transition': 'all 0.7s ease-out'})
+      divOne.html(serverResponse);
     })
   });
 
   $(document).on('change', '#school_two_selector', function(event) {
     event.preventDefault();
+    $('#school_two_display').css({'position': 'relative', 'left': '950px', '-webkit-transition': 'all 0.7s ease-in'})
 
     var url = $('#choose_school_two').attr('action');
     var schoolId = (parseInt($('#school_two_selector option:selected').val()) + 1);
 
     $.get(url, {school_id: schoolId}, function(serverResponse) {
       var divTwo = $('#school_two_display')
-      // divTwo.addClass('.hide_div');
-      console.log(divTwo);
-
-      // console.log(divTwo);
-
-      // divTwo.animate({
-      //   opacity: 0,
-      // });
-      // divTwo.removeClass('.display-none');
-      divTwo.html(serverResponse)
-      // divTwo.animate({
-      //   opacity: 5
-      //   }, 5000, function() {
-      //     console.log("test");
-      //   });
+      divTwo.css({'position': 'relative', 'left': '0px', '-webkit-transition': 'all 0.7s ease-out'})
+        divTwo.html(serverResponse);
     });
 });
-
-
-
-  //   $( "#clickme" ).click(function() {
-  // $( "#book" ).animate({
-  //   opacity: 0.25,
-  //   left: "+=50",
-  //   height: "toggle"
-  // }, 5000, function() {
-  //   // Animation complete.
-
 
 </script>

@@ -1,31 +1,36 @@
-<div id='compare_50'>
-<h1><%= @school.name %></h1>
+<div id='compare_100'>
+  <h1><%= @school.name %></h1>
 
-<h3>A breakdown of all of the social media posts we've collected on this school so far:</h3>
+   <h3>A breakdown of all of the social media posts we've collected on this school so far:</h3>
 
-<div>
     <h2>The possi-vibes versus negi-vibes of a school</h2>
     <h3>Based on the overall sentiment of their input</h3>
-    <script>
+  <div id="pie-chart-<%= @school.id %>">
+  </div>
 
-    var data2 = <%= @ratings_profile.to_json.html_safe %>;
-    // barChart(data2);
+  <div>
+    <h3>These are the ten most prevalent topics students at <%= @school.name %> have been talking about:</h3>
 
-    var allSchoolData = <%= @all_school_data.to_json.html_safe %>;
+    <div id="bar-chart-school">
+    </div>
 
-    var json = '<%= @social_media_profile.html_safe %>';
-    var data = jQuery.parseJSON(json);
-    pieChart(data);
 
-    </script>
+  </div>
 </div>
 
-<div>
-<h3>These are the ten most prevalent topics students at <%= @school.name %> have been talking about:</h3>
+
 <script>
-    var data = <%= @ratings_profile.to_json.html_safe %>;
-    barChart(data);
- </script>
+  var data = <%= @ratings_profile.to_json.html_safe %>;
+  barChart(data,location);
 
-</div>
-</div>
+  var data2 = <%= @ratings_profile.to_json.html_safe %>;
+  barChart(data2);
+
+  var allSchoolData = <%= @all_school_data.to_json.html_safe %>;
+
+  var json = '<%= @social_media_profile.html_safe %>';
+  var data = jQuery.parseJSON(json);
+  setTimeout(function() { pieChart(data, "#pie-chart-<%= @school.id %>"); }, 700);
+  // pieChart(data, "#pie-chart-<%= @school.id %>");
+
+</script>

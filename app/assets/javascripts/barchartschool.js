@@ -1,5 +1,6 @@
 function barChartSchool(data, targetId) {
-    console.log("barchart called");
+    // console.log("barchart called");
+    // console.log(data);
 
     var width = 600,                     //bar length
         barHeight = 40;

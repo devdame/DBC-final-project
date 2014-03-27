@@ -1,7 +1,7 @@
 function pieChart(data, targetId) {
-  console.log("pieChart invoked");
-  console.log(data);
-  console.log(targetId);
+  // console.log("pieChart invoked");
+  // console.log(data);
+  // console.log(targetId);
 
 
   var w = 500,                        //width

@@ -43,7 +43,7 @@
     // console.log(prevRand1);
 
     $.get(url, {school_id: schoolId}, function(serverResponse) {
-      console.log(serverResponse);
+      // console.log(serverResponse);
       var divOne = $('#school_one_display')
       divOne.css({'position': 'relative', 'right': '0px', '-webkit-transition': 'all 0.7s ease-out'})
       divOne.html(serverResponse);
@@ -56,7 +56,6 @@
 
     var url = $('#choose_school_two').attr('action');
     var schoolId = (parseInt($('#school_two_selector option:selected').val()) + 1);
-
 
     $.get(url, {school_id: schoolId}, function(serverResponse) {
       var divTwo = $('#school_two_display')

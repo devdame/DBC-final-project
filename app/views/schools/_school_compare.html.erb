@@ -5,13 +5,13 @@
 
     <h2>The possi-vibes versus negi-vibes of a school</h2>
     <h3>Based on the overall sentiment of their input</h3>
-  <div id="pie-chart-<%= @school.id %>">
+  <div id="pie-chart-<%= @school.id %>-<%= @random_pie_number %>" class="pie-chart">
   </div>
 
   <div>
     <h3>These are the ten most prevalent topics students at <%= @school.name %> have been talking about:</h3>
 
-    <div id="bar-chart-school">
+    <div id="bar-chart-school-<%= @school.id %>-<%= @random_bar_number %>">
     </div>
 
 
@@ -20,17 +20,17 @@
 
 
 <script>
-  var data = <%= @ratings_profile.to_json.html_safe %>;
-  barChart(data,location);
-
-  var data2 = <%= @ratings_profile.to_json.html_safe %>;
-  barChart(data2);
-
-  var allSchoolData = <%= @all_school_data.to_json.html_safe %>;
-
   var json = '<%= @social_media_profile.html_safe %>';
   var data = jQuery.parseJSON(json);
-  setTimeout(function() { pieChart(data, "#pie-chart-<%= @school.id %>"); }, 700);
+  setTimeout(function() { pieChart(data, "#pie-chart-<%= @school.id %>-<%= @random_pie_number %>"); }, 700);
   // pieChart(data, "#pie-chart-<%= @school.id %>");
+
+  // barChartSchool(data,location);
+  // var data2 = <%= @ratings_profile.to_json.html_safe %>;
+  var data2 = <%= @ratings_profile.to_json.html_safe %>;
+  setTimeout(function() { barChartSchool(data2, "#bar-chart-school-<%= @school.id %>-<%= @random_bar_number %>"); }, 800);
+  // barChartSchool(data2);
+
+  var allSchoolData = <%= @all_school_data.to_json.html_safe %>;
 
 </script>

@@ -8,9 +8,11 @@ class SchoolsController < ApplicationController
   def schoolcompare
     if request.xhr?
       @school = School.find(params[:school_id])
-      p @school
+      # p @school
       @ratings = Rating.all.where(school_id: @school.id)
       @topics = Topic.all
+      @random_pie_number = rand(1000000)
+      @random_bar_number = rand(1000000)
       # @topic = Topic.find(params[:id])
       # @ratings = Rating.all
 

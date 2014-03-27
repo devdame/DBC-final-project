@@ -239,7 +239,7 @@ nav {
 
 div {
   /*border: 1px solid red;*/
-  background-color: pink;
+  /*background-color: pink;*/
 }
 
 /*.partial {
@@ -258,6 +258,10 @@ div {
 
 .right {
 
+}
+
+.pie-chart {
+  min-height: 500px;
 }
 
 

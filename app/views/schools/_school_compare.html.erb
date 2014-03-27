@@ -1,19 +1,16 @@
 <div id='compare_100'>
   <h1><%= @school.name %></h1>
 
-   <h3>A breakdown of all of the social media posts we've collected on this school so far:</h3>
-
-    <h2>The possi-vibes versus negi-vibes of a school</h2>
-    <h3>Based on the overall sentiment of their input</h3>
+    <h2>Negativity vs Positivity</h2>
+    <h3>The overall tone of the social media posts coming out of the school</h3>
   <div id="pie-chart-<%= @school.id %>-<%= @random_pie_number %>" class="pie-chart">
   </div>
 
   <div>
-    <h3>These are the ten most prevalent topics students at <%= @school.name %> have been talking about:</h3>
+    <h3>How students at the school have been talking about different topics</h3>
 
     <div id="bar-chart-school-<%= @school.id %>-<%= @random_bar_number %>">
     </div>
-
 
   </div>
 </div>

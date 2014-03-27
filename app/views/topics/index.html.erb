@@ -1,14 +1,38 @@
 
 
-  <h1>So What Are People Talking About?</h1>
+  <h1>See What All Students are Talking About</h1>
 
   <h3>These are the conversation topics we've been collecting data on so far.  Click on a topic to see how each school in our database has been talking about it!</h3>
 
-  <div id="topics-list">
-    <% @topics.each do |topic| %>
-      <%= link_to(topic_path(topic)) do %>
-        <div class="topics-grid"><div><%= topic.name %></div></div>
-      <% end %>
-    <% end %>
-    <a href="#"><div class="topics-grid"><div>&nbsp;</div></div></a>
+  <div id="topics-info">
+    <div id="topics-list">
+      <div id="topics-container">
+        <% @topics.each do |topic| %>
+          <%= link_to(topic_path(topic)) do %>
+            <div class="topics-grid"><div><%= topic.name.gsub('_', ' ').capitalize %></div></div>
+          <% end %>
+        <% end %>
+        <div class="topics-grid"><div>&nbsp;</div></div>
+        <div class="topics-grid"><div>&nbsp;</div></div>
+      </div>
+    </div>
+
+    <div id="topics-steps">
+      <div class="step">
+        <%= image_tag("social_media.png")%>
+        <h3>College students post on social media</h3>
+      </div>
+      <div class="step">
+        <%= image_tag("map.png")%>
+        <h3>We gather posts from each campus</h3>
+      </div>
+      <div class="step">
+        <%= image_tag("desk.png")%>
+        <h3>We analyze what they're talking about</h3>
+      </div>
+      <div class="step">
+        <%= image_tag("chart.png")%>
+        <h3>You get a glimpse into campus culture</h3>
+      </div>
+    </div>
   </div>

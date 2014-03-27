@@ -13,9 +13,9 @@
  */
 
  body {
-  font-family: sans-serif;
   height: 100%;
-  background-image: url('paint.JPG');
+  background-image: url('argyle.jpg');
+  background-size: 20%;
   font-family: lato, sans-serif;
   font-weight: 200;
   padding-top: 70px;
@@ -28,7 +28,8 @@
     padding: 2% 5% 100px 5%;
     overflow: auto;
     display: block;
-    width: 65%;
+    width: 75%;
+    overflow: hidden;
     margin: auto;
     margin-top: 50px;
     box-shadow: 1px 1px 40px gray;
@@ -42,7 +43,7 @@
   width: 50%;
 
    background-color: #EFEFEF;
-   border: 1px solid orange;
+   /*border: 1px solid orange;*/
    display: inline-block;
    width: 49%;
  }
@@ -51,14 +52,15 @@
   /*border-left: 1px solid gray;*/
  }
 
-
 h1 {
-  font-family: 'Noto Sans', sans-serif;
+  font-family: 'Quattrocento Sans', sans-serif;
+  font-size: 3.9em;
 }
 
 h2 {
-  font-family: 'Noto Sans', sans-serif;
+  font-family: 'Quattrocento Sans', sans-serif;
   font-weight: 400;
+  font-size: 2.0em;
 }
 
 h3 {
@@ -71,11 +73,11 @@ nav {
   padding-top: 5px;
   top: 0;
   width: 100%;
-  height: 20px;
+  height: 50px;
   padding: 5px;
   clear: both;
   font-weight: 300;
-  background: #527F3F;
+  background: #193E63;
   box-shadow: 0 1px 20px gray;
   z-index: 1;
 }
@@ -115,6 +117,7 @@ nav {
 
 #nav-links a {
   text-decoration: none;
+  color: white;
   float: right;
   margin-left: 15px;
   text-shadow: 0.1em 0.1em 0.3em #0A0A0A;
@@ -207,31 +210,6 @@ nav {
   text-shadow: 0.12em 0.12em 0.2em #333;
 }
 
-#schools-list {
- width: 55%;
- margin: auto;
-}
-
-#schools-list div {
-  width: 49%;
-  display: inline-block;
-  margin-top: 25px;
-}
-
-#schools-list div img {
-  max-height: 100px;
-  max-width: 80%;
-  margin: auto;
-}
-
-#topics-list {
-  width: 70%;
-  margin: 0 auto;
-/*  padding-top: 30px;*/
-  background-color: #6588A2;
-/*  padding: 25px 0;*/
-}
-
 .col .left-col {
   z-index: 100;
 }
@@ -257,14 +235,38 @@ nav {
 }
 
 
-.topics-grid {
-  width: 19.5%;
+/* TOPICS PAGE STUFF */
+
+#topics-info {
+  margin-top: 60px;
+
+}
+
+#topics-list {
+  width: 59%;
   display: inline-block;
+  margin: 0 auto;
+/*  padding-top: 30px;*/
+/*  padding: 25px 0;*/
+}
+
+#topics-steps {
+  /*display: inline-block;*/
+  float: left;
+  width: 40%;
+  position: relative;
+  border-right: 2px solid lightgray;
+}
+
+.topics-grid {
+  width: 32.5%;
+  float: right;
   height: 90px;
   margin: -1px -2px;
   padding: 0;
   border: 2px solid white;
   background-color: #E78841;
+  font-size: 1.1em;
 }
 
 #topics-list a {
@@ -276,14 +278,66 @@ nav {
   font-size: 1.05em;
 }
 
-/*#topics-list .button {
-  width: 70%;
-  padding: 10px;
-  text-decoration: none;
-  text-shadow: 0.12em 0.12em 0.2em #333;
-  font-weight: 400;
-  font-size: 1.1em;
-}*/
+#topics-container {
+  width: 80%;
+  margin: auto;
+}
+
+
+/*  SCHOOLS INDEX PAGE STUFF */
+
+
+#schools-info{
+  width: 100%;
+  position: relative;
+  top: 50px;
+}
+
+#schools-steps {
+  /*display: inline-block;*/
+  float: left;
+  width: 40%;
+  position: relative;
+  border-right: 2px solid lightgray;
+}
+
+.step {
+  width: 60%;
+  display: inline-block;
+  margin: auto;
+}
+
+.step img {
+  width: 40%;
+}
+
+#schools-list {
+ width: 59%;
+ float: right;
+ overflow: hidden;
+}
+
+#schools-container {
+
+}
+
+#schools-container div {
+  width: 90%;
+  display: inline-block;
+  margin-bottom: 35px;
+/*  height: 100px;
+  background-color: rgba(1,1,1,0.05);
+  border-radius: 10px;
+  border: 1px solid black;*/
+}
+
+#schools-container div img {
+  max-height: 130px;
+  max-width: 70%;
+  margin: auto;
+}
+
+/* GRAPH STUFF */
 
 
 /*Graph stylings*/
@@ -329,4 +383,10 @@ div {
   min-height: 500px;
 }
 
+svg {
+  /*border: 1px solid red;*/
+}
 
+#redis{
+  width:33%;
+}

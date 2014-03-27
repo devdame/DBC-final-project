@@ -1,12 +1,12 @@
-<h1><%= @topic.name %></h1>
+<h1>Topic: <%= @topic.name.gsub('_', ' ').capitalize %></h1>
 
 <div class="single-bar-chart">
-  <h2>Activity in <%= @topic.name %> by school</h2>
+  <h2>Posts about <%= @topic.name.gsub('_', ' ') %> by school</h2>
   <div id="bar-chart-topic-school" class="chart"></div>
 </div>
 
 <div class="single-bar-chart">
-  <h2>Bar graph of the most popular words in <%= @topic.name %></h2>
+  <h2>Words and phrases students are using to talk about  <%= @topic.name.gsub('_', ' ') %> </h2>
   <div id="bar-chart-topic" class="chart"></div>
 </div>
 

@@ -56,7 +56,7 @@ var width = 800,
     .attr("x", 240)       // fix this hard code offset in the future
     .attr("y", barHeight / 2)
     .attr("dy", ".35em")
-    .text(function(d) { return d.count; })
+    .text(function(d) { return d.name; })
     .attr("fill", "#606060")
     .attr("font-family", "sans-serif")
     .attr("font-size", "0.9em")

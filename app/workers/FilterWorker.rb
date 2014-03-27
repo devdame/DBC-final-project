@@ -9,9 +9,10 @@ class FilterWorker
     AnalyzedPost.increment_school_ratings
     Keyword.populate_reference_words
     Keyword.create_or_update_school_word_counts
+    FilterWorker.wildfire
   end
 
-  def wildfire
+  def self.wildfire
   	AnalyzedPost.destroy_all
   	Keyword.destroy_all
   end

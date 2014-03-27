@@ -5,7 +5,8 @@ class GeofeediaWorker
   include Sidekiq::Worker
   include Sidetiq::Schedulable
 
-  recurrence { hourly.minute_of_hour(0, 15, 30, 45) }
+  recurrence { minutely }
+  # recurrence { hourly.minute_of_hour(0, 15, 30, 45) }
 
   def perform
   	geofeedia_id = 32206
@@ -19,5 +20,6 @@ class GeofeediaWorker
     parsed_items.each do |item|
       post = OriginalPost.create(text: item["title"], original_publish_time: item["publishDate"], geofeedia_school_id: geofeedia_id, school_id: school_id, external_id: item["externalId"])
     end
+    AlchemyWorker.perform_async
   end
 end

@@ -15,7 +15,8 @@
  body {
   font-family: sans-serif;
   height: 100%;
-  background-image: url('paint.JPG');
+  background-image: url('argyle.jpg');
+  background-size: 20%;
   font-family: lato, sans-serif;
   font-weight: 200;
   padding-top: 70px;
@@ -75,7 +76,7 @@ nav {
   padding: 5px;
   clear: both;
   font-weight: 300;
-  background: #527F3F;
+  background: #193E63;
   box-shadow: 0 1px 20px gray;
   z-index: 1;
 }
@@ -115,6 +116,7 @@ nav {
 
 #nav-links a {
   text-decoration: none;
+  color: white;
   float: right;
   margin-left: 15px;
   text-shadow: 0.1em 0.1em 0.3em #0A0A0A;

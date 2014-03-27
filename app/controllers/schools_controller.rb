@@ -65,7 +65,7 @@ class SchoolsController < ApplicationController
       end
       puts "Hello, I got here!"
     else
-      render "_sadffsdadfs"
+      redirect_to schools_path
     end
 
   end
@@ -92,7 +92,7 @@ class SchoolsController < ApplicationController
     sorted_ratings.each do |rating|
       # p sorted_ratings
       # @holding["ratings_profile"] << {"rating_#{rating.id}" => {name: rating.topic.name, positive_count: rating.positive_post_count, negative_count: rating.negative_post_count}}
-      ratings_holding["ratings_profile"] << {name: rating.topic.name, positive_count: rating.positive_post_count, negative_count: rating.negative_post_count, count: (rating.positive_post_count + rating.negative_post_count), multiplier: 3}
+      ratings_holding["ratings_profile"] << {name: rating.topic.name, positive_count: rating.positive_post_count, negative_count: rating.negative_post_count, count: (rating.positive_post_count + rating.negative_post_count)}
     end
     @ratings_profile = ratings_holding["ratings_profile"]
     p @ratings_profile
@@ -116,7 +116,7 @@ class SchoolsController < ApplicationController
         # p topic
         # popular_word = SchoolWordCount.find_by_school_id_and_topic_id(@school.id, rating.topic.id)
         # p popular_word
-        popular_words << {name: word.reference_word.name, count: word.word_count, positive_word_count: word.positive_word_count, negative_word_count: word.negative_word_count, mixed_word_count: word.mixed_word_count, neutral_word_count: word.neutral_word_count, multiplier: 30}
+        popular_words << {name: word.reference_word.name, count: word.word_count, positive_word_count: word.positive_word_count, negative_word_count: word.negative_word_count, mixed_word_count: word.mixed_word_count, neutral_word_count: word.neutral_word_count}
       end
       # +++++++++++++++
       # reference_words = rating.topic.reference_words.all

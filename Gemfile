@@ -40,6 +40,10 @@ gem 'd3_rails'
 
 gem 'rails_12factor', group: :production
 
+gem 'sidekiq'
+
+gem 'sidetiq'
+
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
@@ -59,6 +63,7 @@ end
 # gem 'debugger', group: [:development, :test]
 
 group :development, :test do
+  gem 'jasmine'
   gem 'rspec-rails', '~> 2.14.1'
   gem 'capybara', '~> 2.2.1'
   gem 'database_cleaner', '~> 1.2.0'

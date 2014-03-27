@@ -1,5 +1,5 @@
 <div id='compare_100'>
-  <h1><%= @school.name.gsub('_', ' ').capitalize %></h1>
+  <h1><%= @school.name.gsub('_', ' ').titleize %></h1>
 
     <h2>Negativity vs Positivity</h2>
     <h3>The overall tone of the social media posts coming out of the school</h3>
@@ -20,14 +20,9 @@
   var json = '<%= @social_media_profile.html_safe %>';
   var data = jQuery.parseJSON(json);
   setTimeout(function() { pieChart(data, "#pie-chart-<%= @school.id %>-<%= @random_pie_number %>"); }, 700);
-  // pieChart(data, "#pie-chart-<%= @school.id %>");
 
-  // barChartSchool(data,location);
-  // var data2 = <%= @ratings_profile.to_json.html_safe %>;
   var data2 = <%= @ratings_profile.to_json.html_safe %>;
   setTimeout(function() { barChartSchool(data2, "#bar-chart-school-<%= @school.id %>-<%= @random_bar_number %>"); }, 800);
-  // barChartSchool(data2);
 
   var allSchoolData = <%= @all_school_data.to_json.html_safe %>;
-
 </script>

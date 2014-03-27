@@ -17,4 +17,22 @@
 //= require_tree .
 $( document ).ready(function() {
     console.log( "JS ready!" );
+
+
+  // Resize SVG on browser viewport resize
+  // var w = window;
+  // function updateWindow(){
+  //   x = w.innerWidth || e.clientWidth || g.clientWidth;
+  //   y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+
+  //   svg.attr("width", x).attr("height", y);
+  //   console.log("X: " + x + ", Y: " + y);
+  // }
+
+  // window.onresize = updateWindow();
+
+
+
+    // do the actual resize...
+  // }
 });

@@ -1,27 +1,20 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>trUism</title>
-  <%= stylesheet_link_tag "noto_font/stylesheet.css", media: "all", "data-turbolinks-track" => true %>
-  <%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true %>
-  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
-  <%= csrf_meta_tags %>
-  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-</head>
-<body>
-  <h1>WOW IT'S AN APP</h1>
+  <head>
+    <title>trUism</title>
+    <%= stylesheet_link_tag "normalize", media: "all", "data-turbolinks-track" => true %>
+    <%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true %>
+    <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+    <%= csrf_meta_tags %>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="//use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9.js"></script>
+    <script src="//use.edgefonts.net/quicksand;lato:n1,i1,n3,i3,n4,i4,n7,i7,n9,i9.js"></script>
+    <script src="//use.edgefonts.net/cousine.js"></script>
+  </head>
+  <body>
+    <%= render 'layouts/header' unless @disable_nav%>
 
-  <%= link_to "Home", controller: "welcome" %>
-  <%= link_to "Topics", controller: "topics" %>
-  <%= link_to "Schools (index)", controller: "schools" %>
-  <%= link_to "Schools (compare)", compare_path %>
-  <%= link_to "About", controller: "about" %>
-
-  <hr>
-
-<%= yield %>
-<hr>
-<p>Footer stuff. Andrew, Daniel, Jay, Jess, Lauren.</p>
-
-</body>
+    <%= yield %>
+    <%= render 'layouts/footer'%>
+  </body>
 </html>

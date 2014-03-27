@@ -1,10 +1,68 @@
 <h1>test school compare</h1>
 
-<div class="col left-col">
-  <h1><%= @school_one.name %></h2>
+<div class="col menu left">
+  <form id="choose_school_one" action="/schoolcompare" method="GET">
+    <select name="school_selector_one" id="school_one_selector">
+      <option>Please choose your first school...</option>
+      <option value="0">Arizona State University</option>
+      <option value="1">University of Michigan, Ann Arbor</option>
+      <option value="2">University of Texas, Austin</option>
+      <option value="3">Michigan State University</option>
+      <option value="4">University of Georgia, Athens</option>
+    </select>
+  </form>
+</div><div class="col menu right">
+  <form id="choose_school_two" action="/schoolcompare" method="GET">
+    <select name="school_selector_two" id="school_two_selector">
+      <option>Please choose your second school...</option>
+      <option value="0">Arizona State University</option>
+      <option value="1">University of Michigan, Ann Arbor</option>
+      <option value="2">University of Texas, Austin</option>
+      <option value="3">Michigan State University</option>
+      <option value="4">University of Georgia, Athens</option>
+    </select>
+  </form>
 </div>
 
-
-<div class="col right-col">
-  <h1><%= @school_two.name %></h2>
+<div class="col content left">
+  <div id="school_one_display" class="partial">
+  </div>
+</div><div class="col content right">
+  <div id="school_two_display" class="partial">
+  </div>
 </div>
+
+<script type="text/javascript">
+
+  $(document).on('change', '#school_one_selector', function(event) {
+    event.preventDefault();
+    $('#school_one_display').css({'position': 'relative', 'right': '775px', '-webkit-transition': 'all 0.7s ease-in'})
+
+    var url = $('#choose_school_one').attr('action');
+    var schoolId = (parseInt($('#school_one_selector option:selected').val()) + 1);
+    // console.log(prevRand1);
+
+    $.get(url, {school_id: schoolId}, function(serverResponse) {
+      console.log(serverResponse);
+      var divOne = $('#school_one_display')
+      divOne.css({'position': 'relative', 'right': '0px', '-webkit-transition': 'all 0.7s ease-out'})
+      divOne.html(serverResponse);
+    })
+  });
+
+  $(document).on('change', '#school_two_selector', function(event) {
+    event.preventDefault();
+    $('#school_two_display').css({'position': 'relative', 'left': '775px', '-webkit-transition': 'all 0.7s ease-in'})
+
+    var url = $('#choose_school_two').attr('action');
+    var schoolId = (parseInt($('#school_two_selector option:selected').val()) + 1);
+
+
+    $.get(url, {school_id: schoolId}, function(serverResponse) {
+      var divTwo = $('#school_two_display')
+      divTwo.css({'position': 'relative', 'left': '0px', '-webkit-transition': 'all 0.7s ease-out'})
+        divTwo.html(serverResponse);
+    });
+});
+
+</script>

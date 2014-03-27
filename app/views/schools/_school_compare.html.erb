@@ -1,0 +1,36 @@
+<div id='compare_100'>
+  <h1><%= @school.name %></h1>
+
+   <h3>A breakdown of all of the social media posts we've collected on this school so far:</h3>
+
+    <h2>The possi-vibes versus negi-vibes of a school</h2>
+    <h3>Based on the overall sentiment of their input</h3>
+  <div id="pie-chart-<%= @school.id %>-<%= @random_pie_number %>" class="pie-chart">
+  </div>
+
+  <div>
+    <h3>These are the ten most prevalent topics students at <%= @school.name %> have been talking about:</h3>
+
+    <div id="bar-chart-school-<%= @school.id %>-<%= @random_bar_number %>">
+    </div>
+
+
+  </div>
+</div>
+
+
+<script>
+  var json = '<%= @social_media_profile.html_safe %>';
+  var data = jQuery.parseJSON(json);
+  setTimeout(function() { pieChart(data, "#pie-chart-<%= @school.id %>-<%= @random_pie_number %>"); }, 700);
+  // pieChart(data, "#pie-chart-<%= @school.id %>");
+
+  // barChartSchool(data,location);
+  // var data2 = <%= @ratings_profile.to_json.html_safe %>;
+  var data2 = <%= @ratings_profile.to_json.html_safe %>;
+  setTimeout(function() { barChartSchool(data2, "#bar-chart-school-<%= @school.id %>-<%= @random_bar_number %>"); }, 800);
+  // barChartSchool(data2);
+
+  var allSchoolData = <%= @all_school_data.to_json.html_safe %>;
+
+</script>

@@ -1,10 +1,14 @@
-<h1>So What Are People Talking About?</h1>
 
-<h3>These are the conversation topics we've been collecting data on so far.  Click on a topic to see how each school in our database has been talking about it!</h3>
 
-<ul id="topics-list">
-<% @topics.each do |topic| %>
-  <li><%= link_to(topic.name, topic_path(topic), class: "button") %></li>
-<% end %>
+  <h1>So What Are People Talking About?</h1>
 
-</ul>
+  <h3>These are the conversation topics we've been collecting data on so far.  Click on a topic to see how each school in our database has been talking about it!</h3>
+
+  <div id="topics-list">
+    <% @topics.each do |topic| %>
+      <%= link_to(topic_path(topic)) do %>
+        <div class="topics-grid"><div><%= topic.name %></div></div>
+      <% end %>
+    <% end %>
+    <a href="#"><div class="topics-grid"><div>&nbsp;</div></div></a>
+  </div>

@@ -95,7 +95,7 @@ nav {
   height: 10%;
   text-align: center;
   border: 2px solid white;
-  border-radius: 40px;
+  border-radius: 2px;
   box-shadow: 1px 1px 8px black;
 }
 
@@ -203,7 +203,6 @@ nav {
   margin: 0 5%;
   background-color: #527F3F;
   border: 2px solid white;
-  border-radius: 40px;
   font-weight: 500;
   font-size: 1.1em;
   padding: 3px;

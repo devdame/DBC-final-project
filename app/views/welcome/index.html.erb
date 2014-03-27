@@ -9,12 +9,14 @@
       <p class="first-page-sub-header">Let's get started!</p>
     </div>
     <div id="front-page-buttons">
-      <div class="button">
-        <p><%= link_to "View by Schools", controller: "schools" %></p>
-      </div>
-      <div class="button">
-        <p><%= link_to "View by Topics", controller: "topics" %></p>
-      </div>
+      <%= link_to(schools_path) do %>
+        <div class="button"><p>View by Schools</p></div>
+      <% end %>
+      <%= link_to(topics_path) do %>
+        <div class="button">
+          <p>View by Topics</p>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>

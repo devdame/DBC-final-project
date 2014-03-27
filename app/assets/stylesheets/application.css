@@ -44,7 +44,7 @@
   width: 50%;
 
    background-color: #EFEFEF;
-   border: 1px solid orange;
+   /*border: 1px solid orange;*/
    display: inline-block;
    width: 49%;
  }
@@ -338,4 +338,8 @@ div {
 
 svg {
   /*border: 1px solid red;*/
+}
+
+#redis{
+  width:33%;
 }

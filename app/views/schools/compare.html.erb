@@ -36,7 +36,7 @@
 
   $(document).on('change', '#school_one_selector', function(event) {
     event.preventDefault();
-    $('#school_one_display').css({'position': 'relative', 'right': '950px', '-webkit-transition': 'all 0.7s ease-in'})
+    $('#school_one_display').css({'position': 'relative', 'right': '775px', '-webkit-transition': 'all 0.7s ease-in'})
 
     var url = $('#choose_school_one').attr('action');
     var schoolId = (parseInt($('#school_one_selector option:selected').val()) + 1);
@@ -52,7 +52,7 @@
 
   $(document).on('change', '#school_two_selector', function(event) {
     event.preventDefault();
-    $('#school_two_display').css({'position': 'relative', 'left': '950px', '-webkit-transition': 'all 0.7s ease-in'})
+    $('#school_two_display').css({'position': 'relative', 'left': '775px', '-webkit-transition': 'all 0.7s ease-in'})
 
     var url = $('#choose_school_two').attr('action');
     var schoolId = (parseInt($('#school_two_selector option:selected').val()) + 1);

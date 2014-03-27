@@ -19,7 +19,7 @@ require 'net/http'
 require 'uri'
 require 'json'
 
-class AlchemyAPI
+class AlchemyAPIold
 
 	#Setup the endpoints
 	@@ENDPOINTS = {}
@@ -80,7 +80,7 @@ class AlchemyAPI
 	def initialize()
 	
 		begin
-			key = File.read('api_key.txt')
+			key = '1e168120685a7e21834fce443695cdb5ae1a3b37'
 			key.strip!
 
 			if key.empty?

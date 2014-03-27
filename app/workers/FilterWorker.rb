@@ -10,4 +10,9 @@ class FilterWorker
     Keyword.populate_reference_words
     Keyword.create_or_update_school_word_counts
   end
+
+  def wildfire
+  	AnalyzedPost.destroy_all
+  	Keyword.destroy_all
+  end
 end

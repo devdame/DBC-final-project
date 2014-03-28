@@ -1,19 +1,25 @@
 function pieChart(data, targetId) {
+console.log("pieChart invoked");
+  console.log(data);
+  console.log(targetId);
 
-  var w = parseInt(d3.select('.chart').style('width'), 10),  //width
-    h = parseInt(d3.select('.chart').style('width'), 10),                            //height
-    r = (parseInt(d3.select('.chart').style('width'), 10))/2,                           //radius
+  var w = parseInt(d3.select('.pie-chart').style('width'), 10),  //width
+    h = parseInt(d3.select('.pie-chart').style('width'), 10),                            //height
+    r = (parseInt(d3.select('.pie-chart').style('width'), 10))/2,                           //radius
     color = d3.scale.category20c();     //builtin range of colors
 
     data = [{"label":"Positive", "value": data.positive_social_ratio},
             {"label":"Negative", "value": data.negative_social_ratio},
             {"label":"Neutral", "value": data.neutral_social_ratio}];
 
+    console.log("yay");
+    console.log(data);
+
     // Resize SVG on browser viewport resize
     // var w = window;
     function resize(){
     // update width
-      newwidth = parseInt(d3.select('.chart').style('width'), 10);
+      newwidth = parseInt(d3.select('.pie-chart').style('width'), 10);
       // width = width - margin.left - margin.right;
       console.log(newwidth);
       w = newwidth;

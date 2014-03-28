@@ -1,24 +1,33 @@
 function pieChart(data, targetId) {
-  // console.log("pieChart invoked");
-  // console.log(data);
-  // console.log(targetId);
 
-
-  var w = 500,                        //width
-    h = 500,                            //height
-    r = 200,                            //radius
+  var w = parseInt(d3.select('.chart').style('width'), 10),  //width
+    h = parseInt(d3.select('.chart').style('width'), 10),                            //height
+    r = (parseInt(d3.select('.chart').style('width'), 10))/2,                           //radius
     color = d3.scale.category20c();     //builtin range of colors
-
-    // data = [{"label":"Good", "value":60},
-    //         {"label":"Bad", "value":30},
-    //         {"label":"Other", "value":10}];
-
-
 
     data = [{"label":"Positive", "value": data.positive_social_ratio},
             {"label":"Negative", "value": data.negative_social_ratio},
             {"label":"Neutral", "value": data.neutral_social_ratio}];
 
+    // Resize SVG on browser viewport resize
+    // var w = window;
+    function resize(){
+    // update width
+      newwidth = parseInt(d3.select('.chart').style('width'), 10);
+      // width = width - margin.left - margin.right;
+      console.log(newwidth);
+      w = newwidth;
+
+      // resiing SVG container size
+      d3.select(chart.node().parentNode)
+          .style('width', (newwidth) + 'px');
+    }
+
+
+    // resize on page display
+    d3.select(window).on('onload', resize);
+    // invoke resize function on window resize
+    d3.select(window).on('resize', resize);
     var vis = d3.select(targetId)
         .append("svg:svg")              //create the SVG element inside the <body>
         .data([data])                   //associate our data with the document
@@ -61,7 +70,7 @@ function pieChart(data, targetId) {
         arcs.append("svg:text")                                     //add a label to each slice
                 .attr("transform", function(d) {                    //set the label's origin to the center of the arc
                 //we have to make sure to set these before calling arc.centroid
-                d.innerRadius = 120;
+                d.innerRadius = r/2;
                 d.outerRadius = r;
                 return "translate(" + arc.centroid(d) + ")";        //this gives us a pair of coordinates like [50, 50]
             })
@@ -69,5 +78,6 @@ function pieChart(data, targetId) {
             .text(function(d, i) { return data[i].label; })           //get the label from our original data array
             .attr("fill", "white")  // text
             .attr("font-family", "Sans-Serif")
+            .style("text-shadow", "1px 1px 5px black");
 }
 

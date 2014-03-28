@@ -408,9 +408,13 @@ div {
   min-height: 500px;
 }
 
-svg {
-  /*border: 1px solid red;*/
+/*svg {
+  border: 1px solid red;
 }
+
+div {
+  border: 1px solid green;
+}*/
 
 #redis{
   width:33%;

@@ -95,7 +95,7 @@ nav {
   height: 10%;
   text-align: center;
   border: 2px solid white;
-  border-radius: 40px;
+  border-radius: 2px;
   box-shadow: 1px 1px 8px black;
 }
 
@@ -203,7 +203,6 @@ nav {
   margin: 0 5%;
   background-color: #527F3F;
   border: 2px solid white;
-  border-radius: 40px;
   font-weight: 500;
   font-size: 1.1em;
   padding: 3px;
@@ -344,6 +343,32 @@ nav {
 /*.slice:text {
   color: white;
 }*/
+
+#team {
+  width: 80%;
+  margin: auto;
+}
+
+.person {
+  height: 300px;
+  overflow: hidden;
+  padding-bottom: 10px;
+  margin: 20px 0;
+}
+
+.person img {
+  width: 300px;
+  display: inline-block;
+  margin-right: 50px;
+}
+
+.person h3 {
+  display: inline-block;
+  position: relative;
+  bottom: 145px;
+  font-weight: bold;
+  width: 150px;
+}
 
 .chart-div {
   /*border: 1px solid blue;*/

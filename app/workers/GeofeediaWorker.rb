@@ -5,7 +5,7 @@ class GeofeediaWorker
   include Sidekiq::Worker
   include Sidetiq::Schedulable
 
-  recurrence { hourly }
+  recurrence { hourly.minute_of_hour(0, 15, 30, 45) }
 
   def perform
   	geofeedia_id = 32210

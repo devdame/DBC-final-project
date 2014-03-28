@@ -1,10 +1,10 @@
 function barChartTopic(data) {
     // bunch of vars and inits
     var width = 600;                     //bar length
-    var barHeight = 20;
+    var barHeight = 30;
     var w = 1200,                        //viewport width
-        w = newwidth = parseInt(d3.select('.chart').style('width'), 10);
-        h = 22*data.length,              //viewport height
+        w = parseInt(d3.select('.chart').style('width'), 10),
+        h = 31*data.length,              //viewport height
         color = d3.scale.category20b();
 
     var scaler = d3.scale.sqrt()

@@ -22,7 +22,7 @@
   setTimeout(function() { pieChart(data, "#pie-chart-<%= @school.id %>-<%= @random_pie_number %>"); }, 700);
 
   var data2 = <%= @ratings_profile.to_json.html_safe %>;
-  setTimeout(function() { barChartSchool(data2, "#bar-chart-school-<%= @school.id %>-<%= @random_bar_number %>"); }, 800);
+  setTimeout(function() { barChartCompare(data2, "#bar-chart-school-<%= @school.id %>-<%= @random_bar_number %>"); }, 800);
 
-  var allSchoolData = <%= @all_school_data.to_json.html_safe %>;
+  // var allSchoolData = <%= @all_school_data.to_json.html_safe %>;
 </script>

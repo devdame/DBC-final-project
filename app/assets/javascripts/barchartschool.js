@@ -3,7 +3,7 @@ function barChartSchool(data, target) {
     var width = 600;                     //bar length
     var barHeight = 30;
     var w = 1200,                        //viewport width
-        w = parseInt(d3.select('.chart').style('width'), 10),
+        w = parseInt(d3.select('.bar-chart').style('width'), 10),
         h = 31*data.length,              //viewport height
         color = d3.scale.category20b();
 
@@ -14,7 +14,7 @@ function barChartSchool(data, target) {
     // var w = window;
     function resize(){
     // update width
-      newwidth = parseInt(d3.select('.chart').style('width'), 10);
+      newwidth = parseInt(d3.select('.bar-chart').style('width'), 10);
       // width = width - margin.left - margin.right;
       console.log(newwidth);
       w = newwidth;

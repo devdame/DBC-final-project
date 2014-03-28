@@ -5,15 +5,14 @@ class GeofeediaWorker
   include Sidekiq::Worker
   include Sidetiq::Schedulable
 
-  recurrence { minutely }
-  # recurrence { hourly.minute_of_hour(0, 15, 30, 45) }
+  recurrence { hourly }
 
   def perform
-  	geofeedia_id = 32206
-  	school_id = 1
+  	geofeedia_id = 32210
+  	school_id = 6
     appId = ENV['GEOFEEDIA_ID']
     appKey = ENV['GEOFEEDIA_KEY']
-    url = "https://api.geofeedia.com/v1/search/geofeed/#{geofeedia_id}?format=json-default&appId=#{appId}&appKey=#{appKey}&take=10"
+    url = "https://api.geofeedia.com/v1/search/geofeed/#{geofeedia_id}?format=json-default&appId=#{appId}&appKey=#{appKey}&take=20"
     response = HTTParty.get(url)
     parsed = JSON.parse(response.body)
     parsed_items = parsed["items"]

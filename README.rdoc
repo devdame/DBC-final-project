@@ -88,7 +88,7 @@ JavaScript data visualization library utilizing web standards such as SVG, HTML5
 
 === Database Schema
 
-http://i29.photobucket.com/albums/c259/dandydanny/DBC/truism_db_schema_zpsbaade552.png
+http://i29.photobucket.com/albums/c259/dandydanny/DBC/truism_schema_2014-03-26_zps195b1af4.png
 
 === Running the Test Suite
 

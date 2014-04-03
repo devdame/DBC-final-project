@@ -40,10 +40,8 @@
 
     var url = $('#choose_school_one').attr('action');
     var schoolId = (parseInt($('#school_one_selector option:selected').val()) + 1);
-    // console.log(prevRand1);
 
     $.get(url, {school_id: schoolId}, function(serverResponse) {
-      // console.log(serverResponse);
       var divOne = $('#school_one_display')
       divOne.css({'position': 'relative', 'right': '0px', '-webkit-transition': 'all 0.7s ease-out'})
       divOne.html(serverResponse);

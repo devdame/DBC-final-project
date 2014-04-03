@@ -14,11 +14,8 @@ class AnalyzedPost < ActiveRecord::Base
 
   def self.increment_school_word_count
     self.all.each do |post|
-      puts post.id
-      school = post.school
-      puts school.id
+      school = post.school      
       school.post_count += 1
-      puts school.post_count
       case post.overall_sentiment
       when "positive" then school.positive_post_count += 1
       when "negative" then school.negative_post_count += 1
@@ -56,9 +53,6 @@ class AnalyzedPost < ActiveRecord::Base
       ratings = self.get_ratings_hash(post)
       ratings.each do |topic, keyword_match|
         topic_record = Topic.find_by_name(topic)
-        puts "This is the topic and topic record:"
-        puts topic
-        puts topic_record
         school_rating = Rating.where(topic_id: topic_record.id, school_id: school.id).first_or_create
         if school_rating
           school_rating.total_post_count += 1

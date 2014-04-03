@@ -341,9 +341,6 @@ end
         posts = response.parsed_response
         url = response.parsed_response["result"]["nextPage"]["url"]
         timestamp = Time.now.to_s.gsub(/\s|(:)/, '')
-        # p geofeedia_id
-        # p most_recent_post_time
-        # p response.parsed_response["items"].count
         create_local_json_files(geofeedia_id, school_abbreviation_plus_call_amount[0], timestamp, posts)
         sleep 6
       end
@@ -518,6 +515,9 @@ def ping_geofeedia
   end
 end
 
+###################################################################################
+############################DEAD METHODS, MAY BE USED LATER########################
+###################################################################################
 
 
 # def get_most_recent_post_time(posts)

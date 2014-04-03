@@ -7,7 +7,7 @@ require 'fileutils'
 
 
 # # # ############################
-# # # #  FOR REALS STUFF TO USE  #
+# # # #  FOR POTENTIAL FUTURE USE #
 # # # ############################
 
 

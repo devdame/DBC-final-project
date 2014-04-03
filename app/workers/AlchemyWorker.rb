@@ -11,7 +11,6 @@ class AlchemyWorker
   # recurrence { hourly.minute_of_hour(5, 20, 35, 50) }
 
   def perform
-    puts "in the alchemy call now"
     alchemyapi = AlchemyAPI.new()
     new_analyzed_posts = []
     new_analyzed_keywords = []

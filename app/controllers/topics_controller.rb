@@ -8,9 +8,9 @@ class TopicsController < ApplicationController
     @topic = Topic.find(params[:id])
     @ratings = Rating.all
 
+    #Most Popular Words in Topic
     ##########################################
 
-    #Most Popular Words in Topic
     holding = {"popular_words" => []}
 
     reference_words = @topic.reference_words
@@ -23,17 +23,22 @@ class TopicsController < ApplicationController
     @popular_words = holding["popular_words"]
 
 
-    #########################
+    ##########################################
+
 
     #School Total Post Activity in a topic
+    ##########################################
     #To use in a vertical bar chart or pie chart, but is not working in a reasonable amount of time tonight
-    holding2 = {"ratings_by_school" => []}
+    holding_two = {"ratings_by_school" => []}
     ratings_by_school = @ratings.where(topic_id: @topic.id).all
     ratings_by_school.each do |rating|
       if rating
-        holding2["ratings_by_school"] << {name: rating.school.name, count: rating.total_post_count}
+        holding_two["ratings_by_school"] << {name: rating.school.name, count: rating.total_post_count}
       end
     end
-    @ratings_by_school = holding2["ratings_by_school"]
+    @ratings_by_school = holding_two["ratings_by_school"]
   end
+
+
+  ##########################################
 end

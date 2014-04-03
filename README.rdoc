@@ -6,6 +6,10 @@ http://truism.herokuapp.com/assets/truism_logo_2-307567e9f5d2e9fdcc3498d03f57540
 
 Check it out! http://truism.herokuapp.com
 
+=== Sample Screenshots
+
+http://i29.photobucket.com/albums/c259/dandydanny/DBC/truism_screen_shots_zpscd98d91b.jpg
+
 === System Requirements
 - Ruby 2.0.0 p-451
 - Rails 4.0.3

@@ -4,6 +4,8 @@ http://truism.herokuapp.com/assets/truism_logo_2-307567e9f5d2e9fdcc3498d03f57540
 
 <b>trUism</b> is a tool to help prospective college students find a school that's a good culture fit. We listen to social media output on different college campuses and report to you what students are actually talking about.
 
+Check it out! http://truism.herokuapp.com
+
 === System Requirements
 - Ruby 2.0.0 p-451
 - Rails 4.0.3
